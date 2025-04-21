@@ -111,3 +111,39 @@ def edit_usuario(request, pk):
         'action': 'edit',
         'usuario': usuario
     })
+
+
+@login_required
+def gestion_cursos(request):
+    cursos = Course.objects.all()
+    return render(request, 'system/gestion_cursos.html', {
+        'cursos': cursos
+    })
+
+@login_required
+def add_curso(request):
+    if request.method == 'POST':
+        name  = request.POST.get('name', '').strip()
+        hours = request.POST.get('course_hours', '0').strip()
+        Course.objects.create(
+            name=name,
+            course_hours=int(hours)
+        )
+        return redirect('system:gestion_cursos')
+    return render(request, 'system/curso_form.html', {
+        'action': 'add',
+        'curso': None
+    })
+
+@login_required
+def edit_curso(request, pk):
+    curso = Course.objects.get(pk=pk)
+    if request.method == 'POST':
+        curso.name = request.POST.get('name', curso.name).strip()
+        curso.course_hours = int(request.POST.get('course_hours', curso.course_hours))
+        curso.save()
+        return redirect('system:gestion_cursos')
+    return render(request, 'system/curso_form.html', {
+        'action': 'edit',
+        'curso': curso
+    })

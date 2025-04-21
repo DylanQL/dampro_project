@@ -13,9 +13,13 @@ urlpatterns = [
     path('contactanos/', views.contactanos, name='contactanos'),
     path('servicios/', views.servicios, name='servicios'),
     path('cursos/', views.cursos, name='cursos'),
-    path('certificados/', views.certificados, name='certificados'),
 
     path('dashboard/usuarios/',       views.gestion_usuarios, name='gestion_usuarios'),
     path('dashboard/usuarios/add/',   views.add_usuario,      name='add_usuario'),
     path('dashboard/usuarios/edit/<int:pk>/', views.edit_usuario, name='edit_usuario'),
+
+    path('dashboard/cursos/', views.gestion_cursos,  name='gestion_cursos'),
+    path('dashboard/cursos/add/', views.add_curso,       name='add_curso'),
+    path('dashboard/cursos/edit/<int:pk>/', views.edit_curso,   name='edit_curso'),
+
 ]

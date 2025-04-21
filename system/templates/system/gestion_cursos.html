@@ -1,0 +1,37 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}Gestión de Cursos – Dampro SAC{% endblock %}
+
+{% block content %}
+<section class="gestion-cursos">
+  <h1>Gestión de Cursos</h1>
+  <p><a href="{% url 'system:add_curso' %}">+ Agregar Curso</a></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Horas</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in cursos %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.course_hours }}</td>
+        <td>
+          <a href="{% url 'system:edit_curso' c.id %}">Editar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No hay cursos registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

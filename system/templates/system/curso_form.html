@@ -1,0 +1,41 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}
+  {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="curso-form">
+  <h1>
+    {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %}
+  </h1>
+
+  <form method="post" action="">
+    {% csrf_token %}
+    <div>
+      <label for="name">Nombre del curso:</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="{{ curso.name|default_if_none:'' }}"
+        required
+      />
+    </div>
+    <div>
+      <label for="course_hours">Horas del curso:</label>
+      <input
+        type="number"
+        name="course_hours"
+        id="course_hours"
+        value="{{ curso.course_hours|default_if_none:0 }}"
+        required
+      />
+    </div>
+    <button type="submit">
+      {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
+    </button>
+    <a href="{% url 'system:gestion_cursos' %}">Cancelar</a>
+  </form>
+</section>
+{% endblock %}
