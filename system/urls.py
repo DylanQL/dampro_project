@@ -22,4 +22,8 @@ urlpatterns = [
     path('dashboard/cursos/add/', views.add_curso,       name='add_curso'),
     path('dashboard/cursos/edit/<int:pk>/', views.edit_curso,   name='edit_curso'),
 
+    path('dashboard/certificados/', views.gestion_certificados, name='gestion_certificados'),
+    path('dashboard/certificados/add/', views.add_certificado,      name='add_certificado'),
+    path('dashboard/certificados/edit/<int:pk>/', views.edit_certificado,   name='edit_certificado'),
+
 ]

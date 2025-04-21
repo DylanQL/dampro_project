@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Dashboard - Dampro SAC{% endblock %}</title>
+  <title>{% block title %}Dashboard – Dampro SAC{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'system/css/style.css' %}">
 </head>
 <body>
@@ -15,6 +15,7 @@
       <li><a href="{% url 'system:home_logged' %}">Home</a></li>
       <li><a href="{% url 'system:gestion_usuarios' %}">Gestión Usuarios</a></li>
       <li><a href="{% url 'system:gestion_cursos' %}">Gestión Cursos</a></li>
+      <li><a href="{% url 'system:gestion_certificados' %}">Gestión Certificados</a></li>
     </ul>
     <ul class="navbar-logout">
       <li><a href="{% url 'system:logout' %}">Cerrar Sesión</a></li>

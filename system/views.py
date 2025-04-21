@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from functools import wraps
 from .models import *
+from datetime import datetime
 
 
 def index(request):
@@ -146,4 +147,68 @@ def edit_curso(request, pk):
     return render(request, 'system/curso_form.html', {
         'action': 'edit',
         'curso': curso
+    })
+
+
+@login_required
+def gestion_certificados(request):
+    certificados = Certificate.objects.select_related('usuario', 'course').all()
+    return render(request, 'system/gestion_certificados.html', {
+        'certificados': certificados
+    })
+
+@login_required
+def add_certificado(request):
+    if request.method == 'POST':
+        usuario_id = request.POST.get('usuario_id')
+        course_id  = request.POST.get('course_id')
+        horas      = request.POST.get('chronological_hours', '0').strip() or '0'
+
+        usuario = get_object_or_404(Usuario, pk=int(usuario_id))
+        course  = get_object_or_404(Course,  pk=int(course_id))
+
+        # Generar cert_code: inicial First + inicial Last + YYMMDDHHMM
+        now = datetime.now()
+        initials = usuario.first_name[0].upper() + usuario.last_name[0].upper()
+        timestamp = now.strftime('%y%m%d%H%M')
+        cert_code = f"{initials}{timestamp}"
+
+        Certificate.objects.create(
+            usuario=usuario,
+            course=course,
+            chronological_hours=int(horas),
+            cert_code=cert_code
+        )
+        return redirect('system:gestion_certificados')
+
+    usuarios = Usuario.objects.all()
+    cursos   = Course.objects.all()
+    return render(request, 'system/certificado_form.html', {
+        'action': 'add',
+        'certificado': None,
+        'usuarios': usuarios,
+        'cursos': cursos,
+    })
+
+@login_required
+def edit_certificado(request, pk):
+    certificado = get_object_or_404(Certificate, pk=pk)
+    if request.method == 'POST':
+        usuario_id = request.POST.get('usuario_id')
+        course_id  = request.POST.get('course_id')
+        horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
+
+        certificado.usuario = get_object_or_404(Usuario, pk=int(usuario_id))
+        certificado.course  = get_object_or_404(Course,  pk=int(course_id))
+        certificado.chronological_hours = int(horas)
+        certificado.save()
+        return redirect('system:gestion_certificados')
+
+    usuarios = Usuario.objects.all()
+    cursos   = Course.objects.all()
+    return render(request, 'system/certificado_form.html', {
+        'action': 'edit',
+        'certificado': certificado,
+        'usuarios': usuarios,
+        'cursos': cursos,
     })

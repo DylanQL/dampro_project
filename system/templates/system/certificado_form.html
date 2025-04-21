@@ -1,0 +1,59 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}
+  {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="certificado-form">
+  <h1>
+    {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
+  </h1>
+
+  <form method="post" action="">
+    {% csrf_token %}
+
+    <div>
+      <label for="usuario_id">Usuario:</label>
+      <select name="usuario_id" id="usuario_id" required>
+        <option value="">-- selecciona --</option>
+        {% for u in usuarios %}
+          <option value="{{ u.id }}"
+            {% if certificado and certificado.usuario.id == u.id %}selected{% endif %}>
+            {{ u.first_name }} {{ u.last_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label for="course_id">Curso:</label>
+      <select name="course_id" id="course_id" required>
+        <option value="">-- selecciona --</option>
+        {% for cr in cursos %}
+          <option value="{{ cr.id }}"
+            {% if certificado and certificado.course.id == cr.id %}selected{% endif %}>
+            {{ cr.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label for="chronological_hours">Horas cronológicas:</label>
+      <input
+        type="number"
+        name="chronological_hours"
+        id="chronological_hours"
+        value="{{ certificado.chronological_hours|default_if_none:0 }}"
+        required
+      />
+    </div>
+
+    <button type="submit">
+      {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
+    </button>
+    <a href="{% url 'system:gestion_certificados' %}">Cancelar</a>
+  </form>
+</section>
+{% endblock %}
