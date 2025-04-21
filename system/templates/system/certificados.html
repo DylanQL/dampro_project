@@ -1,0 +1,22 @@
+{% extends 'system/base.html' %}
+
+{% block title %}Certificados – Dampro SAC{% endblock %}
+
+{% block content %}
+<section id="certificados" class="certificados">
+  <h1>Verificar Certificado</h1>
+  <form method="get" action="">
+    <div>
+      <label for="id_cert_code">Código de certificado:</label>
+      <input
+        type="text"
+        id="id_cert_code"
+        name="cert_code"
+        placeholder="Ingrese el código de su certificado"
+        required
+      />
+    </div>
+    <button type="submit">Buscar</button>
+  </form>
+</section>
+{% endblock %}

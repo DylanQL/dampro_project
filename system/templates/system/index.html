@@ -1,0 +1,72 @@
+{% extends 'system/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Dampro SAC{% endblock %}
+
+{% block content %}
+  <!-- 1. Carrusel -->
+  <div class="carousel">
+    <!-- Sustituye estos src por tus propias imágenes en static/system/images/ -->
+    <img src="{% static 'system/images/slide1.jpg' %}" alt="Slide 1">
+    <img src="{% static 'system/images/slide2.jpg' %}" alt="Slide 2">
+    <img src="{% static 'system/images/slide3.jpg' %}" alt="Slide 3">
+  </div>
+
+  <!-- 2. Texto a la derecha, imagen a la izquierda -->
+  <section class="section image-left-text-right">
+    <div class="image">
+      <img src="{% static 'system/images/services.jpg' %}" alt="Servicios">
+    </div>
+    <div class="text">
+      <h2>Somos una Consultora de capacitación, especializada en:</h2>
+      <ul>
+        <li>Cursos de Especialización SSOMA.</li>
+        <li>Elaboración de Matriz IPERC y Mapas de Riesgos.</li>
+        <li>Homologaciones para proveedores.</li>
+        <li>Levantamiento de Observaciones de entidades fiscalizadoras, certificadoras y otras.</li>
+        <li>Monitoreos ocupacionales.</li>
+        <li>Sistemas de Gestión de Calidad.</li>
+        <li>Sistemas de Gestión de Seguridad y Salud en el Trabajo.</li>
+        <li>Sistemas de Gestión de Transporte.</li>
+        <li>Sistemas de Gestión del Medio Ambiente.</li>
+        <li>Otros.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Imagen a la derecha, texto a la izquierda -->
+  <section class="section text-left-image-right">
+    <div class="text">
+      <h2>TODO MINTRA - SUNAFIL</h2>
+      <ul>
+        <li>Conformación de Brigadas de Emergencias y personal de respuesta ante el Fenómeno del Niño. (Solicitado por SUNAFIL)</li>
+        <li>Conformación de Comité o Supervisor de Seguridad y Salud en el Trabajo.</li>
+        <li>Campañas Ambientales y de Seguridad y Salud en el Trabajo.</li>
+        <li>Respuesta ante Cartas de Notificación de SUNAFIL.</li>
+        <li>Soluciones ante cartas inductivas de SUNAFIL.</li>
+        <li>Auditorías MINTRA (Auditor acreditado en el Ministerio de Trabajo y Promoción del Empleo para los sectores Industrial, Civil y Minero).</li>
+      </ul>
+    </div>
+    <div class="image">
+      <img src="{% static 'system/images/mintra.jpg' %}" alt="MINTRA - SUNAFIL">
+    </div>
+  </section>
+
+  <!-- 4. Profesionales MINTRA con botón y cardview -->
+  <section class="section">
+    <p><strong>Contamos con los profesionales precisos para las Auditorías MINTRA.</strong></p>
+    <button id="show-professionals">Ver profesionales</button>
+    <div id="professional-card" class="cardview" style="display: none;">
+      <img src="{% static 'system/images/profesionales.jpg' %}" alt="Equipo de profesionales MINTRA">
+      <p>Nuestro equipo cuenta con vasta experiencia en auditorías de Seguridad y Salud en el Trabajo.</p>
+    </div>
+  </section>
+
+  <script>
+    // Lógica mínima para mostrar/ocultar el cardview
+    document.getElementById('show-professionals').addEventListener('click', function() {
+      const card = document.getElementById('professional-card');
+      card.style.display = card.style.display === 'none' ? 'block' : 'none';
+    });
+  </script>
+{% endblock %}

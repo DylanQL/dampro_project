@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dampro SAC{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'system/css/style.css' %}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="{% url 'system:home' %}" class="navbar-brand">Dampro SAC</a>
+    <ul class="navbar-nav">
+      <li><a href="{% url 'system:home' %}">Inicio</a></li>
+      <li><a href="{% url 'system:quienes_somos' %}">Quiénes Somos</a></li>
+      <li><a href="{% url 'system:contactanos' %}">Contáctanos</a></li>
+      <li><a href="{% url 'system:servicios' %}">Servicios</a></li>
+      <li><a href="{% url 'system:cursos' %}">Cursos</a></li>
+      <li><a href="{% url 'system:certificados' %}">Certificados</a></li>
+      <li><a href="{% url 'system:login' %}">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>
