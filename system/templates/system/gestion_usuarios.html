@@ -1,0 +1,35 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}Gestión Usuarios – Dampro SAC{% endblock %}
+
+{% block content %}
+<section class="gestion-usuarios">
+  <h1>Gestión de Usuarios</h1>
+  <p><a href="{% url 'system:add_usuario' %}">+ Agregar Usuario</a></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.first_name }} {{ u.last_name }}</td>
+        <td>{{ u.user_type }}</td>
+        <td>
+          <a href="{% url 'system:edit_usuario' u.id %}">Editar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No hay usuarios registrados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

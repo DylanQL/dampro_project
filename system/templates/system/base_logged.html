@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dashboard - Dampro SAC{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'system/css/style.css' %}">
+</head>
+<body>
+
+  <!-- Navbar para usuarios logueados -->
+  <nav class="navbar-logged">
+    <ul class="navbar-nav-logged">
+      <li><a href="{% url 'system:home_logged' %}">Home</a></li>
+      <li><a href="{% url 'system:gestion_usuarios' %}">Gestión Usuarios</a></li>
+      <li><a href="#">Gestión Certificados</a></li>
+    </ul>
+    <ul class="navbar-logout">
+      <li><a href="{% url 'system:logout' %}">Cerrar Sesión</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>

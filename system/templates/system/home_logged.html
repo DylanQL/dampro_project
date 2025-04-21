@@ -1,0 +1,9 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}Bienvenido – Dampro SAC{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <h1>Bienvenido, {{ user.usuario.first_name }} {{ user.usuario.last_name }}!</h1>
+</section>
+{% endblock %}

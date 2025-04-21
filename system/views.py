@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from functools import wraps
+from .models import *
+
 
 def index(request):
     """
@@ -7,28 +10,6 @@ def index(request):
     Renderiza system/index.html que extiende de base.html.
     """
     return render(request, 'system/index.html')
-
-
-def login_view(request):
-    """
-    Muestra y procesa el formulario de login.
-    En POST, autentica y redirige a 'system:home' si tiene éxito,
-    o vuelve a mostrar el formulario con mensaje de error.
-    """
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('system:home')
-        else:
-            # Falló autenticación
-            return render(request, 'system/login.html', {
-                'error': 'Usuario o contraseña incorrectos'
-            })
-    # GET: renderizar formulario
-    return render(request, 'system/login.html')
 
 def quienes_somos(request):
     return render(request, 'system/quienes_somos.html')
@@ -49,3 +30,84 @@ def certificados(request):
     """
     return render(request, 'system/certificados.html')
 
+# Decorador para comprobar sesión
+def login_required(view_func):
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        if not request.session.get('user_id'):
+            return redirect('system:login')
+        return view_func(request, *args, **kwargs)
+    return wrapped_view
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            user = UserAccount.objects.get(username=username, password=password)
+            request.session['user_id'] = user.id
+            return redirect('system:home_logged')
+        except UserAccount.DoesNotExist:
+            return render(request, 'system/login.html', {
+                'error': 'Usuario o contraseña incorrectos'
+            })
+    return render(request, 'system/login.html')
+
+@login_required
+def home_logged(request):
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    return render(request, 'system/home_logged.html', {'user': user})
+
+def logout_view(request):
+    request.session.flush()  # elimina toda la sesión
+    return redirect('system:login')
+
+
+@login_required
+def gestion_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'system/gestion_usuarios.html', {
+        'usuarios': usuarios
+    })
+
+@login_required
+def add_usuario(request):
+    if request.method == 'POST':
+        # Leer datos del formulario
+        first = request.POST.get('first_name', '').strip()
+        middle = request.POST.get('middle_name', '').strip() or None
+        last = request.POST.get('last_name', '').strip()
+        second_last = request.POST.get('second_last_name', '').strip() or None
+        utype = request.POST.get('user_type', '').strip()
+
+        # Crear y guardar
+        Usuario.objects.create(
+            first_name=first,
+            middle_name=middle,
+            last_name=last,
+            second_last_name=second_last,
+            user_type=utype
+        )
+        return redirect('system:gestion_usuarios')
+
+    return render(request, 'system/usuario_form.html', {
+        'action': 'add',
+        'usuario': None
+    })
+
+@login_required
+def edit_usuario(request, pk):
+    usuario = Usuario.objects.get(pk=pk)
+    if request.method == 'POST':
+        usuario.first_name       = request.POST.get('first_name', usuario.first_name).strip()
+        usuario.middle_name      = request.POST.get('middle_name', usuario.middle_name).strip() or None
+        usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
+        usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
+        usuario.user_type        = request.POST.get('user_type', usuario.user_type).strip()
+        usuario.save()
+        return redirect('system:gestion_usuarios')
+
+    return render(request, 'system/usuario_form.html', {
+        'action': 'edit',
+        'usuario': usuario
+    })
