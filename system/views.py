@@ -3,6 +3,12 @@ from django.contrib.auth import authenticate, login
 from functools import wraps
 from .models import *
 from datetime import datetime
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from weasyprint.text.fonts import FontConfiguration
+from django.conf import settings
+import os
 
 
 def index(request):
@@ -233,3 +239,36 @@ def edit_certificado(request, pk):
         'usuarios': usuarios,
         'cursos': cursos,
     })
+
+@login_required
+def certificado_pdf(request, cert_code):
+    """
+    Genera un PDF con el certificado seleccionado.
+    """
+    certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'course'), cert_code=cert_code)
+    
+    # Renderizar el HTML
+    html_string = render_to_string('system/certificado_pdf.html', {
+        'certificado': certificado,
+    })
+    
+    # Configuración de fuentes
+    font_config = FontConfiguration()
+    
+    # Crear el PDF
+    html = HTML(string=html_string)
+    
+    # Obtener la ruta del logo para incluirla en el PDF
+    logo_path = os.path.join(settings.BASE_DIR, 'system', 'images', 'logo.png')
+    
+    # Definir el nombre del archivo a descargar
+    filename = f"certificado_{certificado.cert_code}.pdf"
+    
+    # Generar el PDF
+    pdf = html.write_pdf(stylesheets=[], font_config=font_config)
+    
+    # Crear la respuesta HTTP con el PDF
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+    return response

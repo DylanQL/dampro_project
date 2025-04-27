@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado - {{ certificado.cert_code }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .certificado-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            box-sizing: border-box;
+            border: 10px solid #f0f0f0;
+            background-color: #ffffff;
+            text-align: center;
+            position: relative;
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        .titulo {
+            font-size: 32px;
+            color: #1a202c;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #ff8c00;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .contenido {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        .nombre {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #ff8c00;
+        }
+        .fecha {
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .firma {
+            margin-top: 50px;
+        }
+        .certificado-footer {
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 100px;
+            color: rgba(200, 200, 200, 0.1);
+            z-index: -1;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+        .codigo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificado-container">
+        <div class="watermark">DAMPRO S.A.C</div>
+        
+        <img src="logo.png" alt="DAMPRO S.A.C." class="logo">
+        
+        <h1 class="titulo">CERTIFICADO</h1>
+        
+        <p class="contenido">
+            <strong>Otorgado a:</strong>
+        </p>
+        
+        <p class="nombre">
+            {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
+            {{ certificado.usuario.first_name }} {{ certificado.usuario.middle_name|default:"" }}
+        </p>
+        
+        <p class="contenido">
+            Por haber participado en la Capacitación de "<strong>{{ certificado.course.name }}</strong>", 
+            realizada por la consultora DAMPRO S.A.C., desarrollada de manera virtual a los trabajadores de 
+            la empresa MEGAVANS S.A.C, identificada con N° de RUC 20607077810, realizado el día 
+            <strong>{{ certificado.creation_date|date:"d 'de' F 'de' Y" }}</strong>, 
+            con un total de <strong>{{ certificado.chronological_hours }}</strong> horas cronológicas.
+        </p>
+        
+        <p class="contenido">
+            El presente certificado para fines convenientes.
+        </p>
+        
+        <div class="firma">
+            <div style="width: 200px; border-top: 1px solid #000; margin: 0 auto;"></div>
+            <p>Gerente General<br>DAMPRO S.A.C.</p>
+        </div>
+        
+        <div class="certificado-footer">
+            <p>Lima, Perú</p>
+        </div>
+        
+        <div class="codigo">Código de certificado: {{ certificado.cert_code }}</div>
+    </div>
+</body>
+</html>

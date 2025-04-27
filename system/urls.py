@@ -15,6 +15,7 @@ urlpatterns = [
     path('cursos/', views.cursos, name='cursos'),
     path('certificados/', views.certificados, name='certificados'),
     path('certificados/<str:cert_code>/', views.certificado_detail, name='certificado_detail'),
+    path('certificados/pdf/<str:cert_code>/', views.certificado_pdf, name='certificado_pdf'),
 
     path('dashboard/usuarios/',       views.gestion_usuarios, name='gestion_usuarios'),
     path('dashboard/usuarios/add/',   views.add_usuario,      name='add_usuario'),
