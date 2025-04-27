@@ -5,62 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificado - {{ certificado.cert_code }}</title>
     <style>
-        body {
+        @page {
+            size: A4 landscape; /* A4 horizontal: 297mm x 210mm */
+            margin: 0;
+        }
+        html, body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #ffffff;
+            width: 297mm;
+            height: 210mm;
         }
+        /* Contenedor principal del certificado */
         .certificado-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
+            position: relative;
+            width: 297mm;
+            height: 210mm;
+            padding: 15mm;
             box-sizing: border-box;
-            border: 10px solid #f0f0f0;
+            border: 8px solid #f0f0f0;
             background-color: #ffffff;
             text-align: center;
-            position: relative;
+            overflow: hidden;
         }
-        .logo {
-            width: 150px;
-            margin-bottom: 20px;
-        }
-        .titulo {
-            font-size: 32px;
-            color: #1a202c;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 2px;
-            border-bottom: 2px solid #ff8c00;
-            padding-bottom: 10px;
-            display: inline-block;
-        }
-        .contenido {
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            text-align: justify;
-        }
-        .nombre {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #ff8c00;
-        }
-        .fecha {
-            font-style: italic;
-            margin-bottom: 30px;
-        }
-        .firma {
-            margin-top: 50px;
-        }
-        .certificado-footer {
-            margin-top: 40px;
-            color: #666;
-            font-size: 14px;
-        }
+        /* Marca de agua */
         .watermark {
             position: absolute;
             top: 50%;
@@ -71,97 +40,178 @@
             z-index: -1;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
+            white-space: nowrap;
         }
-        .codigo {
+        /* Logo */
+        .logo-container {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 12px;
-            color: #666;
+            top: 15mm;
+            left: 15mm;
         }
-        .qr-code {
-            margin: 20px auto;
-            width: 150px;
-            height: 150px;
-        }
-        .qr-code img {
-            width: 100%;
+        .logo {
+            width: 80px;
             height: auto;
         }
-        .qr-text {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-            max-width: 200px;
-            margin-left: auto;
-            margin-right: auto;
+        /* Título del certificado */
+        .header {
+            margin-top: 10mm;
+            margin-bottom: 15mm;
         }
-        /* Nuevo diseño de 2 columnas para firma y QR */
-        .footer-container {
+        .titulo {
+            font-size: 36px;
+            color: #1a202c;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 4px;
+            border-bottom: 2px solid #ff8c00;
+            padding-bottom: 5mm;
+            display: inline-block;
+            margin: 0;
+        }
+        /* Contenido principal */
+        .main-content {
+            padding: 0 25mm;
+            margin-bottom: 15mm;
+        }
+        .contenido {
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 5mm 0;
+            text-align: justify;
+        }
+        .nombre {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 8mm 0;
+            color: #ff8c00;
+        }
+        /* Footer con firma y QR */
+        .footer {
+            position: absolute;
+            bottom: 35mm;
+            left: 0;
+            width: 100%;
+            padding: 0 25mm;
+            box-sizing: border-box;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-top: 50px;
+            align-items: flex-end;
         }
         .firma-container {
             flex: 1;
             text-align: center;
-            padding-right: 20px;
+            padding: 0 10mm;
+        }
+        .firma-linea {
+            width: 150px;
+            border-top: 1px solid #000;
+            margin: 0 auto;
+        }
+        .firma-texto {
+            margin-top: 5mm;
+            font-size: 14px;
+            line-height: 1.4;
         }
         .qr-container {
-            flex: 0 0 auto;
+            width: 100px;
             text-align: center;
+        }
+        .qr-code img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2mm;
+        }
+        .qr-text {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.2;
+        }
+        /* Pie de página y código */
+        .certificado-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .codigo {
+            position: absolute;
+            bottom: 5mm;
+            right: 10mm;
+            font-size: 11px;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="certificado-container">
+        <!-- Marca de agua -->
         <div class="watermark">DAMPRO S.A.C</div>
         
-        <img src="logo.png" alt="DAMPRO S.A.C." class="logo">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="logo.png" alt="DAMPRO S.A.C." class="logo">
+        </div>
         
-        <h1 class="titulo">CERTIFICADO</h1>
+        <!-- Encabezado -->
+        <div class="header">
+            <h1 class="titulo">CERTIFICADO</h1>
+        </div>
         
-        <p class="contenido">
-            <strong>Otorgado a:</strong>
-        </p>
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Texto "Otorgado a" -->
+            <p class="contenido">
+                <strong>Otorgado a:</strong>
+            </p>
+            
+            <!-- Nombre del titular -->
+            <p class="nombre">
+                {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
+                {{ certificado.usuario.first_name }} {{ certificado.usuario.middle_name|default:"" }}
+            </p>
+            
+            <!-- Descripción del certificado -->
+            <p class="contenido">
+                Por haber participado en la Capacitación de "<strong>{{ certificado.course.name }}</strong>", 
+                realizada por la consultora DAMPRO S.A.C., desarrollada de manera virtual a los trabajadores de 
+                la empresa MEGAVANS S.A.C, identificada con N° de RUC 20607077810, realizado el día 
+                <strong>{{ certificado.creation_date|date:"d 'de' F 'de' Y" }}</strong>, 
+                con un total de <strong>{{ certificado.chronological_hours }}</strong> horas cronológicas.
+            </p>
+            
+            <!-- Texto adicional -->
+            <p class="contenido">
+                El presente certificado para fines convenientes.
+            </p>
+        </div>
         
-        <p class="nombre">
-            {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
-            {{ certificado.usuario.first_name }} {{ certificado.usuario.middle_name|default:"" }}
-        </p>
-        
-        <p class="contenido">
-            Por haber participado en la Capacitación de "<strong>{{ certificado.course.name }}</strong>", 
-            realizada por la consultora DAMPRO S.A.C., desarrollada de manera virtual a los trabajadores de 
-            la empresa MEGAVANS S.A.C, identificada con N° de RUC 20607077810, realizado el día 
-            <strong>{{ certificado.creation_date|date:"d 'de' F 'de' Y" }}</strong>, 
-            con un total de <strong>{{ certificado.chronological_hours }}</strong> horas cronológicas.
-        </p>
-        
-        <p class="contenido">
-            El presente certificado para fines convenientes.
-        </p>
-        
-        <div class="footer-container">
+        <!-- Footer con firma y QR -->
+        <div class="footer">
+            <!-- Firma -->
             <div class="firma-container">
-                <div style="width: 200px; border-top: 1px solid #000; margin: 0 auto;"></div>
-                <p>Gerente General<br>DAMPRO S.A.C.</p>
+                <div class="firma-linea"></div>
+                <p class="firma-texto">Gerente General<br>DAMPRO S.A.C.</p>
             </div>
             
+            <!-- Código QR -->
             <div class="qr-container">
                 <div class="qr-code">
                     <img src="data:image/png;base64,{{ qr_code }}" alt="Código QR">
                 </div>
-                <p class="qr-text">Escanea para verificar la autenticidad del certificado</p>
+                <p class="qr-text">Escanea para verificar<br>la autenticidad</p>
             </div>
         </div>
         
+        <!-- Pie de página -->
         <div class="certificado-footer">
             <p>Lima, Perú</p>
         </div>
         
+        <!-- Código del certificado -->
         <div class="codigo">Código de certificado: {{ certificado.cert_code }}</div>
     </div>
 </body>
