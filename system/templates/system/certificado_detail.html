@@ -1,0 +1,37 @@
+{% extends 'system/base.html' %}
+
+{% block title %}Detalle del Certificado – Dampro SAC{% endblock %}
+
+{% block content %}
+<section id="certificado-detail" class="certificado-detail">
+  <h1>Resultado de la Búsqueda</h1>
+  
+  {% if error %}
+    <div class="error-message">
+      <p>{{ error }}</p>
+      <a href="{% url 'system:certificados' %}" class="btn-back">Volver a Buscar</a>
+    </div>
+  {% endif %}
+  
+  {% if certificado %}
+    <div class="certificado-result">
+      <h2>Certificado Encontrado</h2>
+      <div class="certificado-details">
+        <div class="certificado-info">
+          <p><strong>Código de Certificado:</strong> {{ certificado.cert_code }}</p>
+          <p><strong>Nombre del Titular:</strong> 
+            {{ certificado.usuario.first_name }} 
+            {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
+            {{ certificado.usuario.last_name }}
+            {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
+          </p>
+          <p><strong>Curso:</strong> {{ certificado.course.name }}</p>
+          <p><strong>Horas Cronológicas:</strong> {{ certificado.chronological_hours }}</p>
+          <p><strong>Fecha de Emisión:</strong> {{ certificado.creation_date|date:"d/m/Y" }}</p>
+        </div>
+      </div>
+      <a href="{% url 'system:certificados' %}" class="btn-back">Volver a Buscar</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

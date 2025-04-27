@@ -14,37 +14,10 @@
         id="id_cert_code"
         name="cert_code"
         placeholder="Ingrese el código de su certificado"
-        value="{{ request.GET.cert_code }}"
         required
       />
     </div>
     <button type="submit">Buscar</button>
   </form>
-  
-  {% if error %}
-    <div class="error-message">
-      <p>{{ error }}</p>
-    </div>
-  {% endif %}
-  
-  {% if certificado %}
-    <div class="certificado-result">
-      <h2>Certificado Encontrado</h2>
-      <div class="certificado-details">
-        <div class="certificado-info">
-          <p><strong>Código de Certificado:</strong> {{ certificado.cert_code }}</p>
-          <p><strong>Nombre del Titular:</strong> 
-            {{ certificado.usuario.first_name }} 
-            {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
-            {{ certificado.usuario.last_name }}
-            {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
-          </p>
-          <p><strong>Curso:</strong> {{ certificado.course.name }}</p>
-          <p><strong>Horas Cronológicas:</strong> {{ certificado.chronological_hours }}</p>
-          <p><strong>Fecha de Emisión:</strong> {{ certificado.creation_date|date:"d/m/Y" }}</p>
-        </div>
-      </div>
-    </div>
-  {% endif %}
 </section>
 {% endblock %}

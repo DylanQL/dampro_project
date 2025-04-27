@@ -27,19 +27,27 @@ def cursos(request):
 def certificados(request):
     """
     Página para verificar certificados mediante su código.
-    Si se proporciona un código, busca el certificado correspondiente.
+    Si se proporciona un código, redirecciona a la vista de detalle del certificado.
+    """
+    if 'cert_code' in request.GET:
+        cert_code = request.GET.get('cert_code').strip()
+        return redirect('system:certificado_detail', cert_code=cert_code)
+    
+    return render(request, 'system/certificados.html')
+
+def certificado_detail(request, cert_code):
+    """
+    Página que muestra el detalle de un certificado específico.
     """
     certificado = None
     error = None
     
-    if 'cert_code' in request.GET:
-        cert_code = request.GET.get('cert_code').strip()
-        try:
-            certificado = Certificate.objects.select_related('usuario', 'course').get(cert_code=cert_code)
-        except Certificate.DoesNotExist:
-            error = f"No se encontró ningún certificado con el código: {cert_code}"
+    try:
+        certificado = Certificate.objects.select_related('usuario', 'course').get(cert_code=cert_code)
+    except Certificate.DoesNotExist:
+        error = f"No se encontró ningún certificado con el código: {cert_code}"
     
-    return render(request, 'system/certificados.html', {
+    return render(request, 'system/certificado_detail.html', {
         'certificado': certificado,
         'error': error
     })
