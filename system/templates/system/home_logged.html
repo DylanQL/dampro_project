@@ -3,7 +3,45 @@
 {% block title %}Bienvenido – Dampro SAC{% endblock %}
 
 {% block content %}
-<section class="dashboard">
-  <h1>Bienvenido, {{ user.usuario.first_name }} {{ user.usuario.last_name }}!</h1>
+<section class="dashboard bg-gray-100 py-16">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-dampro-dark mb-6">
+        Bienvenido, <span class="text-dampro-orange">{{ user.usuario.first_name }} {{ user.usuario.last_name }}</span>!
+      </h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h3 class="text-xl font-semibold text-dampro-dark mb-4">Mis Cursos</h3>
+          <p class="text-gray-600 mb-4">Accede a tus cursos y certificados disponibles.</p>
+          <a href="#" class="text-dampro-orange font-medium hover:underline flex items-center">
+            Ver mis cursos
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        
+        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h3 class="text-xl font-semibold text-dampro-dark mb-4">Mi Perfil</h3>
+          <p class="text-gray-600 mb-4">Actualiza tu información personal y preferencias.</p>
+          <a href="#" class="text-dampro-orange font-medium hover:underline flex items-center">
+            Editar perfil
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <div class="mt-8 p-6 bg-dampro-dark rounded-lg text-white">
+        <h3 class="text-xl font-semibold mb-4">Próximos eventos</h3>
+        <p class="mb-4">No tienes eventos programados próximamente.</p>
+        <a href="#" class="inline-block bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">
+          Ver calendario
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}

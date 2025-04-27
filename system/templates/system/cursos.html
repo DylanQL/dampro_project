@@ -3,23 +3,74 @@
 {% block title %}Cursos – Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="cursos" class="cursos">
-  <h1>Cursos</h1>
-  <p>Ofrecemos <strong>CERTIFICADOS VIRTUALES</strong> en los siguientes cursos:</p>
-  <ul>
-    <li>Bloque y etiquetado – loto.</li>
-    <li>Manejo de extintores.</li>
-    <li>Manejo de sustancias químicas.</li>
-    <li>Materiales Peligrosos Matpel nivel 1.</li>
-    <li>Materiales Peligrosos Matpel nivel 2.</li>
-    <li>Montaje y desmontaje de andamios.</li>
-    <li>Riesgo eléctrico.</li>
-    <li>Trabajos en altura.</li>
-    <li>Trabajos en caliente.</li>
-    <li>Trabajos en espacios confinados.</li>
-    <li>Trabajos en excavación.</li>
-    <li>Trabajos en izaje.</li>
-    <li>Otros.</li>
-  </ul>
+<section id="cursos" class="bg-gray-100 py-12">
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-dampro-dark mb-6 text-center">Cursos</h1>
+    
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
+      <p class="text-lg text-gray-700 mb-6">Ofrecemos <strong class="text-dampro-orange font-medium">CERTIFICADOS VIRTUALES</strong> en los siguientes cursos:</p>
+      
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Bloque y etiquetado – loto.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Manejo de extintores.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Manejo de sustancias químicas.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Materiales Peligrosos Matpel nivel 1.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Materiales Peligrosos Matpel nivel 2.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Montaje y desmontaje de andamios.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Riesgo eléctrico.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Trabajos en altura.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Trabajos en caliente.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Trabajos en espacios confinados.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Trabajos en excavación.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Trabajos en izaje.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-dampro-orange mr-2">•</span>
+          <span>Otros.</span>
+        </li>
+      </ul>
+      
+      <div class="mt-8 text-center">
+        <a href="{% url 'system:contactanos' %}" class="inline-block bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">
+          Solicitar información
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -1,59 +1,81 @@
 {% extends 'system/base_logged.html' %}
 
 {% block title %}
-  {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
+  {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %} – Dampro SAC
 {% endblock %}
 
 {% block content %}
-<section class="certificado-form">
-  <h1>
-    {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
-  </h1>
+<section class="certificado-form bg-gray-100 py-12">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+      <h1 class="text-2xl font-bold text-dampro-dark mb-6">
+        {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
+      </h1>
 
-  <form method="post" action="">
-    {% csrf_token %}
+      <form method="post" action="" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="space-y-2">
+          <label for="usuario_id" class="block text-sm font-medium text-gray-700">Usuario:</label>
+          <select 
+            name="usuario_id" 
+            id="usuario_id" 
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          >
+            <option value="">-- selecciona --</option>
+            {% for u in usuarios %}
+              <option value="{{ u.id }}"
+                {% if certificado and certificado.usuario.id == u.id %}selected{% endif %}>
+                {{ u.first_name }} {{ u.last_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label for="course_id" class="block text-sm font-medium text-gray-700">Curso:</label>
+          <select 
+            name="course_id" 
+            id="course_id" 
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          >
+            <option value="">-- selecciona --</option>
+            {% for cr in cursos %}
+              <option value="{{ cr.id }}"
+                {% if certificado and certificado.course.id == cr.id %}selected{% endif %}>
+                {{ cr.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label for="chronological_hours" class="block text-sm font-medium text-gray-700">Horas cronológicas:</label>
+          <input
+            type="number"
+            name="chronological_hours"
+            id="chronological_hours"
+            value="{{ certificado.chronological_hours|default_if_none:0 }}"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          />
+        </div>
 
-    <div>
-      <label for="usuario_id">Usuario:</label>
-      <select name="usuario_id" id="usuario_id" required>
-        <option value="">-- selecciona --</option>
-        {% for u in usuarios %}
-          <option value="{{ u.id }}"
-            {% if certificado and certificado.usuario.id == u.id %}selected{% endif %}>
-            {{ u.first_name }} {{ u.last_name }}
-          </option>
-        {% endfor %}
-      </select>
+        <div class="flex items-center justify-between pt-4">
+          <a href="{% url 'system:gestion_certificados' %}" class="text-gray-600 hover:text-gray-800 font-medium">
+            Cancelar
+          </a>
+          <button 
+            type="submit" 
+            class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors"
+          >
+            {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
+          </button>
+        </div>
+      </form>
     </div>
-
-    <div>
-      <label for="course_id">Curso:</label>
-      <select name="course_id" id="course_id" required>
-        <option value="">-- selecciona --</option>
-        {% for cr in cursos %}
-          <option value="{{ cr.id }}"
-            {% if certificado and certificado.course.id == cr.id %}selected{% endif %}>
-            {{ cr.name }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div>
-      <label for="chronological_hours">Horas cronológicas:</label>
-      <input
-        type="number"
-        name="chronological_hours"
-        id="chronological_hours"
-        value="{{ certificado.chronological_hours|default_if_none:0 }}"
-        required
-      />
-    </div>
-
-    <button type="submit">
-      {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
-    </button>
-    <a href="{% url 'system:gestion_certificados' %}">Cancelar</a>
-  </form>
+  </div>
 </section>
 {% endblock %}

@@ -1,44 +1,83 @@
 {% extends 'system/base.html' %}
 
-{% block title %}Servicios – Dampro SAC{% endblock %}
+{% block title %}Servicios – Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="servicios" class="servicios">
-  <h1>Nuestros Servicios</h1>
-  <hr>
+<section id="servicios" class="max-w-5xl mx-auto px-4 py-12">
+  <h1 class="text-3xl md:text-4xl font-bold text-dampro-dark mb-6 text-center">Nuestros Servicios</h1>
+  
+  <!-- Monitoreos -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-dampro-orange mb-4 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+      Monitoreos
+    </h2>
+    <ul class="mb-4 pl-6 list-disc text-gray-700 space-y-2">
+      <li>Monitoreos Ocupacionales</li>
+      <li>Monitoreos Ambientales</li>
+    </ul>
+    <p class="text-gray-700 italic bg-gray-100 p-3 rounded border-l-4 border-dampro-orange">
+      Identificamos el nivel de riesgo de los factores a los que se 
+      encuentran expuestos tus colaboradores.
+    </p>
+  </div>
+  
+  <!-- Auditorías -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-dampro-orange mb-4 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      Auditorías
+    </h2>
+    
+    <div class="space-y-4 text-gray-700">
+      <div class="p-4 border-l-4 border-dampro-orange bg-gray-50 rounded">
+        <p><span class="font-semibold">Auditorías de Diagnóstico:</span><br>
+          Determina la brecha existente entre lo que deseas y tu situación 
+          actual como organización.
+        </p>
+      </div>
+      
+      <div class="p-4 border-l-4 border-dampro-orange bg-gray-50 rounded">
+        <p><span class="font-semibold">Auditorías Mintra:</span><br>
+          En base a la Ley 29783 y el D.S. 014-2013-TR. Contamos con un 
+          staff de asesores acreditados por Mintra.
+        </p>
+      </div>
+      
+      <div class="p-4 border-l-4 border-dampro-orange bg-gray-50 rounded">
+        <p><span class="font-semibold">Auditorías Internas:</span><br>
+          Para los Sistemas de Gestión en las Normas ISO 9001:2015; 
+          ISO 45001:2015; ISO 14001:2015.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sistema de Gestión SST -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-bold text-dampro-orange mb-4 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+      Sistema de Gestión Seguridad y Salud en el Trabajo
+    </h2>
+    <ul class="pl-6 list-disc text-gray-700 space-y-3">
+      <li>Elaboración del Sistema de Gestión de Seguridad y Salud en el Trabajo.</li>
+      <li>Elaboración de IPERC, PETS, Plan de Emergencia.</li>
+      <li>Implementación del Comité de Prevención y Sanción del Hostigamiento Sexual.</li>
+      <li>Supervisión de trabajos de alto riesgo para subcontratistas e inspecciones.</li>
+    </ul>
+  </div>
 
-  <h2>Monitoreos</h2>
-  <ul>
-    <li>Monitoreos Ocupacionales</li>
-    <li>Monitoreos Ambientales</li>
-  </ul>
-  <p>
-    Identificamos el nivel de riesgo de los factores a los que se 
-    encuentran expuestos tus colaboradores.
-  </p>
-  <hr>
-
-  <h2>Auditorías</h2>
-  <p><strong>Auditorías de Diagnóstico:</strong><br>
-    Determina la brecha existente entre lo que deseas y tu situación 
-    actual como organización.
-  </p>
-  <p><strong>Auditorías Mintra:</strong><br>
-    En base a la Ley 29783 y el D.S. 014-2013-TR. Contamos con un 
-    staff de asesores acreditados por Mintra.
-  </p>
-  <p><strong>Auditorías Internas:</strong><br>
-    Para los Sistemas de Gestión en las Normas ISO 9001:2015; 
-    ISO 45001:2015; ISO 14001:2015.
-  </p>
-  <hr>
-
-  <h2>Sistema de Gestión Seguridad y Salud en el Trabajo</h2>
-  <ul>
-    <li>Elaboración del Sistema de Gestión de Seguridad y Salud en el Trabajo.</li>
-    <li>Elaboración de IPERC, PETS, Plan de Emergencia.</li>
-    <li>Implementación del Comité de Prevención y Sanción del Hostigamiento Sexual.</li>
-    <li>Supervisión de trabajos de alto riesgo para subcontratistas e inspecciones.</li>
-  </ul>
+  <!-- CTA Section -->
+  <div class="mt-12 bg-dampro-dark text-white p-6 rounded-lg text-center">
+    <h3 class="text-xl font-bold mb-3">¿Necesitas alguno de nuestros servicios?</h3>
+    <p class="mb-4">Contáctanos para obtener una evaluación personalizada a tu empresa</p>
+    <a href="{% url 'system:contactanos' %}" class="inline-block bg-dampro-orange hover:bg-orange-600 text-white py-2 px-6 rounded-md font-medium transition duration-300">Solicitar información</a>
+  </div>
 </section>
 {% endblock %}

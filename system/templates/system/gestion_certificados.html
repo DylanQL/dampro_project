@@ -3,39 +3,69 @@
 {% block title %}Gestión Certificados – Dampro SAC{% endblock %}
 
 {% block content %}
-<section class="gestion-certificados">
-  <h1>Gestión de Certificados</h1>
-  <p><a href="{% url 'system:add_certificado' %}">+ Agregar Certificado</a></p>
+<section class="gestion-certificados bg-gray-100 py-12">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-dampro-dark">Gestión de Certificados</h1>
+        <a href="{% url 'system:add_certificado' %}" class="bg-dampro-orange text-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Agregar Certificado
+        </a>
+      </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Código</th>
-        <th>Usuario</th>
-        <th>Curso</th>
-        <th>Emitido</th>
-        <th>Horas</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for c in certificados %}
-      <tr>
-        <td>{{ c.id }}</td>
-        <td>{{ c.cert_code }}</td>
-        <td>{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>
-        <td>{{ c.course.name }}</td>
-        <td>{{ c.creation_date|date:"d/m/Y H:i" }}</td>
-        <td>{{ c.chronological_hours }}</td>
-        <td>
-          <a href="{% url 'system:edit_certificado' c.id %}">Editar</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="7">No hay certificados registrados.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead>
+            <tr class="bg-dampro-dark text-white">
+              <th class="py-3 px-4 text-left font-medium rounded-tl-lg">ID</th>
+              <th class="py-3 px-4 text-left font-medium">Código</th>
+              <th class="py-3 px-4 text-left font-medium">Usuario</th>
+              <th class="py-3 px-4 text-left font-medium">Curso</th>
+              <th class="py-3 px-4 text-left font-medium">Emitido</th>
+              <th class="py-3 px-4 text-left font-medium">Horas</th>
+              <th class="py-3 px-4 text-right font-medium rounded-tr-lg">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for c in certificados %}
+            <tr class="hover:bg-gray-50">
+              <td class="py-3 px-4 text-gray-700">{{ c.id }}</td>
+              <td class="py-3 px-4 text-gray-700 font-medium">{{ c.cert_code }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ c.course.name }}</td>
+              <td class="py-3 px-4 text-gray-700">{{ c.creation_date|date:"d/m/Y H:i" }}</td>
+              <td class="py-3 px-4">
+                <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                  {{ c.chronological_hours }} horas
+                </span>
+              </td>
+              <td class="py-3 px-4 text-right">
+                <a href="{% url 'system:edit_certificado' c.id %}" class="text-dampro-orange hover:underline font-medium flex items-center justify-end">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Editar
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="py-8 text-center text-gray-500 italic">No hay certificados registrados.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="mt-6 flex justify-end">
+        <div class="text-sm text-gray-600">
+          Total de certificados: <span class="font-semibold">{{ certificados|length }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -1,41 +1,57 @@
 {% extends 'system/base_logged.html' %}
 
 {% block title %}
-  {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %}
+  {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %} – Dampro SAC
 {% endblock %}
 
 {% block content %}
-<section class="curso-form">
-  <h1>
-    {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %}
-  </h1>
+<section class="curso-form bg-gray-100 py-12">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+      <h1 class="text-2xl font-bold text-dampro-dark mb-6">
+        {% if action == 'add' %}Agregar Curso{% else %}Editar Curso{% endif %}
+      </h1>
 
-  <form method="post" action="">
-    {% csrf_token %}
-    <div>
-      <label for="name">Nombre del curso:</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        value="{{ curso.name|default_if_none:'' }}"
-        required
-      />
+      <form method="post" action="" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="space-y-2">
+          <label for="name" class="block text-sm font-medium text-gray-700">Nombre del curso:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value="{{ curso.name|default_if_none:'' }}"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          />
+        </div>
+        
+        <div class="space-y-2">
+          <label for="course_hours" class="block text-sm font-medium text-gray-700">Horas del curso:</label>
+          <input
+            type="number"
+            name="course_hours"
+            id="course_hours"
+            value="{{ curso.course_hours|default_if_none:0 }}"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          />
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+          <a href="{% url 'system:gestion_cursos' %}" class="text-gray-600 hover:text-gray-800 font-medium">
+            Cancelar
+          </a>
+          <button 
+            type="submit" 
+            class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors"
+          >
+            {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
+          </button>
+        </div>
+      </form>
     </div>
-    <div>
-      <label for="course_hours">Horas del curso:</label>
-      <input
-        type="number"
-        name="course_hours"
-        id="course_hours"
-        value="{{ curso.course_hours|default_if_none:0 }}"
-        required
-      />
-    </div>
-    <button type="submit">
-      {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
-    </button>
-    <a href="{% url 'system:gestion_cursos' %}">Cancelar</a>
-  </form>
+  </div>
 </section>
 {% endblock %}

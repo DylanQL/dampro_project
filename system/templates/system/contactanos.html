@@ -3,19 +3,53 @@
 {% block title %}Contáctanos - Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="contactanos" class="contactanos">
-  <h1>Contáctanos</h1>
-  <p>📞 Teléfonos:</p>
-  <ul>
-    <li>Roberto Contreras: +51 958 729 308</li>
-    <li>Víctor Davis:      +51 967 703 540</li>
-  </ul>
-  <p>✉️ Correos:</p>
-  <ul>
-    <li><a href="mailto:rcontreras@damprosac.com">rcontreras@damprosac.com</a></li>
-    <li><a href="mailto:vdavis@damprosac.com">vdavis@damprosac.com</a></li>
-  </ul>
-  <p>🌐 Sitio web: <a href="http://www.damprosac.com" target="_blank">www.damprosac.com</a></p>
-  <p>Atendemos 24/7 los 365 días del año. ¡Consulte sin compromiso!</p>
+<section id="contactanos" class="max-w-5xl mx-auto px-4 py-12">
+  <h1 class="text-3xl md:text-4xl font-bold text-dampro-dark mb-6 text-center">Contáctanos</h1>
+  
+  <div class="bg-white shadow-md rounded-lg p-8 mb-10">
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Teléfonos -->
+      <div class="mb-6 md:mb-0">
+        <p class="text-xl font-semibold text-dampro-orange mb-3 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+          Teléfonos:
+        </p>
+        <ul class="space-y-2 pl-8">
+          <li class="text-gray-700">Roberto Contreras: <a href="tel:+51958729308" class="text-dampro-orange hover:underline">+51 958 729 308</a></li>
+        </ul>
+      </div>
+      
+      <!-- Correos -->
+      <div>
+        <p class="text-xl font-semibold text-dampro-orange mb-3 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Correos:
+        </p>
+        <ul class="space-y-2 pl-8">
+          <li><a href="mailto:rcontreras@damprosac.com" class="text-dampro-orange hover:underline">rcontreras@damprosac.com</a></li>
+          <li><a href="mailto:vdavis@damprosac.com" class="text-dampro-orange hover:underline">vdavis@damprosac.com</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Sitio web -->
+    <div class="mt-8 border-t pt-6">
+      <p class="text-xl font-semibold text-dampro-orange mb-3 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+        </svg>
+        Sitio web: <a href="http://www.damprosac.com" target="_blank" class="text-dampro-orange hover:underline">www.damprosac.com</a>
+      </p>
+    </div>
+    
+    <!-- Atención -->
+    <div class="mt-8 bg-dampro-dark text-white p-4 rounded-md text-center">
+      <p class="text-lg font-medium">Atendemos 24/7 los 365 días del año. ¡Consulte sin compromiso!</p>
+    </div>
+  </div>
 </section>
-{% endblock %}
+{% endblock %}  

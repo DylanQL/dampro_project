@@ -5,68 +5,193 @@
 
 {% block content %}
   <!-- 1. Carrusel -->
-  <div class="carousel">
-    <!-- Sustituye estos src por tus propias imágenes en static/system/images/ -->
-    <img src="{% static 'system/images/slide1.jpg' %}" alt="Slide 1">
-    <img src="{% static 'system/images/slide2.jpg' %}" alt="Slide 2">
-    <img src="{% static 'system/images/slide3.jpg' %}" alt="Slide 3">
+  <div class="relative w-full overflow-hidden bg-dampro-dark">
+    <!-- Carousel container -->
+    <div class="carousel-container flex transition-transform duration-700 ease-in-out h-96">
+      <img src="{% static 'system/images/slide1.jpg' %}" alt="Slide 1" class="w-full h-full object-cover flex-shrink-0">
+      <img src="{% static 'system/images/slide2.jpg' %}" alt="Slide 2" class="w-full h-full object-cover flex-shrink-0">
+      <img src="{% static 'system/images/slide3.jpg' %}" alt="Slide 3" class="w-full h-full object-cover flex-shrink-0">
+    </div>
+    
+    <!-- Carousel controls -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+      <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+      <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+      <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100"></button>
+    </div>
   </div>
 
   <!-- 2. Texto a la derecha, imagen a la izquierda -->
-  <section class="section image-left-text-right">
-    <div class="image">
-      <img src="{% static 'system/images/services.jpg' %}" alt="Servicios">
+  <section class="flex flex-col md:flex-row bg-white">
+    <div class="w-full md:w-1/2">
+      <img src="{% static 'system/images/services.jpg' %}" alt="Servicios" class="w-full h-full object-cover">
     </div>
-    <div class="text">
-      <h2>Somos una Consultora de capacitación, especializada en:</h2>
-      <ul>
-        <li>Cursos de Especialización SSOMA.</li>
-        <li>Elaboración de Matriz IPERC y Mapas de Riesgos.</li>
-        <li>Homologaciones para proveedores.</li>
-        <li>Levantamiento de Observaciones de entidades fiscalizadoras, certificadoras y otras.</li>
-        <li>Monitoreos ocupacionales.</li>
-        <li>Sistemas de Gestión de Calidad.</li>
-        <li>Sistemas de Gestión de Seguridad y Salud en el Trabajo.</li>
-        <li>Sistemas de Gestión de Transporte.</li>
-        <li>Sistemas de Gestión del Medio Ambiente.</li>
-        <li>Otros.</li>
+    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+      <h2 class="text-2xl font-bold text-dampro-dark mb-4">Somos una Consultora de capacitación, especializada en:</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Cursos de Especialización SSOMA.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Elaboración de Matriz IPERC y Mapas de Riesgos.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Homologaciones para proveedores.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Levantamiento de Observaciones de entidades fiscalizadoras, certificadoras y otras.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Monitoreos ocupacionales.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Sistemas de Gestión de Calidad.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Sistemas de Gestión de Seguridad y Salud en el Trabajo.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Sistemas de Gestión de Transporte.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Sistemas de Gestión del Medio Ambiente.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Otros.
+        </li>
       </ul>
     </div>
   </section>
 
   <!-- 3. Imagen a la derecha, texto a la izquierda -->
-  <section class="section text-left-image-right">
-    <div class="text">
-      <h2>TODO MINTRA - SUNAFIL</h2>
-      <ul>
-        <li>Conformación de Brigadas de Emergencias y personal de respuesta ante el Fenómeno del Niño. (Solicitado por SUNAFIL)</li>
-        <li>Conformación de Comité o Supervisor de Seguridad y Salud en el Trabajo.</li>
-        <li>Campañas Ambientales y de Seguridad y Salud en el Trabajo.</li>
-        <li>Respuesta ante Cartas de Notificación de SUNAFIL.</li>
-        <li>Soluciones ante cartas inductivas de SUNAFIL.</li>
-        <li>Auditorías MINTRA (Auditor acreditado en el Ministerio de Trabajo y Promoción del Empleo para los sectores Industrial, Civil y Minero).</li>
+  <section class="flex flex-col md:flex-row bg-gray-100">
+    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center order-2 md:order-1">
+      <h2 class="text-2xl font-bold text-dampro-dark mb-4">TODO MINTRA - SUNAFIL</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Conformación de Brigadas de Emergencias y personal de respuesta ante el Fenómeno del Niño. (Solicitado por SUNAFIL)
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Conformación de Comité o Supervisor de Seguridad y Salud en el Trabajo.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Campañas Ambientales y de Seguridad y Salud en el Trabajo.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Respuesta ante Cartas de Notificación de SUNAFIL.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Soluciones ante cartas inductivas de SUNAFIL.
+        </li>
+        <li class="flex items-start">
+          <svg class="w-5 h-5 text-dampro-orange mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Auditorías MINTRA (Auditor acreditado en el Ministerio de Trabajo y Promoción del Empleo para los sectores Industrial, Civil y Minero).
+        </li>
       </ul>
     </div>
-    <div class="image">
-      <img src="{% static 'system/images/mintra.jpg' %}" alt="MINTRA - SUNAFIL">
+    <div class="w-full md:w-1/2 order-1 md:order-2">
+      <img src="{% static 'system/images/mintra.jpg' %}" alt="MINTRA - SUNAFIL" class="w-full h-full object-cover">
     </div>
   </section>
 
   <!-- 4. Profesionales MINTRA con botón y cardview -->
-  <section class="section">
-    <p><strong>Contamos con los profesionales precisos para las Auditorías MINTRA.</strong></p>
-    <button id="show-professionals">Ver profesionales</button>
-    <div id="professional-card" class="cardview" style="display: none;">
-      <img src="{% static 'system/images/profesionales.jpg' %}" alt="Equipo de profesionales MINTRA">
-      <p>Nuestro equipo cuenta con vasta experiencia en auditorías de Seguridad y Salud en el Trabajo.</p>
+  <section class="py-12 px-6 bg-white text-center">
+    <p class="text-xl font-bold text-dampro-dark mb-6">Contamos con los profesionales precisos para las Auditorías MINTRA.</p>
+    <button id="show-professionals" class="bg-dampro-orange hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-md transition-colors">
+      Ver profesionales
+    </button>
+    
+    <div id="professional-card" class="mt-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden hidden">
+      <img src="{% static 'system/images/profesionales.jpg' %}" alt="Equipo de profesionales MINTRA" class="w-full h-64 object-cover">
+      <div class="p-6">
+        <p class="text-gray-700">Nuestro equipo cuenta con vasta experiencia en auditorías de Seguridad y Salud en el Trabajo.</p>
+      </div>
     </div>
   </section>
 
   <script>
-    // Lógica mínima para mostrar/ocultar el cardview
-    document.getElementById('show-professionals').addEventListener('click', function() {
-      const card = document.getElementById('professional-card');
-      card.style.display = card.style.display === 'none' ? 'block' : 'none';
+    // Carousel functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const carouselContainer = document.querySelector('.carousel-container');
+      const slides = carouselContainer.querySelectorAll('img');
+      const dots = document.querySelectorAll('.carousel-dot');
+      let currentSlide = 0;
+      
+      // Set initial active dot
+      dots[0].classList.add('opacity-100');
+      
+      // Function to move to a specific slide
+      function goToSlide(index) {
+        carouselContainer.style.transform = `translateX(-${index * 100}%)`;
+        // Update active dot
+        dots.forEach(dot => dot.classList.remove('opacity-100'));
+        dots[index].classList.add('opacity-100');
+        currentSlide = index;
+      }
+      
+      // Add click event to dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => goToSlide(index));
+      });
+      
+      // Auto rotate slides
+      setInterval(() => {
+        const nextSlide = (currentSlide + 1) % slides.length;
+        goToSlide(nextSlide);
+      }, 5000);
+      
+      // Toggle professional card
+      document.getElementById('show-professionals').addEventListener('click', function() {
+        const card = document.getElementById('professional-card');
+        card.classList.toggle('hidden');
+      });
     });
   </script>
 {% endblock %}

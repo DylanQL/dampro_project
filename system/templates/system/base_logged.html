@@ -5,26 +5,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Dashboard – Dampro SAC{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'system/css/style.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'dampro-orange': '#E87F45',
+            'dampro-dark': '#2D323A',
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
   <!-- Navbar para usuarios logueados -->
-  <nav class="navbar-logged">
-    <ul class="navbar-nav-logged">
-      <li><a href="{% url 'system:home_logged' %}">Home</a></li>
-      <li><a href="{% url 'system:gestion_usuarios' %}">Gestión Usuarios</a></li>
-      <li><a href="{% url 'system:gestion_cursos' %}">Gestión Cursos</a></li>
-      <li><a href="{% url 'system:gestion_certificados' %}">Gestión Certificados</a></li>
-    </ul>
-    <ul class="navbar-logout">
-      <li><a href="{% url 'system:logout' %}">Cerrar Sesión</a></li>
-    </ul>
+  <nav class="bg-dampro-dark text-white shadow-md">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-3">
+        <div class="flex items-center">
+          <a href="{% url 'system:home_logged' %}" class="mr-6">
+            <img src="{% static 'system/img/logo.png' %}" alt="Dampro SAC" class="h-8">
+          </a>
+          <ul class="hidden md:flex space-x-6">
+            <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-dampro-orange transition-colors">Home</a></li>
+            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
+            <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
+            <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul class="flex items-center">
+            <li>
+              <a href="{% url 'system:logout' %}" class="bg-dampro-orange hover:bg-orange-600 text-white py-2 px-4 rounded-md font-medium transition-colors">
+                Cerrar Sesión
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Mobile menu (hidden by default) -->
+      <div class="md:hidden py-2">
+        <ul class="space-y-2">
+          <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-dampro-orange transition-colors">Home</a></li>
+          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
+          <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
+          <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
+        </ul>
+      </div>
+    </div>
   </nav>
 
-  <main>
-    {% block content %}{% endblock %}
+  <main class="flex-grow container mx-auto px-4 py-6">
+    {% block content %}
+    <!-- Dashboard content default -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h1 class="text-2xl font-bold text-dampro-dark mb-6">Dashboard</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-2">Usuarios</h3>
+          <p class="text-3xl font-bold">0</p>
+          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Usuarios →</a>
+        </div>
+        
+        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-2">Cursos</h3>
+          <p class="text-3xl font-bold">0</p>
+          <a href="{% url 'system:gestion_cursos' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Cursos →</a>
+        </div>
+        
+        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-2">Certificados</h3>
+          <p class="text-3xl font-bold">0</p>
+          <a href="{% url 'system:gestion_certificados' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Certificados →</a>
+        </div>
+      </div>
+      
+      <div class="mt-8">
+        <h2 class="text-xl font-bold text-dampro-dark mb-4">Actividad Reciente</h2>
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-gray-600">No hay actividad reciente para mostrar.</p>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
   </main>
+
+  <footer class="bg-dampro-dark text-white py-4 mt-auto">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p>&copy; {% now "Y" %} Dampro SAC. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
