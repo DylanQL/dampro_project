@@ -26,10 +26,23 @@ def cursos(request):
 
 def certificados(request):
     """
-    Página simple para ingresar el código de certificado
-    (aún sin lógica de búsqueda).
+    Página para verificar certificados mediante su código.
+    Si se proporciona un código, busca el certificado correspondiente.
     """
-    return render(request, 'system/certificados.html')
+    certificado = None
+    error = None
+    
+    if 'cert_code' in request.GET:
+        cert_code = request.GET.get('cert_code').strip()
+        try:
+            certificado = Certificate.objects.select_related('usuario', 'course').get(cert_code=cert_code)
+        except Certificate.DoesNotExist:
+            error = f"No se encontró ningún certificado con el código: {cert_code}"
+    
+    return render(request, 'system/certificados.html', {
+        'certificado': certificado,
+        'error': error
+    })
 
 # Decorador para comprobar sesión
 def login_required(view_func):
