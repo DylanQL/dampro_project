@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
 from functools import wraps
 from .models import *
 from datetime import datetime
@@ -9,6 +10,9 @@ from weasyprint import HTML
 from weasyprint.text.fonts import FontConfiguration
 from django.conf import settings
 import os
+import qrcode
+from io import BytesIO
+import base64
 
 
 def index(request):
@@ -247,19 +251,46 @@ def certificado_pdf(request, cert_code):
     """
     certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'course'), cert_code=cert_code)
     
+    # Generar URL para el QR con un dominio personalizado
+    # Puedes cambiarlo al dominio que prefieras, por ejemplo 'https://dampro.com.pe'
+    custom_domain = 'http://localhost:8000'  # Cambia esto a tu dominio real
+    verification_url = f"{custom_domain}/certificados/{cert_code}/"
+    
+    # Alternativamente, si prefieres seguir usando el dominio actual del servidor (desarrollo/producción):
+    # verification_url = request.build_absolute_uri(
+    #     reverse('system:certificado_detail', kwargs={'cert_code': cert_code})
+    # )
+    
+    # Generar QR code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(verification_url)
+    qr.make(fit=True)
+    
+    # Crear imagen del QR
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # Guardar imagen en memoria
+    buffer = BytesIO()
+    img.save(buffer)
+    qr_image_base64 = base64.b64encode(buffer.getvalue()).decode()
+    
     # Renderizar el HTML
     html_string = render_to_string('system/certificado_pdf.html', {
         'certificado': certificado,
+        'qr_code': qr_image_base64,
+        'verification_url': verification_url,
     })
     
     # Configuración de fuentes
     font_config = FontConfiguration()
     
     # Crear el PDF
-    html = HTML(string=html_string)
-    
-    # Obtener la ruta del logo para incluirla en el PDF
-    logo_path = os.path.join(settings.BASE_DIR, 'system', 'images', 'logo.png')
+    html = HTML(string=html_string, base_url=request.build_absolute_uri('/'))
     
     # Definir el nombre del archivo a descargar
     filename = f"certificado_{certificado.cert_code}.pdf"

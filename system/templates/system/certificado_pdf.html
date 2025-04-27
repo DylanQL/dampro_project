@@ -80,6 +80,39 @@
             font-size: 12px;
             color: #666;
         }
+        .qr-code {
+            margin: 20px auto;
+            width: 150px;
+            height: 150px;
+        }
+        .qr-code img {
+            width: 100%;
+            height: auto;
+        }
+        .qr-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Nuevo diseño de 2 columnas para firma y QR */
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .firma-container {
+            flex: 1;
+            text-align: center;
+            padding-right: 20px;
+        }
+        .qr-container {
+            flex: 0 0 auto;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -111,9 +144,18 @@
             El presente certificado para fines convenientes.
         </p>
         
-        <div class="firma">
-            <div style="width: 200px; border-top: 1px solid #000; margin: 0 auto;"></div>
-            <p>Gerente General<br>DAMPRO S.A.C.</p>
+        <div class="footer-container">
+            <div class="firma-container">
+                <div style="width: 200px; border-top: 1px solid #000; margin: 0 auto;"></div>
+                <p>Gerente General<br>DAMPRO S.A.C.</p>
+            </div>
+            
+            <div class="qr-container">
+                <div class="qr-code">
+                    <img src="data:image/png;base64,{{ qr_code }}" alt="Código QR">
+                </div>
+                <p class="qr-text">Escanea para verificar la autenticidad del certificado</p>
+            </div>
         </div>
         
         <div class="certificado-footer">
