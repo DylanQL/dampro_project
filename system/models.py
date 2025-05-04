@@ -2,12 +2,20 @@ from django.db import models
 
 # Create your models here.
 
+class Empresa(models.Model):
+    ruc = models.CharField(max_length=11, unique=True)
+    nombre = models.CharField(max_length=200)  # razón social
+    
+    def __str__(self):
+        return f"{self.nombre} (RUC: {self.ruc})"
+
 class Usuario(models.Model):
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100)
     second_last_name = models.CharField(max_length=100, blank=True, null=True)
     user_type = models.CharField(max_length=50)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='usuarios', null=True, blank=True)
 
 class UserAccount(models.Model):
     username = models.CharField(max_length=150, unique=True)

@@ -88,7 +88,20 @@ def login_view(request):
 @login_required
 def home_logged(request):
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
-    return render(request, 'system/home_logged.html', {'user': user})
+    
+    # Count the records for dashboard display
+    usuarios_count = Usuario.objects.count()
+    empresas_count = Empresa.objects.count()
+    cursos_count = Course.objects.count()
+    certificados_count = Certificate.objects.count()
+    
+    return render(request, 'system/home_logged.html', {
+        'user': user,
+        'usuarios_count': usuarios_count,
+        'empresas_count': empresas_count,
+        'cursos_count': cursos_count,
+        'certificados_count': certificados_count
+    })
 
 def logout_view(request):
     request.session.flush()  # elimina toda la sesión
@@ -111,6 +124,15 @@ def add_usuario(request):
         last = request.POST.get('last_name', '').strip()
         second_last = request.POST.get('second_last_name', '').strip() or None
         utype = request.POST.get('user_type', '').strip()
+        empresa_id = request.POST.get('empresa_id', '')
+        
+        # Obtener la empresa si se proporcionó un ID
+        empresa = None
+        if empresa_id:
+            try:
+                empresa = Empresa.objects.get(pk=int(empresa_id))
+            except (Empresa.DoesNotExist, ValueError):
+                pass
 
         # Crear y guardar
         Usuario.objects.create(
@@ -118,13 +140,16 @@ def add_usuario(request):
             middle_name=middle,
             last_name=last,
             second_last_name=second_last,
-            user_type=utype
+            user_type=utype,
+            empresa=empresa
         )
         return redirect('system:gestion_usuarios')
-
+    
+    empresas = Empresa.objects.all()
     return render(request, 'system/usuario_form.html', {
         'action': 'add',
-        'usuario': None
+        'usuario': None,
+        'empresas': empresas
     })
 
 @login_required
@@ -136,12 +161,25 @@ def edit_usuario(request, pk):
         usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
         usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
         usuario.user_type        = request.POST.get('user_type', usuario.user_type).strip()
+        
+        # Actualizar la relación con la empresa
+        empresa_id = request.POST.get('empresa_id', '')
+        if empresa_id:
+            try:
+                usuario.empresa = Empresa.objects.get(pk=int(empresa_id))
+            except (Empresa.DoesNotExist, ValueError):
+                usuario.empresa = None
+        else:
+            usuario.empresa = None
+            
         usuario.save()
         return redirect('system:gestion_usuarios')
 
+    empresas = Empresa.objects.all()
     return render(request, 'system/usuario_form.html', {
         'action': 'edit',
-        'usuario': usuario
+        'usuario': usuario,
+        'empresas': empresas
     })
 
 
@@ -303,3 +341,54 @@ def certificado_pdf(request, cert_code):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
     return response
+
+
+@login_required
+def gestion_empresas(request):
+    """
+    Página para gestionar las empresas.
+    Muestra todas las empresas registradas.
+    """
+    empresas = Empresa.objects.all()
+    return render(request, 'system/gestion_empresas.html', {
+        'empresas': empresas
+    })
+
+@login_required
+def add_empresa(request):
+    """
+    Página para añadir una nueva empresa.
+    """
+    if request.method == 'POST':
+        # Leer datos del formulario
+        ruc = request.POST.get('ruc', '').strip()
+        nombre = request.POST.get('nombre', '').strip()
+
+        # Crear y guardar
+        Empresa.objects.create(
+            ruc=ruc,
+            nombre=nombre
+        )
+        return redirect('system:gestion_empresas')
+
+    return render(request, 'system/empresa_form.html', {
+        'action': 'add',
+        'empresa': None
+    })
+
+@login_required
+def edit_empresa(request, pk):
+    """
+    Página para editar una empresa existente.
+    """
+    empresa = get_object_or_404(Empresa, pk=pk)
+    if request.method == 'POST':
+        empresa.ruc = request.POST.get('ruc', empresa.ruc).strip()
+        empresa.nombre = request.POST.get('nombre', empresa.nombre).strip()
+        empresa.save()
+        return redirect('system:gestion_empresas')
+
+    return render(request, 'system/empresa_form.html', {
+        'action': 'edit',
+        'empresa': empresa
+    })

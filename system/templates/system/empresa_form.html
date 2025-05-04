@@ -1,0 +1,64 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}
+  {% if action == 'add' %}Agregar Empresa{% else %}Editar Empresa{% endif %} – Dampro SAC
+{% endblock %}
+
+{% block content %}
+<section class="py-12">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+      <div class="flex items-center mb-6">
+        <a href="{% url 'system:gestion_empresas' %}" class="mr-2 text-dampro-orange">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <h1 class="text-2xl font-bold text-dampro-dark">
+          {% if action == 'add' %}Agregar Empresa{% else %}Editar Empresa{% endif %}
+        </h1>
+      </div>
+
+      <form method="post" action="" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="space-y-2">
+          <label for="ruc" class="block text-sm font-medium text-gray-700">RUC:</label>
+          <input
+            type="text"
+            name="ruc"
+            id="ruc"
+            value="{{ empresa.ruc|default_if_none:'' }}"
+            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange focus:border-transparent"
+            required
+            pattern="[0-9]{11}"
+            title="El RUC debe tener 11 dígitos numéricos"
+          />
+          <p class="text-xs text-gray-500">El RUC debe contener 11 dígitos numéricos.</p>
+        </div>
+        
+        <div class="space-y-2">
+          <label for="nombre" class="block text-sm font-medium text-gray-700">Razón Social:</label>
+          <input
+            type="text"
+            name="nombre"
+            id="nombre"
+            value="{{ empresa.nombre|default_if_none:'' }}"
+            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange focus:border-transparent"
+            required
+          />
+        </div>
+        
+        <div class="flex justify-between pt-4">
+          <a href="{% url 'system:gestion_empresas' %}" class="py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+            Cancelar
+          </a>
+          <button type="submit" class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">
+            {% if action == 'add' %}Crear Empresa{% else %}Actualizar Empresa{% endif %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

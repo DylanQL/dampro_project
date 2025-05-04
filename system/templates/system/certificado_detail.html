@@ -35,6 +35,13 @@
               </span>
             </div>
             
+            {% if certificado.usuario.empresa %}
+            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Empresa:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.usuario.empresa.nombre }}</span>
+            </div>
+            {% endif %}
+            
             <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
               <span class="font-bold text-dampro-dark w-full sm:w-2/5">Curso:</span> 
               <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.course.name }}</span>

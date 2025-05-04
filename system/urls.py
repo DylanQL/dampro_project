@@ -21,6 +21,10 @@ urlpatterns = [
     path('dashboard/usuarios/add/',   views.add_usuario,      name='add_usuario'),
     path('dashboard/usuarios/edit/<int:pk>/', views.edit_usuario, name='edit_usuario'),
 
+    path('dashboard/empresas/', views.gestion_empresas, name='gestion_empresas'),
+    path('dashboard/empresas/add/', views.add_empresa, name='add_empresa'),
+    path('dashboard/empresas/edit/<int:pk>/', views.edit_empresa, name='edit_empresa'),
+
     path('dashboard/cursos/', views.gestion_cursos,  name='gestion_cursos'),
     path('dashboard/cursos/add/', views.add_curso,       name='add_curso'),
     path('dashboard/cursos/edit/<int:pk>/', views.edit_curso,   name='edit_curso'),

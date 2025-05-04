@@ -32,6 +32,7 @@
           <ul class="hidden md:flex space-x-6">
             <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-dampro-orange transition-colors">Home</a></li>
             <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
+            <li><a href="{% url 'system:gestion_empresas' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Empresas</a></li>
             <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
             <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
           </ul>
@@ -52,6 +53,7 @@
         <ul class="space-y-2">
           <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-dampro-orange transition-colors">Home</a></li>
           <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
+          <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Empresas</a></li>
           <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
           <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
         </ul>
@@ -65,22 +67,28 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
       <h1 class="text-2xl font-bold text-dampro-dark mb-6">Dashboard</h1>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Usuarios</h3>
-          <p class="text-3xl font-bold">0</p>
+          <p class="text-3xl font-bold">{{ usuarios_count|default:"0" }}</p>
           <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Usuarios →</a>
         </div>
         
         <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-2">Empresas</h3>
+          <p class="text-3xl font-bold">{{ empresas_count|default:"0" }}</p>
+          <a href="{% url 'system:gestion_empresas' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Empresas →</a>
+        </div>
+        
+        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Cursos</h3>
-          <p class="text-3xl font-bold">0</p>
+          <p class="text-3xl font-bold">{{ cursos_count|default:"0" }}</p>
           <a href="{% url 'system:gestion_cursos' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Cursos →</a>
         </div>
         
         <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Certificados</h3>
-          <p class="text-3xl font-bold">0</p>
+          <p class="text-3xl font-bold">{{ certificados_count|default:"0" }}</p>
           <a href="{% url 'system:gestion_certificados' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Certificados →</a>
         </div>
       </div>
