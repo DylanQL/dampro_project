@@ -8,8 +8,6 @@ __pycache__/
 .env
 *.env
 
-# Base de datos local de desarrollo
-db.sqlite3
 
 # Archivos de migración compilados
 */migrations/__pycache__/
