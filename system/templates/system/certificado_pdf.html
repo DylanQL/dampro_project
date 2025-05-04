@@ -179,7 +179,7 @@
                 Por haber participado en la Capacitación de "<strong>{{ certificado.course.name }}</strong>", 
                 realizada por la consultora DAMPRO S.A.C., desarrollada de manera virtual a los trabajadores de 
                 la empresa MEGAVANS S.A.C, identificada con N° de RUC 20607077810, realizado el día 
-                <strong>{{ certificado.creation_date|date:"d 'de' F 'de' Y" }}</strong>, 
+                <strong>{{ certificado.creation_date|date:"d" }} de {{ certificado.creation_date|date:"F" }} del {{ certificado.creation_date|date:"Y" }}</strong>, 
                 con un total de <strong>{{ certificado.chronological_hours }}</strong> horas cronológicas.
             </p>
             
