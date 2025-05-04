@@ -1,0 +1,34 @@
+# Archivos y carpetas de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Archivos de entorno
+.env
+*.env
+
+# Base de datos local de desarrollo
+db.sqlite3
+
+# Archivos de migración compilados
+*/migrations/__pycache__/
+*.pyc
+
+# Archivos de configuración del sistema operativo/editor
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Archivos de logs
+*.log
+
+# Archivos generados por pip
+pip-log.txt
+
+# Archivos de dependencias que pueden regenerarse
+*.egg-info/
+dist/
+build/
