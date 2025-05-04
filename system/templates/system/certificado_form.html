@@ -4,6 +4,36 @@
   {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %} – Dampro SAC
 {% endblock %}
 
+{% block extra_head %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Función que actualiza las horas cronológicas según el curso seleccionado
+    function actualizarHoras() {
+      const cursoSelect = document.getElementById('course_id');
+      const horasInput = document.getElementById('chronological_hours');
+      
+      if (cursoSelect.value) {
+        const selectedOption = cursoSelect.options[cursoSelect.selectedIndex];
+        const horas = selectedOption.getAttribute('data-hours');
+        if (horas) {
+          horasInput.value = horas;
+        }
+      }
+    }
+    
+    // Evento que se ejecuta cuando se cambia el curso
+    document.getElementById('course_id').addEventListener('change', actualizarHoras);
+    
+    // Si estamos editando un certificado, no autocompletamos las horas
+    // a menos que el curso haya cambiado
+    {% if action == 'add' %}
+      // Para nuevos certificados, intentamos llenar las horas cuando la página carga
+      setTimeout(actualizarHoras, 100); // Pequeño retraso para asegurar que todo está cargado
+    {% endif %}
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 <section class="certificado-form bg-gray-100 py-12">
   <div class="container mx-auto px-4">
@@ -43,9 +73,9 @@
           >
             <option value="">-- selecciona --</option>
             {% for cr in cursos %}
-              <option value="{{ cr.id }}"
+              <option value="{{ cr.id }}" data-hours="{{ cr.course_hours }}"
                 {% if certificado and certificado.course.id == cr.id %}selected{% endif %}>
-                {{ cr.name }}
+                {{ cr.name }} - ({{ cr.course_hours }} horas)
               </option>
             {% endfor %}
           </select>
@@ -59,8 +89,9 @@
             id="chronological_hours"
             value="{{ certificado.chronological_hours|default_if_none:0 }}"
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange bg-gray-50"
           />
+          <p class="text-xs text-gray-500 italic">Las horas se completan automáticamente según el curso seleccionado, pero pueden modificarse manualmente.</p>
         </div>
 
         <div class="flex items-center justify-between pt-4">

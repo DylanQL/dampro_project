@@ -5,9 +5,6 @@ from django.db import models
 class Empresa(models.Model):
     ruc = models.CharField(max_length=11, unique=True)
     nombre = models.CharField(max_length=200)  # razón social
-    
-    def __str__(self):
-        return f"{self.nombre} (RUC: {self.ruc})"
 
 class Usuario(models.Model):
     first_name = models.CharField(max_length=100)
