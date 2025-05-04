@@ -93,6 +93,21 @@
           />
           <p class="text-xs text-gray-500 italic">Las horas se completan automáticamente según el curso seleccionado, pero pueden modificarse manualmente.</p>
         </div>
+        
+        {% if action == 'edit' %}
+        <div class="space-y-2">
+          <label for="creation_date" class="block text-sm font-medium text-gray-700">Fecha de emisión:</label>
+          <input
+            type="datetime-local"
+            name="creation_date"
+            id="creation_date"
+            value="{{ certificado.creation_date|date:'Y-m-d\TH:i' }}"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+          />
+          <p class="text-xs text-gray-500 italic">Fecha y hora de emisión del certificado.</p>
+        </div>
+        {% endif %}
 
         <div class="flex items-center justify-between pt-4">
           <a href="{% url 'system:gestion_certificados' %}" class="text-gray-600 hover:text-gray-800 font-medium">
