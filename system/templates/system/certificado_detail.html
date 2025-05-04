@@ -3,35 +3,60 @@
 {% block title %}Detalle del Certificado – Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="certificado-detail" class="certificado-detail">
-  <h1>Resultado de la Búsqueda</h1>
-  
-  {% if error %}
-    <div class="error-message">
-      <p>{{ error }}</p>
-      <a href="{% url 'system:certificados' %}" class="btn-back">Volver a Buscar</a>
-    </div>
-  {% endif %}
-  
-  {% if certificado %}
-    <div class="certificado-result">
-      <h2>Certificado Encontrado</h2>
-      <div class="certificado-details">
-        <div class="certificado-info">
-          <p><strong>Código de Certificado:</strong> {{ certificado.cert_code }}</p>
-          <p><strong>Nombre del Titular:</strong> 
-            {{ certificado.usuario.first_name }} 
-            {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
-            {{ certificado.usuario.last_name }}
-            {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
-          </p>
-          <p><strong>Curso:</strong> {{ certificado.course.name }}</p>
-          <p><strong>Horas Cronológicas:</strong> {{ certificado.chronological_hours }}</p>
-          <p><strong>Fecha de Emisión:</strong> {{ certificado.creation_date|date:"d/m/Y" }}</p>
+<section id="certificado-detail" class="bg-white py-12">
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center text-dampro-dark mb-8">Resultado de la Búsqueda</h1>
+    
+    <div class="max-w-2xl mx-auto">
+      {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 rounded-lg mb-6" role="alert">
+          <p class="mb-4">{{ error }}</p>
+          <a href="{% url 'system:certificados' %}" class="inline-block bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Volver a Buscar</a>
         </div>
-      </div>
-      <a href="{% url 'system:certificados' %}" class="btn-back">Volver a Buscar</a>
+      {% endif %}
+      
+      {% if certificado %}
+        <div class="bg-white p-8 rounded-lg shadow-md border border-gray-200">
+          <h2 class="text-2xl font-bold text-dampro-dark mb-6 pb-2 border-b border-gray-200">Certificado Encontrado</h2>
+          
+          <div class="space-y-4 mb-8">
+            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Código de Certificado:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.cert_code }}</span>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Nombre del Titular:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">
+                {{ certificado.usuario.first_name }} 
+                {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
+                {{ certificado.usuario.last_name }}
+                {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
+              </span>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Curso:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.course.name }}</span>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Horas Cronológicas:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.chronological_hours }}</span>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row pb-3">
+              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Fecha de Emisión:</span> 
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.creation_date|date:"d/m/Y" }}</span>
+            </div>
+          </div>
+          
+          <div class="flex justify-between items-center mt-8">
+            <a href="{% url 'system:certificados' %}" class="inline-block bg-dampro-dark text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Volver a Buscar</a>
+          </div>
+        </div>
+      {% endif %}
     </div>
-  {% endif %}
+  </div>
 </section>
 {% endblock %}

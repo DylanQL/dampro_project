@@ -3,21 +3,69 @@
 {% block title %}Certificados – Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="certificados" class="certificados">
-  <h1>Verificar Certificado</h1>
-  
-  <form method="get" action="">
-    <div>
-      <label for="id_cert_code">Código de certificado:</label>
-      <input
-        type="text"
-        id="id_cert_code"
-        name="cert_code"
-        placeholder="Ingrese el código de su certificado"
-        required
-      />
+<section id="certificados" class="bg-white py-12">
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center text-dampro-dark mb-8">Verificar Certificado</h1>
+    
+    <div class="max-w-2xl mx-auto bg-gray-100 p-8 rounded-lg shadow-md">
+      <form method="get" action="" class="mb-8">
+        <div class="mb-4">
+          <label for="id_cert_code" class="block text-gray-700 font-medium mb-2">Código de certificado:</label>
+          <input
+            type="text"
+            id="id_cert_code"
+            name="cert_code"
+            placeholder="Ingrese el código de su certificado"
+            value="{{ request.GET.cert_code }}"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange"
+          />
+        </div>
+        <button type="submit" class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Buscar</button>
+      </form>
+      
+      {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+          <p>{{ error }}</p>
+        </div>
+      {% endif %}
+      
+      {% if certificado %}
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+          <h2 class="text-2xl font-bold text-dampro-dark mb-4">Certificado Encontrado</h2>
+          <div class="space-y-3">
+            <p class="border-b border-gray-200 pb-2">
+              <span class="font-bold text-dampro-dark">Código de Certificado:</span> 
+              <span class="text-gray-700">{{ certificado.cert_code }}</span>
+            </p>
+            <p class="border-b border-gray-200 pb-2">
+              <span class="font-bold text-dampro-dark">Nombre del Titular:</span> 
+              <span class="text-gray-700">
+                {{ certificado.usuario.first_name }} 
+                {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
+                {{ certificado.usuario.last_name }}
+                {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
+              </span>
+            </p>
+            <p class="border-b border-gray-200 pb-2">
+              <span class="font-bold text-dampro-dark">Curso:</span> 
+              <span class="text-gray-700">{{ certificado.course.name }}</span>
+            </p>
+            <p class="border-b border-gray-200 pb-2">
+              <span class="font-bold text-dampro-dark">Horas Cronológicas:</span> 
+              <span class="text-gray-700">{{ certificado.chronological_hours }}</span>
+            </p>
+            <p>
+              <span class="font-bold text-dampro-dark">Fecha de Emisión:</span> 
+              <span class="text-gray-700">{{ certificado.creation_date|date:"d/m/Y" }}</span>
+            </p>
+          </div>
+          <div class="mt-6 text-center">
+            <a href="#" class="inline-block bg-dampro-dark text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Descargar Certificado</a>
+          </div>
+        </div>
+      {% endif %}
     </div>
-    <button type="submit">Buscar</button>
-  </form>
+  </div>
 </section>
 {% endblock %}
