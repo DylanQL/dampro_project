@@ -241,7 +241,8 @@ def add_certificado(request):
         initials = usuario.first_name[0].upper() + usuario.last_name[0].upper()
         timestamp = now.strftime('%y%m%d%H%M')
         cert_code = f"{initials}{timestamp}"
-
+        
+        # Crear el certificado con la fecha automática (la del momento de creación)
         Certificate.objects.create(
             usuario=usuario,
             course=course,
@@ -266,10 +267,23 @@ def edit_certificado(request, pk):
         usuario_id = request.POST.get('usuario_id')
         course_id  = request.POST.get('course_id')
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
+        creation_date = request.POST.get('creation_date')
 
         certificado.usuario = get_object_or_404(Usuario, pk=int(usuario_id))
         certificado.course  = get_object_or_404(Course,  pk=int(course_id))
         certificado.chronological_hours = int(horas)
+        
+        # Actualizar la fecha si se proporcionó una nueva
+        if creation_date:
+            from datetime import datetime
+            # Convertir la cadena de fecha-hora en un objeto datetime
+            # El formato debe ser compatible con el formato datetime-local de HTML5
+            try:
+                certificado.creation_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+            except ValueError:
+                # Si hay un problema con el formato, mantenemos la fecha actual
+                pass
+                
         certificado.save()
         return redirect('system:gestion_certificados')
 
