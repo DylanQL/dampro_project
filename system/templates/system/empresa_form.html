@@ -7,14 +7,14 @@
 {% block content %}
 <section class="py-12">
   <div class="container mx-auto px-4">
-    <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+    <div class="bg-rcm-white border border-rcm-blue-light rounded-lg shadow-md p-8 max-w-2xl mx-auto">
       <div class="flex items-center mb-6">
-        <a href="{% url 'system:gestion_empresas' %}" class="mr-2 text-dampro-orange">
+        <a href="{% url 'system:gestion_empresas' %}" class="mr-2 text-rcm-blue-light hover:text-rcm-blue-medium transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
           </svg>
         </a>
-        <h1 class="text-2xl font-bold text-dampro-dark">
+        <h1 class="text-2xl font-bold text-rcm-navy">
           {% if action == 'add' %}Agregar Empresa{% else %}Editar Empresa{% endif %}
         </h1>
       </div>
@@ -23,37 +23,37 @@
         {% csrf_token %}
         
         <div class="space-y-2">
-          <label for="ruc" class="block text-sm font-medium text-gray-700">RUC:</label>
+          <label for="ruc" class="block text-sm font-medium text-rcm-navy">RUC:</label>
           <input
             type="text"
             name="ruc"
             id="ruc"
             value="{{ empresa.ruc|default_if_none:'' }}"
-            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange focus:border-transparent"
+            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
             required
             pattern="[0-9]{11}"
             title="El RUC debe tener 11 dígitos numéricos"
           />
-          <p class="text-xs text-gray-500">El RUC debe contener 11 dígitos numéricos.</p>
+          <p class="text-xs text-rcm-blue-medium">El RUC debe contener 11 dígitos numéricos.</p>
         </div>
         
         <div class="space-y-2">
-          <label for="nombre" class="block text-sm font-medium text-gray-700">Razón Social:</label>
+          <label for="nombre" class="block text-sm font-medium text-rcm-navy">Razón Social:</label>
           <input
             type="text"
             name="nombre"
             id="nombre"
             value="{{ empresa.nombre|default_if_none:'' }}"
-            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange focus:border-transparent"
+            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
             required
           />
         </div>
         
         <div class="flex justify-between pt-4">
-          <a href="{% url 'system:gestion_empresas' %}" class="py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+          <a href="{% url 'system:gestion_empresas' %}" class="py-2 px-4 border border-rcm-blue-light rounded-md text-rcm-blue-medium hover:bg-rcm-blue-light hover:text-rcm-white transition-colors">
             Cancelar
           </a>
-          <button type="submit" class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">
+          <button type="submit" class="bg-rcm-gold text-rcm-black py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">
             {% if action == 'add' %}Crear Empresa{% else %}Actualizar Empresa{% endif %}
           </button>
         </div>

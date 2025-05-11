@@ -4,9 +4,9 @@
 {% block title %}Iniciar Sesión – Dampro SAC{% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
-    <div class="bg-dampro-dark text-white py-6 px-8">
+<div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full bg-rcm-white rounded-xl shadow-lg overflow-hidden">
+    <div class="bg-rcm-navy text-white py-6 px-8">
       <h2 class="text-2xl font-bold text-center">Iniciar Sesión</h2>
     </div>
     
@@ -20,39 +20,37 @@
       <form method="post" action="{% url 'system:login' %}" class="space-y-6">
         {% csrf_token %}
         <div>
-          <label for="id_username" class="block text-sm font-medium text-gray-700 mb-1">Usuario:</label>
+          <label for="id_username" class="block text-sm font-medium text-rcm-navy mb-1">Usuario:</label>
           <input 
             type="text" 
             name="username" 
             id="id_username" 
             required 
-            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-dampro-orange focus:border-dampro-orange"
+            class="appearance-none block w-full px-3 py-2 border border-rcm-blue-light rounded-md shadow-sm placeholder-rcm-blue-light focus:outline-none focus:ring-rcm-blue-medium focus:border-rcm-blue-medium"
           >
         </div>
         
         <div>
-          <label for="id_password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña:</label>
+          <label for="id_password" class="block text-sm font-medium text-rcm-navy mb-1">Contraseña:</label>
           <input 
             type="password" 
             name="password" 
             id="id_password" 
             required 
-            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-dampro-orange focus:border-dampro-orange"
+            class="appearance-none block w-full px-3 py-2 border border-rcm-blue-light rounded-md shadow-sm placeholder-rcm-blue-light focus:outline-none focus:ring-rcm-blue-medium focus:border-rcm-blue-medium"
           >
         </div>
         
         <div>
           <button 
             type="submit" 
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-dampro-orange hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dampro-orange transition-colors"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rcm-gold hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rcm-gold transition-colors"
           >
             Entrar
           </button>
         </div>
       </form>
     </div>
-    
-    <!-- Removed logo section that was causing the error -->
   </div>
 </div>
 {% endblock %}

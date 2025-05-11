@@ -11,36 +11,54 @@
       theme: {
         extend: {
           colors: {
-            'dampro-orange': '#E87F45',
-            'dampro-dark': '#2D323A',
+            'rcm-navy': '#000957',
+            'rcm-blue-medium': '#344CB7',
+            'rcm-blue-light': '#577BC1',
+            'rcm-gold': '#ffcf00',
+            'rcm-white': '#FFFFFF',
+            'rcm-black': '#000000',
           }
         }
       }
     }
   </script>
+  <style>
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      object-fit: cover;
+      filter: blur(5px);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
-
+<body class="flex flex-col min-h-screen relative">
+  <!-- Imagen de fondo fija -->
+  <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="background-image">
+  
   <!-- Navbar para usuarios logueados -->
-  <nav class="bg-dampro-dark text-white shadow-md">
+  <nav class="bg-rcm-navy text-rcm-white shadow-md relative z-10">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center">
           <a href="{% url 'system:home_logged' %}" class="mr-6">
-            <img src="{% static 'system/images/logo.png' %}" alt="Dampro SAC" class="h-8">
+            <img src="{% static 'system/images/logo.jpg' %}" alt="Dampro SAC" class="h-8">
           </a>
           <ul class="hidden md:flex space-x-6">
-            <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-dampro-orange transition-colors">Home</a></li>
-            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
-            <li><a href="{% url 'system:gestion_empresas' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Empresas</a></li>
-            <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
-            <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
+            <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-rcm-gold transition-colors">Home</a></li>
+            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Usuarios</a></li>
+            <li><a href="{% url 'system:gestion_empresas' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
+            <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
+            <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
           </ul>
         </div>
         <div>
           <ul class="flex items-center">
             <li>
-              <a href="{% url 'system:logout' %}" class="bg-dampro-orange hover:bg-orange-600 text-white py-2 px-4 rounded-md font-medium transition-colors">
+              <a href="{% url 'system:logout' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium hover:bg-rcm-white hover:text-rcm-navy transition-colors duration-300">
                 Cerrar Sesión
               </a>
             </li>
@@ -51,59 +69,59 @@
       <!-- Mobile menu (hidden by default) -->
       <div class="md:hidden py-2">
         <ul class="space-y-2">
-          <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-dampro-orange transition-colors">Home</a></li>
-          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Usuarios</a></li>
-          <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Empresas</a></li>
-          <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Cursos</a></li>
-          <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-dampro-orange transition-colors">Gestión Certificados</a></li>
+          <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-rcm-gold transition-colors">Home</a></li>
+          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Usuarios</a></li>
+          <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
+          <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
+          <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main class="flex-grow container mx-auto px-4 py-6">
+  <main class="flex-grow container mx-auto px-4 py-6 relative z-10">
     {% block content %}
     <!-- Dashboard content default -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-      <h1 class="text-2xl font-bold text-dampro-dark mb-6">Dashboard</h1>
+    <div class="bg-gray-50 rounded-lg shadow-lg p-6 bg-opacity-95">
+      <h1 class="text-2xl font-bold text-rcm-navy mb-6">Dashboard</h1>
       
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Usuarios</h3>
           <p class="text-3xl font-bold">{{ usuarios_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Usuarios →</a>
+          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Usuarios →</a>
         </div>
         
-        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Empresas</h3>
           <p class="text-3xl font-bold">{{ empresas_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_empresas' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Empresas →</a>
+          <a href="{% url 'system:gestion_empresas' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Empresas →</a>
         </div>
         
-        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Cursos</h3>
           <p class="text-3xl font-bold">{{ cursos_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_cursos' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Cursos →</a>
+          <a href="{% url 'system:gestion_cursos' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Cursos →</a>
         </div>
         
-        <div class="bg-dampro-dark text-white p-6 rounded-lg shadow">
+        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
           <h3 class="text-xl font-bold mb-2">Certificados</h3>
           <p class="text-3xl font-bold">{{ certificados_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_certificados' %}" class="mt-4 inline-block text-sm text-dampro-orange hover:underline">Gestionar Certificados →</a>
+          <a href="{% url 'system:gestion_certificados' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Certificados →</a>
         </div>
       </div>
       
       <div class="mt-8">
-        <h2 class="text-xl font-bold text-dampro-dark mb-4">Actividad Reciente</h2>
-        <div class="bg-gray-100 p-4 rounded-lg">
-          <p class="text-gray-600">No hay actividad reciente para mostrar.</p>
+        <h2 class="text-xl font-bold text-rcm-navy mb-4">Actividad Reciente</h2>
+        <div class="bg-rcm-blue-light bg-opacity-10 p-4 rounded-lg">
+          <p class="text-rcm-navy">No hay actividad reciente para mostrar.</p>
         </div>
       </div>
     </div>
     {% endblock %}
   </main>
 
-  <footer class="bg-dampro-dark text-white py-4 mt-auto">
+  <footer class="bg-rcm-navy text-rcm-white py-4 mt-auto relative z-10">
     <div class="container mx-auto px-4">
       <div class="text-center">
         <p>&copy; {% now "Y" %} Dampro SAC. Todos los derechos reservados.</p>

@@ -1,14 +1,14 @@
 {% extends 'system/base_logged.html' %}
 
-{% block title %}Gestión Usuarios – Dampro SAC{% endblock %}
+{% block title %}Gestión Usuarios – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<section class="gestion-usuarios bg-gray-100 py-12">
+<section class="gestion-usuarios py-12">
   <div class="container mx-auto px-4">
     <div class="bg-white rounded-lg shadow-md p-8 max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-dampro-dark">Gestión de Usuarios</h1>
-        <a href="{% url 'system:add_usuario' %}" class="bg-dampro-orange text-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors flex items-center">
+        <h1 class="text-2xl font-bold text-rcm-navy">Gestión de Usuarios</h1>
+        <a href="{% url 'system:add_usuario' %}" class="bg-rcm-gold text-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
@@ -19,7 +19,7 @@
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
           <thead>
-            <tr class="bg-dampro-dark text-white">
+            <tr class="bg-rcm-navy text-white">
               <th class="py-3 px-4 text-left font-medium rounded-tl-lg">ID</th>
               <th class="py-3 px-4 text-left font-medium">Nombre</th>
               <th class="py-3 px-4 text-left font-medium">Tipo</th>
@@ -29,11 +29,18 @@
           </thead>
           <tbody class="divide-y divide-gray-200">
             {% for u in usuarios %}
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-rcm-blue-light/10">
               <td class="py-3 px-4 text-gray-700">{{ u.id }}</td>
               <td class="py-3 px-4 text-gray-700 font-medium">{{ u.first_name }} {{ u.last_name }}</td>
               <td class="py-3 px-4">
-                <span class="px-2 py-1 text-xs rounded-full {% if u.user_type == 'admin' %}bg-blue-100 text-blue-800{% elif u.user_type == 'staff' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                <span class="px-2 py-1 text-xs rounded-full 
+                  {% if u.user_type == 'admin' %}
+                    bg-rcm-blue-medium text-white
+                  {% elif u.user_type == 'staff' %}
+                    bg-rcm-blue-light text-white
+                  {% else %}
+                    bg-gray-100 text-gray-800
+                  {% endif %}">
                   {{ u.user_type }}
                 </span>
               </td>
@@ -45,7 +52,7 @@
                 {% endif %}
               </td>
               <td class="py-3 px-4 text-right">
-                <a href="{% url 'system:edit_usuario' u.id %}" class="text-dampro-orange hover:underline font-medium flex items-center justify-end">
+                <a href="{% url 'system:edit_usuario' u.id %}" class="text-rcm-gold hover:underline font-medium flex items-center justify-end">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
@@ -55,7 +62,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="5" class="py-8 text-center text-gray-500 italic">No hay usuarios registrados.</td>
+              <td colspan="5" class="py-8 text-center text-rcm-blue-light italic">No hay usuarios registrados.</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -70,4 +77,4 @@
     </div>
   </div>
 </section>
-{% endblock %}  
+{% endblock %}

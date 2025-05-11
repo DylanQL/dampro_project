@@ -5,23 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<section class="certificado-form bg-gray-100 py-12">
+<section class="py-12">
   <div class="container mx-auto px-4">
-    <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
-      <h1 class="text-2xl font-bold text-dampro-dark mb-6">
+    <div class="bg-rcm-white border border-rcm-blue-light rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+      <h1 class="text-2xl font-bold text-rcm-navy mb-6">
         {% if action == 'add' %}Agregar Certificado{% else %}Editar Certificado{% endif %}
       </h1>
 
       <form method="post" action="" class="space-y-6">
         {% csrf_token %}
-        
+
         <div class="space-y-2">
-          <label for="usuario_id" class="block text-sm font-medium text-gray-700">Usuario:</label>
+          <label for="usuario_id" class="block text-sm font-medium text-rcm-navy">Usuario:</label>
           <select 
             name="usuario_id" 
             id="usuario_id" 
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
           >
             <option value="">-- selecciona --</option>
             {% for u in usuarios %}
@@ -32,14 +32,14 @@
             {% endfor %}
           </select>
         </div>
-        
+
         <div class="space-y-2">
-          <label for="course_id" class="block text-sm font-medium text-gray-700">Curso:</label>
+          <label for="course_id" class="block text-sm font-medium text-rcm-navy">Curso:</label>
           <select 
             name="course_id" 
             id="course_id" 
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
           >
             <option value="">-- selecciona --</option>
             {% for cr in cursos %}
@@ -50,26 +50,26 @@
             {% endfor %}
           </select>
         </div>
-        
+
         <div class="space-y-2">
-          <label for="chronological_hours" class="block text-sm font-medium text-gray-700">Horas cronológicas:</label>
+          <label for="chronological_hours" class="block text-sm font-medium text-rcm-navy">Horas cronológicas:</label>
           <input
             type="number"
             name="chronological_hours"
             id="chronological_hours"
             value="{{ certificado.chronological_hours|default_if_none:0 }}"
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-dampro-orange focus:border-dampro-orange"
+            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
           />
         </div>
 
         <div class="flex items-center justify-between pt-4">
-          <a href="{% url 'system:gestion_certificados' %}" class="text-gray-600 hover:text-gray-800 font-medium">
+          <a href="{% url 'system:gestion_certificados' %}" class="py-2 px-4 border border-rcm-blue-light rounded-md text-rcm-blue-medium hover:bg-rcm-blue-light hover:text-rcm-white transition-colors">
             Cancelar
           </a>
           <button 
             type="submit" 
-            class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors"
+            class="bg-rcm-gold text-rcm-black py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors"
           >
             {% if action == 'add' %}Crear{% else %}Actualizar{% endif %}
           </button>

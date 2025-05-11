@@ -3,14 +3,16 @@
 {% block title %}Certificados – Dampro SAC{% endblock %}
 
 {% block content %}
-<section id="certificados" class="bg-white py-12">
+<section id="certificados" class="py-12">
   <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold text-center text-dampro-dark mb-8">Verificar Certificado</h1>
+    <h1 class="text-3xl font-bold text-center text-rcm-navy mb-8">
+      <span class="bg-gradient-to-r from-rcm-blue-medium to-rcm-navy bg-clip-text text-transparent">Verificar Certificado</span>
+    </h1>
     
-    <div class="max-w-2xl mx-auto bg-gray-100 p-8 rounded-lg shadow-md">
+    <div class="max-w-2xl mx-auto bg-rcm-white p-8 rounded-lg shadow-md border border-rcm-blue-light">
       <form method="get" action="" class="mb-8">
         <div class="mb-4">
-          <label for="id_cert_code" class="block text-gray-700 font-medium mb-2">Código de certificado:</label>
+          <label for="id_cert_code" class="block text-rcm-navy font-medium mb-2">Código de certificado:</label>
           <input
             type="text"
             id="id_cert_code"
@@ -18,10 +20,12 @@
             placeholder="Ingrese el código de su certificado"
             value="{{ request.GET.cert_code }}"
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dampro-orange"
+            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
           />
         </div>
-        <button type="submit" class="bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Buscar</button>
+        <button type="submit" class="bg-rcm-gold text-rcm-black py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">
+          Buscar
+        </button>
       </form>
       
       {% if error %}
@@ -31,37 +35,39 @@
       {% endif %}
       
       {% if certificado %}
-        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 class="text-2xl font-bold text-dampro-dark mb-4">Certificado Encontrado</h2>
+        <div class="bg-rcm-white p-6 rounded-lg shadow-md border border-rcm-blue-light">
+          <h2 class="text-2xl font-bold text-rcm-blue-medium mb-4">Certificado Encontrado</h2>
           <div class="space-y-3">
-            <p class="border-b border-gray-200 pb-2">
-              <span class="font-bold text-dampro-dark">Código de Certificado:</span> 
-              <span class="text-gray-700">{{ certificado.cert_code }}</span>
+            <p class="border-b border-rcm-blue-light pb-2">
+              <span class="font-bold text-rcm-navy">Código de Certificado:</span> 
+              <span class="text-rcm-black">{{ certificado.cert_code }}</span>
             </p>
-            <p class="border-b border-gray-200 pb-2">
-              <span class="font-bold text-dampro-dark">Nombre del Titular:</span> 
-              <span class="text-gray-700">
+            <p class="border-b border-rcm-blue-light pb-2">
+              <span class="font-bold text-rcm-navy">Nombre del Titular:</span> 
+              <span class="text-rcm-black">
                 {{ certificado.usuario.first_name }} 
                 {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
                 {{ certificado.usuario.last_name }}
                 {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
               </span>
             </p>
-            <p class="border-b border-gray-200 pb-2">
-              <span class="font-bold text-dampro-dark">Curso:</span> 
-              <span class="text-gray-700">{{ certificado.course.name }}</span>
+            <p class="border-b border-rcm-blue-light pb-2">
+              <span class="font-bold text-rcm-navy">Curso:</span> 
+              <span class="text-rcm-black">{{ certificado.course.name }}</span>
             </p>
-            <p class="border-b border-gray-200 pb-2">
-              <span class="font-bold text-dampro-dark">Horas Cronológicas:</span> 
-              <span class="text-gray-700">{{ certificado.chronological_hours }}</span>
+            <p class="border-b border-rcm-blue-light pb-2">
+              <span class="font-bold text-rcm-navy">Horas Cronológicas:</span> 
+              <span class="text-rcm-black">{{ certificado.chronological_hours }}</span>
             </p>
             <p>
-              <span class="font-bold text-dampro-dark">Fecha de Emisión:</span> 
-              <span class="text-gray-700">{{ certificado.creation_date|date:"d/m/Y" }}</span>
+              <span class="font-bold text-rcm-navy">Fecha de Emisión:</span> 
+              <span class="text-rcm-black">{{ certificado.creation_date|date:"d/m/Y" }}</span>
             </p>
           </div>
           <div class="mt-6 text-center">
-            <a href="#" class="inline-block bg-dampro-dark text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Descargar Certificado</a>
+            <a href="#" class="inline-block bg-rcm-blue-medium text-rcm-white py-2 px-6 rounded-md font-medium hover:bg-rcm-navy transition-colors">
+              Descargar Certificado
+            </a>
           </div>
         </div>
       {% endif %}
