@@ -13,10 +13,17 @@
     // Obtener los elementos necesarios
     const cursoSelect = document.getElementById('course_id');
     const horasInput = document.getElementById('chronological_hours');
+    let isEditMode = {% if action == 'edit' %}true{% else %}false{% endif %};
     
     // Función para actualizar las horas
-    function actualizarHoras() {
+    function actualizarHoras(forceUpdate = false) {
       console.log("Función actualizarHoras ejecutada");
+      
+      // En modo edición, solo actualizamos las horas si se cambia el curso o si se fuerza la actualización
+      if (isEditMode && !forceUpdate) {
+        console.log("En modo edición - manteniendo el valor original de horas");
+        return; // No hacemos nada si estamos en modo edición y no se fuerza la actualización
+      }
       
       if (cursoSelect && cursoSelect.value) {
         const selectedOption = cursoSelect.options[cursoSelect.selectedIndex];
@@ -37,20 +44,19 @@
       // Agregar el evento change al select de cursos
       cursoSelect.addEventListener('change', function() {
         console.log("Cambio detectado en select de cursos");
-        actualizarHoras();
+        // En modo edición, solo actualizamos las horas al CAMBIAR el curso
+        actualizarHoras(true);
       });
       
-      // Si ya hay un curso seleccionado, actualizamos las horas inmediatamente
-      if (cursoSelect.value) {
-        console.log("Curso ya seleccionado, actualizando horas");
-        actualizarHoras();
-      }
-      
       // Para nuevos certificados, asegurarse de que se actualizan las horas
-      {% if action == 'add' %}
-      console.log("Modo agregar, configurando actualización con retraso");
-      setTimeout(actualizarHoras, 300); // Aumentamos el tiempo de espera para asegurar que todo está cargado
-      {% endif %}
+      if (!isEditMode) {
+        console.log("Modo agregar, configurando actualización con retraso");
+        setTimeout(function() {
+          actualizarHoras(true);
+        }, 300); // Aumentamos el tiempo de espera para asegurar que todo está cargado
+      } else {
+        console.log("Modo edición - manteniendo horas originales del certificado");
+      }
     } else {
       console.log("Error: No se encontraron los elementos necesarios");
       if (!cursoSelect) console.log("No se encontró el elemento curso_id");
@@ -93,7 +99,11 @@
             name="course_id" 
             id="course_id" 
             required
+            {% if action == 'add' %}
             onchange="updateCourseHours(this)"
+            {% else %}
+            onchange="updateCourseHoursIfChangedInEdit(this)"
+            {% endif %}
             class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
           >
             <option value="">-- selecciona --</option>
@@ -105,9 +115,9 @@
             {% endfor %}
           </select>
           <script>
-            // Función directa para actualizar horas
+            // Función directa para actualizar horas en modo AÑADIR
             function updateCourseHours(selectElement) {
-              console.log("Actualizando horas desde evento onchange inline");
+              console.log("Actualizando horas desde evento onchange inline (modo AÑADIR)");
               if (selectElement.value) {
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
                 const horas = selectedOption.getAttribute('data-hours');
@@ -118,13 +128,31 @@
               }
             }
             
-            // Ejecutar inmediatamente si hay un valor
+            // Función para actualizar horas en modo EDITAR - solo actualiza si cambia el curso
+            function updateCourseHoursIfChangedInEdit(selectElement) {
+              console.log("Actualizando horas en modo EDITAR solo si cambió el curso");
+              // Solo actualiza las horas si el curso ha cambiado
+              const originalCourseId = {% if certificado and certificado.course %}{{ certificado.course.id }}{% else %}null{% endif %};
+              if (selectElement.value && selectElement.value != originalCourseId) {
+                console.log("El curso ha cambiado, actualizando horas");
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                const horas = selectedOption.getAttribute('data-hours');
+                if (horas) {
+                  document.getElementById('chronological_hours').value = horas;
+                  console.log("Horas actualizadas a (inline):", horas);
+                }
+              }
+            }
+            
+            // En modo AÑADIR, ejecutar inmediatamente si hay un valor
+            {% if action == 'add' %}
             setTimeout(() => {
               const courseSelect = document.getElementById('course_id');
               if (courseSelect && courseSelect.value) {
                 updateCourseHours(courseSelect);
               }
             }, 100);
+            {% endif %}
           </script>
         </div>
 
@@ -182,6 +210,10 @@
   (function() {
     console.log("Script en línea ejecutado");
     
+    // Verificar si estamos en modo edición
+    const isEditMode = {% if action == 'edit' %}true{% else %}false{% endif %};
+    console.log("¿Modo edición?:", isEditMode);
+    
     // Esperar a que el DOM esté listo
     function checkAndUpdateHours() {
       const cursoSelect = document.getElementById('course_id');
@@ -190,30 +222,54 @@
       if (cursoSelect && horasInput) {
         console.log("Elementos encontrados en script en línea");
         
-        // Verificar si hay un curso seleccionado
-        if (cursoSelect.value) {
-          const selectedOption = cursoSelect.options[cursoSelect.selectedIndex];
-          const horas = selectedOption.getAttribute('data-hours');
-          console.log("Curso seleccionado (script en línea):", selectedOption.text, "Horas:", horas);
+        // En modo edición, no actualizamos automáticamente las horas al cargar
+        if (isEditMode) {
+          console.log("En modo edición - manteniendo horas originales");
           
-          if (horas) {
-            console.log("Estableciendo valor de horas (script en línea):", horas);
-            horasInput.value = horas;
-          }
-        }
-        
-        // Asignar el evento change
-        cursoSelect.onchange = function() {
-          console.log("Cambio detectado en curso (script en línea)");
-          if (this.value) {
-            const selectedOption = this.options[this.selectedIndex];
+          // Solo configurar el evento change para actualizar si cambia el curso
+          cursoSelect.onchange = function() {
+            console.log("Cambio detectado en curso (script en línea - modo EDICIÓN)");
+            // Verificar si el curso ha cambiado respecto al original
+            const originalCourseId = {% if certificado and certificado.course %}{{ certificado.course.id }}{% else %}null{% endif %};
+            if (this.value && this.value != originalCourseId) {
+              console.log("Curso cambiado, actualizando horas");
+              const selectedOption = this.options[this.selectedIndex];
+              const horas = selectedOption.getAttribute('data-hours');
+              if (horas) {
+                horasInput.value = horas;
+                console.log("Horas actualizadas a:", horas);
+              }
+            }
+          };
+        } else {
+          // Modo AÑADIR - actualizar automáticamente
+          console.log("En modo AÑADIR");
+          
+          // Verificar si hay un curso seleccionado
+          if (cursoSelect.value) {
+            const selectedOption = cursoSelect.options[cursoSelect.selectedIndex];
             const horas = selectedOption.getAttribute('data-hours');
+            console.log("Curso seleccionado (script en línea):", selectedOption.text, "Horas:", horas);
+            
             if (horas) {
+              console.log("Estableciendo valor de horas (script en línea):", horas);
               horasInput.value = horas;
-              console.log("Horas actualizadas a:", horas);
             }
           }
-        };
+          
+          // Asignar el evento change para modo AÑADIR
+          cursoSelect.onchange = function() {
+            console.log("Cambio detectado en curso (script en línea - modo AÑADIR)");
+            if (this.value) {
+              const selectedOption = this.options[this.selectedIndex];
+              const horas = selectedOption.getAttribute('data-hours');
+              if (horas) {
+                horasInput.value = horas;
+                console.log("Horas actualizadas a:", horas);
+              }
+            }
+          };
+        }
       } else {
         console.log("Elementos no encontrados aún, reintentando...");
         setTimeout(checkAndUpdateHours, 100);
