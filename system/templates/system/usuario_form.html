@@ -71,6 +71,19 @@
             />
           </div>
         </div>
+
+        <div class="space-y-2">
+          <label for="dni" class="block text-sm font-medium text-rcm-navy">DNI:</label>
+          <input
+            type="text"
+            name="dni"
+            id="dni"
+            value="{{ usuario.dni|default_if_none:'' }}"
+            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
+            maxlength="8"
+            placeholder="Ingrese el DNI (8 dígitos)"
+          />
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="space-y-2">

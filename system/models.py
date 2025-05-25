@@ -11,6 +11,7 @@ class Usuario(models.Model):
     middle_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100)
     second_last_name = models.CharField(max_length=100, blank=True, null=True)
+    dni = models.CharField(max_length=8, unique=True, null=True, blank=True)  # DNI peruano estándar de 8 dígitos
     user_type = models.CharField(max_length=50)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='usuarios', null=True, blank=True)
 

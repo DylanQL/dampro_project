@@ -22,6 +22,7 @@
             <tr class="bg-rcm-navy text-white">
               <th class="py-3 px-4 text-left font-medium rounded-tl-lg">ID</th>
               <th class="py-3 px-4 text-left font-medium">Nombre</th>
+              <th class="py-3 px-4 text-left font-medium">DNI</th>
               <th class="py-3 px-4 text-left font-medium">Tipo</th>
               <th class="py-3 px-4 text-left font-medium">Empresa</th>
               <th class="py-3 px-4 text-right font-medium rounded-tr-lg">Acciones</th>
@@ -32,6 +33,13 @@
             <tr class="hover:bg-rcm-blue-light/10">
               <td class="py-3 px-4 text-gray-700">{{ u.id }}</td>
               <td class="py-3 px-4 text-gray-700 font-medium">{{ u.first_name }} {{ u.last_name }}</td>
+              <td class="py-3 px-4 text-gray-700">
+                {% if u.dni %}
+                  {{ u.dni }}
+                {% else %}
+                  <span class="text-gray-400">-</span>
+                {% endif %}
+              </td>
               <td class="py-3 px-4">
                 <span class="px-2 py-1 text-xs rounded-full 
                   {% if u.user_type == 'admin' %}
@@ -62,7 +70,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="5" class="py-8 text-center text-rcm-blue-light italic">No hay usuarios registrados.</td>
+              <td colspan="6" class="py-8 text-center text-rcm-blue-light italic">No hay usuarios registrados.</td>
             </tr>
             {% endfor %}
           </tbody>

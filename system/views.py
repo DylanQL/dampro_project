@@ -123,6 +123,7 @@ def add_usuario(request):
         middle = request.POST.get('middle_name', '').strip() or None
         last = request.POST.get('last_name', '').strip()
         second_last = request.POST.get('second_last_name', '').strip() or None
+        dni = request.POST.get('dni', '').strip() or None
         utype = request.POST.get('user_type', '').strip()
         empresa_id = request.POST.get('empresa_id', '')
         
@@ -140,6 +141,7 @@ def add_usuario(request):
             middle_name=middle,
             last_name=last,
             second_last_name=second_last,
+            dni=dni,
             user_type=utype,
             empresa=empresa
         )
@@ -160,6 +162,7 @@ def edit_usuario(request, pk):
         usuario.middle_name      = request.POST.get('middle_name', usuario.middle_name).strip() or None
         usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
         usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
+        usuario.dni              = request.POST.get('dni', usuario.dni).strip() or None
         usuario.user_type        = request.POST.get('user_type', usuario.user_type).strip()
         
         # Actualizar la relación con la empresa
