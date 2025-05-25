@@ -173,13 +173,12 @@
                 {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
                 {{ certificado.usuario.first_name }} {{ certificado.usuario.middle_name|default:"" }}
             </p>
-            
-            <!-- Descripción del certificado -->
+              <!-- Descripción del certificado -->
             <p class="contenido">
                 Por haber participado en la Capacitación de "<strong>{{ certificado.course.name }}</strong>", 
                 realizada por la consultora DAMPRO S.A.C., desarrollada de manera virtual a los trabajadores de 
-                {% if certificado.usuario.empresa %}
-                la empresa {{ certificado.usuario.empresa.nombre }}, identificada con N° de RUC {{ certificado.usuario.empresa.ruc }},
+                {% if certificado.empresa %}
+                la empresa {{ certificado.empresa.nombre }}, identificada con N° de RUC {{ certificado.empresa.ruc }},
                 {% else %}
                 la empresa MEGAVANS S.A.C, identificada con N° de RUC 20607077810,
                 {% endif %}

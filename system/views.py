@@ -53,7 +53,7 @@ def certificado_detail(request, cert_code):
     error = None
     
     try:
-        certificado = Certificate.objects.select_related('usuario', 'course').get(cert_code=cert_code)
+        certificado = Certificate.objects.select_related('usuario', 'course', 'empresa').get(cert_code=cert_code)
     except Certificate.DoesNotExist:
         error = f"No se encontró ningún certificado con el código: {cert_code}"
     
@@ -221,7 +221,7 @@ def edit_curso(request, pk):
 
 @login_required
 def gestion_certificados(request):
-    certificados = Certificate.objects.select_related('usuario', 'course').all()
+    certificados = Certificate.objects.select_related('usuario', 'course', 'empresa').all()
     return render(request, 'system/gestion_certificados.html', {
         'certificados': certificados
     })
@@ -257,11 +257,13 @@ def add_certificado(request):
 
     usuarios = Usuario.objects.all()
     cursos   = Course.objects.all()
+    empresas = Empresa.objects.all()
     return render(request, 'system/certificado_form.html', {
         'action': 'add',
         'certificado': None,
         'usuarios': usuarios,
         'cursos': cursos,
+        'empresas': empresas,
     })
 
 @login_required
@@ -270,6 +272,7 @@ def edit_certificado(request, pk):
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
         course_id  = request.POST.get('course_id')
+        empresa_id = request.POST.get('empresa_id')
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
         creation_date = request.POST.get('creation_date')
 
@@ -277,8 +280,14 @@ def edit_certificado(request, pk):
         certificado.usuario = usuario
         certificado.course = get_object_or_404(Course, pk=int(course_id))
         
-        # Asignar automáticamente la empresa del usuario al certificado
-        certificado.empresa = usuario.empresa
+        # Permitir la selección manual de la empresa
+        if empresa_id:
+            try:
+                certificado.empresa = get_object_or_404(Empresa, pk=int(empresa_id))
+            except (ValueError, Empresa.DoesNotExist):
+                certificado.empresa = None
+        else:
+            certificado.empresa = None
         
         certificado.chronological_hours = int(horas)
         
@@ -298,11 +307,13 @@ def edit_certificado(request, pk):
 
     usuarios = Usuario.objects.all()
     cursos   = Course.objects.all()
+    empresas = Empresa.objects.all()
     return render(request, 'system/certificado_form.html', {
         'action': 'edit',
         'certificado': certificado,
         'usuarios': usuarios,
         'cursos': cursos,
+        'empresas': empresas,
     })
 
 @login_required
@@ -310,7 +321,7 @@ def certificado_pdf(request, cert_code):
     """
     Genera un PDF con el certificado seleccionado.
     """
-    certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'course'), cert_code=cert_code)
+    certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'course', 'empresa'), cert_code=cert_code)
     
     # Generar URL para el QR con un dominio personalizado
     # Puedes cambiarlo al dominio que prefieras, por ejemplo 'https://dampro.com.pe'
