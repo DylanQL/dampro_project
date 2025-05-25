@@ -13,6 +13,36 @@ import os
 import qrcode
 from io import BytesIO
 import base64
+import string
+import random
+
+
+def generate_unique_cert_code(length=10):
+    """
+    Genera un código de certificado aleatorio único.
+    
+    Args:
+        length: La longitud del código a generar (sin incluir el prefijo)
+    
+    Returns:
+        Un código de certificado que no existe en la base de datos
+    """
+    # Caracteres para generar el código (letras mayúsculas y números)
+    characters = string.ascii_uppercase + string.digits
+    
+    while True:
+        # Prefijo para identificar que es un certificado
+        prefix = "CERT-"
+        
+        # Generar código aleatorio
+        random_part = ''.join(random.choice(characters) for _ in range(length))
+        
+        # Combinar prefijo con parte aleatoria
+        cert_code = f"{prefix}{random_part}"
+        
+        # Verificar si ya existe en la base de datos
+        if not Certificate.objects.filter(cert_code=cert_code).exists():
+            return cert_code
 
 
 def index(request):
@@ -239,11 +269,8 @@ def add_certificado(request):
         usuario = get_object_or_404(Usuario, pk=int(usuario_id))
         course  = get_object_or_404(Course,  pk=int(course_id))
 
-        # Generar cert_code: inicial First + inicial Last + YYMMDDHHMM
-        now = datetime.now()
-        initials = usuario.first_name[0].upper() + usuario.last_name[0].upper()
-        timestamp = now.strftime('%y%m%d%H%M')
-        cert_code = f"{initials}{timestamp}"
+        # Generar un código aleatorio único para el certificado
+        cert_code = generate_unique_cert_code()
         
         # Obtener automáticamente la empresa del usuario
         empresa = usuario.empresa
