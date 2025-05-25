@@ -242,10 +242,14 @@ def add_certificado(request):
         timestamp = now.strftime('%y%m%d%H%M')
         cert_code = f"{initials}{timestamp}"
         
-        # Crear el certificado con la fecha automática (la del momento de creación)
+        # Obtener automáticamente la empresa del usuario
+        empresa = usuario.empresa
+        
+        # Crear el certificado con la fecha automática y la empresa del usuario
         Certificate.objects.create(
             usuario=usuario,
             course=course,
+            empresa=empresa,
             chronological_hours=int(horas),
             cert_code=cert_code
         )
@@ -269,8 +273,13 @@ def edit_certificado(request, pk):
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
         creation_date = request.POST.get('creation_date')
 
-        certificado.usuario = get_object_or_404(Usuario, pk=int(usuario_id))
-        certificado.course  = get_object_or_404(Course,  pk=int(course_id))
+        usuario = get_object_or_404(Usuario, pk=int(usuario_id))
+        certificado.usuario = usuario
+        certificado.course = get_object_or_404(Course, pk=int(course_id))
+        
+        # Asignar automáticamente la empresa del usuario al certificado
+        certificado.empresa = usuario.empresa
+        
         certificado.chronological_hours = int(horas)
         
         # Actualizar la fecha si se proporcionó una nueva

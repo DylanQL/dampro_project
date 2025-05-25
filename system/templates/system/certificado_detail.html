@@ -34,11 +34,10 @@
                 {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
               </span>
             </div>
-            
-            {% if certificado.usuario.empresa %}
+              {% if certificado.empresa %}
             <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
               <span class="font-bold text-dampro-dark w-full sm:w-2/5">Empresa:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.usuario.empresa.nombre }}</span>
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.empresa.nombre }}</span>
             </div>
             {% endif %}
             
