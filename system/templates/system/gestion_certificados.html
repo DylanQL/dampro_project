@@ -35,10 +35,9 @@
             <tr class="hover:bg-rcm-blue-light/10 transition-colors">
               <td class="py-3 px-4 text-rcm-navy">{{ c.id }}</td>
               <td class="py-3 px-4 text-rcm-navy font-medium">{{ c.cert_code }}</td>
-              <td class="py-3 px-4 text-rcm-navy">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>
-              <td class="py-3 px-4 text-rcm-navy">
-                {% if c.usuario.empresa %}
-                  {{ c.usuario.empresa.nombre }}
+              <td class="py-3 px-4 text-rcm-navy">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>              <td class="py-3 px-4 text-rcm-navy">
+                {% if c.empresa %}
+                  {{ c.empresa.nombre }}
                 {% else %}
                   <span class="text-gray-400">-</span>
                 {% endif %}
