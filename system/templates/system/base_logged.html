@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Dashboard – Dampro SAC{% endblock %}</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{% static 'system/images/favicon02.jpg' %}">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -45,7 +49,7 @@
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center">
           <a href="{% url 'system:home_logged' %}" class="mr-6">
-            <img src="{% static 'system/images/logo.jpg' %}" alt="Dampro SAC" class="h-8">
+            <img src="{% static 'system/images/logo03.jpg' %}" alt="Dampro SAC" class="h-8">
           </a>
           <ul class="hidden md:flex space-x-6">
             <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-rcm-gold transition-colors">Home</a></li>
