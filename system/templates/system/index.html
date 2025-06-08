@@ -4,194 +4,436 @@
 {% block title %}Inicio - RCM Solutions SAC{% endblock %}
 
 {% block content %}
-  <!-- 1. Carrusel -->
+  <!-- 1. Carrusel Corregido -->
   <div class="relative w-full overflow-hidden bg-rcm-navy">
-    <!-- Carousel container -->
-    <div class="carousel-container flex transition-transform duration-700 ease-in-out h-96">
-        <img src="{% static 'system/images/RCM_view_2.jpg' %}" alt="Slide 1" class="w-full h-full object-cover absolute inset-0">
-        <img src="{% static 'system/images/RCM_view_5.jpg' %}" alt="Slide 2" class="w-full h-full object-cover absolute inset-0">
-        <img src="{% static 'system/images/RCM_view_7.jpg' %}" alt="Slide 3" class="w-full h-full object-cover absolute inset-0">
+    <!-- Carousel wrapper con altura consistente -->
+    <div class="carousel-wrapper relative" style="height: 400px;">
+      <!-- Slides del carrusel -->
+      <div class="carousel-slide active absolute inset-0 transition-opacity duration-700 ease-in-out">
+        <img src="{% static 'system/images/RCM_view_2.jpg' %}" alt="Servicios profesionales" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center text-white px-4">
+            <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-4">Servicios Profesionales</h2>
+            <p class="text-lg md:text-xl">Consultoría especializada en seguridad</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="carousel-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
+        <img src="{% static 'system/images/RCM_view_5.jpg' %}" alt="Capacitación especializada" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center text-white px-4">
+            <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-4">Capacitación Especializada</h2>
+            <p class="text-lg md:text-xl">Cursos certificados SSOMA</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="carousel-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
+        <img src="{% static 'system/images/RCM_view_7.jpg' %}" alt="Auditorías MINTRA" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center text-white px-4">
+            <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-4">Auditorías MINTRA</h2>
+            <p class="text-lg md:text-xl">Profesionales acreditados</p>
+          </div>
+        </div>
+      </div>
     </div>
     
-    <!-- Carousel controls -->
-    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-50 hover:opacity-100"></button>
-      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-50 hover:opacity-100"></button>
-      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-50 hover:opacity-100"></button>
+    <!-- Controles del carrusel -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-10">
+      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-100 transition-opacity" data-slide="0"></button>
+      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-50 transition-opacity" data-slide="1"></button>
+      <button class="carousel-dot w-3 h-3 rounded-full bg-rcm-white opacity-50 transition-opacity" data-slide="2"></button>
     </div>
-  </div>
-
-  <!-- 2. Texto a la derecha, imagen a la izquierda -->
-  <section class="flex flex-col md:flex-row bg-rcm-white">
-    <div class="w-full md:w-1/2">
-      <img src="{% static 'system/images/RCM_view_9.jpg' %}" alt="Servicios" class="w-full h-full object-cover">
-    </div>
-    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
-      <h2 class="text-2xl font-bold text-rcm-navy mb-4">Somos una Consultora de capacitación, especializada en:</h2>
-      <ul class="space-y-2 text-gray-700">
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Cursos de Especialización SSOMA.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Elaboración de Matriz IPERC y Mapas de Riesgos.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Homologaciones para proveedores.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Levantamiento de Observaciones de entidades fiscalizadoras, certificadoras y otras.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Monitoreos ocupacionales.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Sistemas de Gestión de Calidad.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Sistemas de Gestión de Seguridad y Salud en el Trabajo.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Sistemas de Gestión de Transporte.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Sistemas de Gestión del Medio Ambiente.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Otros.
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 3. Imagen a la derecha, texto a la izquierda -->
-  <section class="flex flex-col md:flex-row bg-gray-100">
-    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center order-2 md:order-1">
-      <h2 class="text-2xl font-bold text-rcm-navy mb-4">TODO MINTRA - SUNAFIL</h2>
-      <ul class="space-y-2 text-gray-700">
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Conformación de Brigadas de Emergencias y personal de respuesta ante el Fenómeno del Niño. (Solicitado por SUNAFIL)
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Conformación de Comité o Supervisor de Seguridad y Salud en el Trabajo.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Campañas Ambientales y de Seguridad y Salud en el Trabajo.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Respuesta ante Cartas de Notificación de SUNAFIL.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Soluciones ante cartas inductivas de SUNAFIL.
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-rcm-gold mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-          </svg>
-          Auditorías MINTRA (Auditor acreditado en el Ministerio de Trabajo y Promoción del Empleo para los sectores Industrial, Civil y Minero).
-        </li>
-      </ul>
-    </div>
-    <div class="w-full md:w-1/2 order-1 md:order-2">
-      <img src="{% static 'system/images/RCM_view_8.jpg' %}" alt="MINTRA - SUNAFIL" class="w-full h-full object-cover">
-    </div>
-  </section>
-
-  <!-- 4. Profesionales MINTRA con botón y cardview -->
-  <section class="py-12 px-6 bg-rcm-white text-center">
-    <p class="text-xl font-bold text-rcm-navy mb-6">Contamos con los profesionales precisos para las Auditorías MINTRA.</p>
-    <button id="show-professionals" class="bg-rcm-navy hover:bg-rcm-gold text-rcm-white font-medium py-2 px-6 rounded-md transition-colors">
-      Ver profesionales
+    
+    <!-- Flechas de navegación -->
+    <button class="carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-rcm-gold bg-opacity-80 text-rcm-navy p-2 rounded-full hover:bg-opacity-100 transition-all z-10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
     </button>
     
-    <div id="professional-card" class="mt-8 max-w-3xl mx-auto bg-rcm-white rounded-lg shadow-lg overflow-hidden hidden">
-      <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Equipo de profesionales MINTRA" class="w-full h-64 object-cover">
-      <div class="p-6">
-        <p class="text-gray-700">Nuestro equipo cuenta con vasta experiencia en auditorías de Seguridad y Salud en el Trabajo.</p>
+    <button class="carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-rcm-gold bg-opacity-80 text-rcm-navy p-2 rounded-full hover:bg-opacity-100 transition-all z-10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- 2. Sección: Imagen izquierda, texto derecha - Tamaño consistente -->
+  <section class="flex flex-col lg:flex-row bg-rcm-white shadow-sm">
+    <div class="w-full lg:w-1/2">
+      <!-- Contenedor con aspect-ratio consistente -->
+      <div class="aspect-w-16 aspect-h-12 lg:aspect-h-16 h-64 sm:h-80 lg:h-full min-h-[400px]">
+        <img src="{% static 'system/images/RCM_view_9.jpg' %}" alt="Servicios especializados" class="w-full h-full object-cover">
+      </div>
+    </div>
+    <div class="w-full lg:w-1/2 p-6 lg:p-8 xl:p-12 flex flex-col justify-center">
+      <h2 class="text-xl lg:text-2xl xl:text-3xl font-bold text-rcm-navy mb-6">Somos una Consultora de capacitación, especializada en:</h2>
+      <div class="grid grid-cols-1 gap-3">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Cursos de Especialización SSOMA</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Elaboración de Matriz IPERC y Mapas de Riesgos</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Homologaciones para proveedores</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Levantamiento de Observaciones de entidades fiscalizadoras</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Monitoreos ocupacionales</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Sistemas de Gestión (Calidad, SST, Transporte, MA)</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Otros servicios especializados</span>
+        </div>
+      </div>
+      <div class="mt-6">
+        <a href="{% url 'system:servicios' %}" class="inline-block bg-rcm-gold text-rcm-navy py-3 px-6 lg:px-8 rounded-md font-medium hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105">
+          Ver todos nuestros servicios
+        </a>
       </div>
     </div>
   </section>
 
+  <!-- 3. Sección: Texto izquierda, imagen derecha - Tamaño consistente -->
+  <section class="flex flex-col lg:flex-row bg-gray-50">
+    <div class="w-full lg:w-1/2 p-6 lg:p-8 xl:p-12 flex flex-col justify-center order-2 lg:order-1">
+      <h2 class="text-xl lg:text-2xl xl:text-3xl font-bold text-rcm-navy mb-6">TODO MINTRA - SUNAFIL</h2>
+      <div class="space-y-3">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Conformación de Brigadas de Emergencias (Solicitado por SUNAFIL)</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Conformación de Comité o Supervisor de SST</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Campañas Ambientales y de Seguridad y Salud</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Respuesta ante Cartas de Notificación de SUNAFIL</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Soluciones ante cartas inductivas de SUNAFIL</span>
+        </div>
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-rcm-gold mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700 text-sm lg:text-base">Auditorías MINTRA (Sectores Industrial, Civil y Minero)</span>
+        </div>
+      </div>
+      <div class="mt-6">
+        <a href="{% url 'system:contactanos' %}" class="inline-block bg-rcm-blue-medium text-rcm-white py-3 px-6 lg:px-8 rounded-md font-medium hover:bg-rcm-navy transition-all duration-300 transform hover:scale-105">
+          Contactar especialista
+        </a>
+      </div>
+    </div>
+    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+      <!-- Contenedor con aspect-ratio consistente -->
+      <div class="aspect-w-16 aspect-h-12 lg:aspect-h-16 h-64 sm:h-80 lg:h-full min-h-[400px]">
+        <img src="{% static 'system/images/RCM_view_8.jpg' %}" alt="MINTRA - SUNAFIL" class="w-full h-full object-cover">
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Profesionales MINTRA con imagen consistente -->
+  <section class="py-12 px-6 bg-rcm-white text-center">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-xl lg:text-2xl xl:text-3xl font-bold text-rcm-navy mb-6">Contamos con profesionales especializados para Auditorías MINTRA</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">Nuestro equipo está acreditado por el Ministerio de Trabajo y Promoción del Empleo</p>
+      
+      <button id="show-professionals" class="bg-rcm-navy hover:bg-rcm-gold hover:text-rcm-navy text-rcm-white font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 mb-8">
+        Ver nuestro equipo profesional
+      </button>
+      
+      <div id="professional-card" class="mt-8 bg-rcm-white rounded-xl shadow-lg overflow-hidden hidden transform transition-all duration-500 max-w-4xl mx-auto">
+        <!-- Imagen con tamaño consistente -->
+        <div class="aspect-w-16 aspect-h-9 h-64 sm:h-80 relative overflow-hidden">
+          <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Equipo de profesionales MINTRA" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-50"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <h3 class="text-xl lg:text-2xl font-bold">Equipo Especializado</h3>
+            <p class="text-lg">Profesionales acreditados MINTRA</p>
+          </div>
+        </div>
+        
+        <div class="p-6 lg:p-8">
+          <div class="grid md:grid-cols-2 gap-6 text-left">
+            <div>
+              <h4 class="font-bold text-rcm-navy mb-3 text-lg">Sectores de Especialización:</h4>
+              <ul class="space-y-2 text-gray-700">
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-gold rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Industrial</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-gold rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Civil</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-gold rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Minero</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-bold text-rcm-navy mb-3 text-lg">Certificaciones:</h4>
+              <ul class="space-y-2 text-gray-700">
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-blue-medium rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Acreditación MINTRA</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-blue-medium rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Experiencia en SUNAFIL</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="w-2 h-2 bg-rcm-blue-medium rounded-full mr-3"></span>
+                  <span class="text-sm lg:text-base">Especialistas en SST</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Llamada a la acción final -->
+  <section class="bg-gradient-to-r from-rcm-navy to-rcm-blue-medium text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-2xl lg:text-3xl xl:text-4xl font-bold mb-4">¿Listo para mejorar la seguridad de tu empresa?</h2>
+      <p class="text-lg lg:text-xl mb-8 text-rcm-white opacity-90 max-w-3xl mx-auto">Contacta con nuestros especialistas y obtén una consultoría personalizada</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'system:contactanos' %}" class="bg-rcm-gold text-rcm-navy py-3 px-6 lg:px-8 rounded-md font-medium hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105 inline-block">
+          Contactar ahora
+        </a>
+        <a href="{% url 'system:certificados' %}" class="border-2 border-rcm-white text-white py-3 px-6 lg:px-8 rounded-md font-medium hover:bg-white hover:text-rcm-navy transition-all duration-300 transform hover:scale-105 inline-block">
+          Verificar certificado
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CSS para aspectos y transiciones -->
+  <style>
+    /* Aspect ratio utilities para mantener proporciones */
+    .aspect-w-16 {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    }
+    
+    .aspect-w-16 > * {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    
+    /* Transiciones suaves para el carrusel */
+    .carousel-slide {
+      transition: opacity 0.7s ease-in-out;
+    }
+    
+    /* Animaciones para el card profesional */
+    #professional-card {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    }
+    
+    #professional-card:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    /* Efectos de hover para botones */
+    .btn-hover-zoom {
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .btn-hover-zoom:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Responsive breakpoints personalizados */
+    @media (min-width: 1024px) {
+      .aspect-h-16 {
+        padding-bottom: 66.67%; /* Más altura en desktop para mejor proporción */
+      }
+    }
+    
+    /* Optimización para tablets */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .min-h-[400px] {
+        min-height: 350px;
+      }
+    }
+    
+    /* Optimización para móviles */
+    @media (max-width: 767px) {
+      .min-h-[400px] {
+        min-height: 250px;
+      }
+    }
+  </style>
+
+  <!-- JavaScript mejorado -->
   <script>
-    // Carousel functionality
     document.addEventListener('DOMContentLoaded', function() {
-      const carouselContainer = document.querySelector('.carousel-container');
-      const slides = carouselContainer.querySelectorAll('img');
+      // Carrusel mejorado con mejor control
+      const slides = document.querySelectorAll('.carousel-slide');
       const dots = document.querySelectorAll('.carousel-dot');
+      const prevBtn = document.querySelector('.carousel-prev');
+      const nextBtn = document.querySelector('.carousel-next');
       let currentSlide = 0;
+      let slideInterval;
       
-      // Set initial active dot
-      dots[0].classList.add('opacity-100');
-      
-      // Function to move to a specific slide
-      function goToSlide(index) {
-        carouselContainer.style.transform = `translateX(-${index * 100}%)`;
-        // Update active dot
-        dots.forEach(dot => dot.classList.remove('opacity-100'));
+      function showSlide(index) {
+        // Ocultar todas las slides
+        slides.forEach(slide => {
+          slide.classList.remove('opacity-100');
+          slide.classList.add('opacity-0');
+        });
+        
+        // Mostrar slide actual
+        slides[index].classList.remove('opacity-0');
+        slides[index].classList.add('opacity-100');
+        
+        // Actualizar dots
+        dots.forEach(dot => {
+          dot.classList.remove('opacity-100');
+          dot.classList.add('opacity-50');
+        });
+        dots[index].classList.remove('opacity-50');
         dots[index].classList.add('opacity-100');
+        
         currentSlide = index;
       }
       
-      // Add click event to dots
+      function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      }
+      
+      function prevSlide() {
+        const prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+      }
+      
+      function startAutoSlide() {
+        slideInterval = setInterval(nextSlide, 5000);
+      }
+      
+      function stopAutoSlide() {
+        clearInterval(slideInterval);
+      }
+      
+      // Event listeners para navegación
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          nextSlide();
+          stopAutoSlide();
+          startAutoSlide();
+        });
+      }
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          prevSlide();
+          stopAutoSlide();
+          startAutoSlide();
+        });
+      }
+      
+      // Event listeners para dots
       dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => goToSlide(index));
+        dot.addEventListener('click', () => {
+          showSlide(index);
+          stopAutoSlide();
+          startAutoSlide();
+        });
       });
       
-      // Auto rotate slides
-      setInterval(() => {
-        const nextSlide = (currentSlide + 1) % slides.length;
-        goToSlide(nextSlide);
-      }, 5000);
+      // Pause on hover
+      const carousel = document.querySelector('.carousel-wrapper');
+      if (carousel) {
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+      }
+      
+      // Iniciar auto-slide
+      startAutoSlide();
       
       // Toggle professional card
-      document.getElementById('show-professionals').addEventListener('click', function() {
-        const card = document.getElementById('professional-card');
-        card.classList.toggle('hidden');
-      });
+      const showBtn = document.getElementById('show-professionals');
+      const card = document.getElementById('professional-card');
+      
+      if (showBtn && card) {
+        showBtn.addEventListener('click', function() {
+          if (card.classList.contains('hidden')) {
+            card.classList.remove('hidden');
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            }, 10);
+            this.textContent = 'Ocultar equipo profesional';
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              card.classList.add('hidden');
+            }, 400);
+            this.textContent = 'Ver nuestro equipo profesional';
+          }
+        });
+      }
     });
   </script>
 {% endblock %}
