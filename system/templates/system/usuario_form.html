@@ -63,17 +63,22 @@
           </div>
         </div>
 
-        <div class="space-y-2">
+        '''        <div class="space-y-2">
           <label for="dni" class="block text-sm font-medium text-rcm-navy">DNI:</label>
-          <input
-            type="text"
-            name="dni"
-            id="dni"
-            value="{{ usuario.dni|default_if_none:'' }}"
-            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
-            maxlength="8"
-            placeholder="Ingrese el DNI (8 dígitos)"
-          />
+          <div class="flex items-center space-x-2">
+            <input
+              type="text"
+              name="dni"
+              id="dni"
+              value="{{ usuario.dni|default_if_none:'' }}"
+              class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
+              maxlength="8"
+              placeholder="Ingrese el DNI (8 dígitos)"
+            />
+            <button type="button" id="buscar-dni" class="bg-rcm-blue-medium text-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors">
+              Buscar DNI
+            </button>
+          </div>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -117,4 +122,39 @@
     </div>
   </div>
 </section>
+
+'''<script>
+document.getElementById('buscar-dni').addEventListener('click', function() {
+    var dni = document.getElementById('dni').value;
+    if (dni.length !== 8) {
+        alert('Por favor, ingrese un DNI de 8 dígitos.');
+        return;
+    }
+
+    fetch("{% url 'system:buscar_dni' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: 'dni=' + dni
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            document.getElementById('first_name').value = data.nombres;
+            document.getElementById('last_name').value = data.apellido_paterno;
+            document.getElementById('second_last_name').value = data.apellido_materno;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Ocurrió un error al buscar el DNI.');
+    });
+});
+</script>
 {% endblock %}
+'''
+''

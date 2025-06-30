@@ -439,6 +439,70 @@ def add_empresa(request):
         'empresa': None
     })
 
+from django.http import JsonResponse
+import requests
+from bs4 import BeautifulSoup
+
+def buscar_dni_view(request):
+    if request.method == 'POST':
+        dni = request.POST.get('dni')
+        if not dni or len(dni) != 8:
+            return JsonResponse({'error': 'DNI inválido'}, status=400)
+
+        url = 'https://eldni.com/pe/buscar-datos-por-dni'
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+
+        try:
+            # Usar una sesión para mantener las cookies
+            with requests.Session() as s:
+                # 1. Obtener la página inicial y el token CSRF
+                get_response = s.get(url, headers=headers)
+                get_response.raise_for_status()
+                
+                soup = BeautifulSoup(get_response.text, 'html.parser')
+                token_input = soup.find('input', {'name': '_token'})
+                
+                if not token_input:
+                    return JsonResponse({'error': 'No se pudo encontrar el token de seguridad.'}, status=500)
+                
+                token = token_input['value']
+
+                # 2. Enviar la petición POST con el DNI y el token
+                payload = {
+                    'dni': dni,
+                    '_token': token
+                }
+                post_response = s.post(url, data=payload, headers=headers)
+                post_response.raise_for_status()
+
+                # 3. Analizar la respuesta
+                soup = BeautifulSoup(post_response.text, 'html.parser')
+                table = soup.find('table', {'class': 'table table-striped table-scroll'})
+
+                if table:
+                    rows = table.find_all('tr')
+                    if len(rows) > 1:
+                        cols = rows[1].find_all('td')
+                        nombres = cols[1].text.strip()
+                        apellido_paterno = cols[2].text.strip()
+                        apellido_materno = cols[3].text.strip()
+                        
+                        return JsonResponse({
+                            'nombres': nombres,
+                            'apellido_paterno': apellido_paterno,
+                            'apellido_materno': apellido_materno
+                        })
+
+                return JsonResponse({'error': 'No se encontraron datos para el DNI ingresado.'}, status=404)
+
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({'error': f'Error de conexión: {e}'}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
 @login_required
 def edit_empresa(request, pk):
     """
