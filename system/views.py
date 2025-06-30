@@ -4,7 +4,7 @@ from django.urls import reverse
 from functools import wraps
 from .models import *
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from weasyprint.text.fonts import FontConfiguration
@@ -15,6 +15,10 @@ from io import BytesIO
 import base64
 import string
 import random
+import requests
+from bs4 import BeautifulSoup
+import requests
+from bs4 import BeautifulSoup
 
 
 def generate_unique_cert_code(length=10):
@@ -447,10 +451,6 @@ def add_empresa(request):
         'empresa': None
     })
 
-from django.http import JsonResponse
-import requests
-from bs4 import BeautifulSoup
-
 def buscar_dni_view(request):
     if request.method == 'POST':
         dni = request.POST.get('dni')
@@ -510,6 +510,98 @@ def buscar_dni_view(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+def buscar_ruc_view(request):
+    """
+    Vista para buscar información de RUC - versión de demostración
+    """
+    if request.method == 'POST':
+        ruc = request.POST.get('ruc', '').strip()
+        
+        # Validar que el RUC tenga 11 dígitos
+        if not ruc or len(ruc) != 11 or not ruc.isdigit():
+            return JsonResponse({'error': 'RUC inválido. Debe contener 11 dígitos numéricos.'}, status=400)
+
+        # Base de datos de demostración con RUCs de empresas conocidas
+        demo_rucs = {
+            '20100017491': {
+                'razon_social': 'TELEFONICA DEL PERU S.A.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. AREQUIPA NRO. 1155 LIMA - LIMA - LIMA'
+            },
+            '20131312955': {
+                'razon_social': 'SAGA FALABELLA S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. PASEO DE LA REPUBLICA NRO. 3220 LIMA - LIMA - SAN ISIDRO'
+            },
+            '20100070970': {
+                'razon_social': 'SUPERMERCADOS PERUANOS SOCIEDAD ANONIMA',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. MORALES DUAREZ NRO. 1760 LIMA - LIMA - MIRAFLORES'
+            },
+            '20547121205': {
+                'razon_social': 'RIPLEY CORP PERU S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. JAVIER PRADO ESTE NRO. 4200 LIMA - LIMA - SURCO'
+            },
+            '20100128056': {
+                'razon_social': 'CORPORACION WONG S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. SANTA CRUZ NRO. 814 LIMA - LIMA - MIRAFLORES'
+            },
+            '20100000001': {
+                'razon_social': 'EMPRESA DE PRUEBA S.A.C.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. EJEMPLO NRO. 123 LIMA - LIMA - LIMA'
+            }
+        }
+
+        # Simular delay de consulta para hacerlo más realista
+        import time
+        time.sleep(1)
+
+        # Buscar en la base de datos de demostración
+        if ruc in demo_rucs:
+            empresa_data = demo_rucs[ruc]
+            return JsonResponse({
+                'ruc': ruc,
+                'razon_social': empresa_data['razon_social'],
+                'estado': empresa_data['estado'],
+                'condicion': empresa_data['condicion'],
+                'direccion': empresa_data['direccion']
+            })
+        else:
+            # Para otros RUCs, intentar con API real si está disponible
+            try:
+                url = f'https://api.apis.net.pe/v1/ruc?numero={ruc}'
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json',
+                }
+                
+                response = requests.get(url, headers=headers, timeout=5)
+                response.raise_for_status()
+                
+                data = response.json()
+                if data and 'nombre' in data:
+                    return JsonResponse({
+                        'ruc': data.get('numeroDocumento', ruc),
+                        'razon_social': data.get('nombre', ''),
+                        'estado': data.get('estado', 'ACTIVO'),
+                        'condicion': data.get('condicion', 'HABIDO'),
+                        'direccion': data.get('direccion', ''),
+                    })
+            except:
+                pass
+            
+            return JsonResponse({'error': f'No se encontraron datos para el RUC {ruc}. Intente con uno de los RUCs de prueba: 20100017491, 20131312955, 20100070970, 20547121205, 20100128056, 20100000001'}, status=404)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 @login_required
 def edit_empresa(request, pk):

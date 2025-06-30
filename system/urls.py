@@ -34,4 +34,5 @@ urlpatterns = [
     path('dashboard/certificados/edit/<int:pk>/', views.edit_certificado,   name='edit_certificado'),
 
     path('api/buscar-dni/', views.buscar_dni_view, name='buscar_dni'),
+    path('api/buscar-ruc/', views.buscar_ruc_view, name='buscar_ruc'),
 ]
