@@ -150,12 +150,21 @@ def add_usuario(request):
     if request.method == 'POST':
         # Leer datos del formulario
         first = request.POST.get('first_name', '').strip()
-        middle = request.POST.get('middle_name', '').strip() or None
         last = request.POST.get('last_name', '').strip()
         second_last = request.POST.get('second_last_name', '').strip() or None
         dni = request.POST.get('dni', '').strip() or None
         utype = "Empleado"
         empresa_id = request.POST.get('empresa_id', '')
+
+        # Comprobar si el DNI ya existe
+        if dni and Usuario.objects.filter(dni=dni).exists():
+            empresas = Empresa.objects.all()
+            return render(request, 'system/usuario_form.html', {
+                'action': 'add',
+                'usuario': None,
+                'empresas': empresas,
+                'error_message': 'El DNI ingresado ya se encuentra registrado.'
+            })
         
         # Obtener la empresa si se proporcionó un ID
         empresa = None
