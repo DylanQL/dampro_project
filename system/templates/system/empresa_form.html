@@ -57,9 +57,9 @@
             value="{{ empresa.nombre|default_if_none:'' }}"
             class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
             required
-            readonly
+            placeholder="Ingrese la razón social o búsquela con el RUC"
           />
-          <p class="text-xs text-rcm-blue-medium">Este campo se completará automáticamente al buscar el RUC.</p>
+          <p class="text-xs text-rcm-blue-medium">Puede ingresar manualmente o usar el botón "Buscar" del RUC para completar automáticamente.</p>
         </div>
         
         <div class="flex justify-between pt-4">
@@ -89,11 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.value = e.target.value.slice(0, 11);
         }
         
-        // Limpiar el campo de razón social cuando se modifica el RUC
-        if (nombreInput.hasAttribute('readonly')) {
-            nombreInput.value = '';
-            hideMessage();
-        }
+        // Limpiar mensajes cuando se modifica el RUC
+        hideMessage();
     });
 
     // Función para mostrar mensajes
@@ -147,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // Completar automáticamente la razón social
                 nombreInput.value = data.razon_social;
-                nombreInput.removeAttribute('readonly');
                 showMessage('✓ Información encontrada: ' + data.razon_social, false);
             }
         })
@@ -169,11 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
             btnBuscarRuc.click();
         }
     });
-
-    // Si estamos editando, permitir modificar la razón social
-    {% if action == 'edit' %}
-    nombreInput.removeAttribute('readonly');
-    {% endif %}
 });
 </script>
 {% endblock %}
