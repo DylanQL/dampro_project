@@ -154,7 +154,7 @@ def add_usuario(request):
         last = request.POST.get('last_name', '').strip()
         second_last = request.POST.get('second_last_name', '').strip() or None
         dni = request.POST.get('dni', '').strip() or None
-        utype = request.POST.get('user_type', '').strip()
+        utype = "Empleado"
         empresa_id = request.POST.get('empresa_id', '')
         
         # Obtener la empresa si se proporcionó un ID
