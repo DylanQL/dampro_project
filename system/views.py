@@ -434,21 +434,31 @@ def add_empresa(request):
     """
     Página para añadir una nueva empresa.
     """
+    error_message = None
+    
     if request.method == 'POST':
         # Leer datos del formulario
         ruc = request.POST.get('ruc', '').strip()
         nombre = request.POST.get('nombre', '').strip()
 
-        # Crear y guardar
-        Empresa.objects.create(
-            ruc=ruc,
-            nombre=nombre
-        )
-        return redirect('system:gestion_empresas')
+        # Validar que no exista una empresa con el mismo RUC
+        if Empresa.objects.filter(ruc=ruc).exists():
+            error_message = f'Ya existe una empresa registrada con el RUC {ruc}. Por favor, verifique el número o busque la empresa en la lista.'
+        else:
+            try:
+                # Crear y guardar
+                Empresa.objects.create(
+                    ruc=ruc,
+                    nombre=nombre
+                )
+                return redirect('system:gestion_empresas')
+            except Exception as e:
+                error_message = 'Ocurrió un error al guardar la empresa. Por favor, intente nuevamente.'
 
     return render(request, 'system/empresa_form.html', {
         'action': 'add',
-        'empresa': None
+        'empresa': None,
+        'error_message': error_message
     })
 
 def buscar_dni_view(request):
