@@ -189,7 +189,6 @@ def edit_usuario(request, pk):
     usuario = Usuario.objects.get(pk=pk)
     if request.method == 'POST':
         usuario.first_name       = request.POST.get('first_name', usuario.first_name).strip()
-        usuario.middle_name      = request.POST.get('middle_name', usuario.middle_name).strip() or None
         usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
         usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
         usuario.dni              = request.POST.get('dni', usuario.dni).strip() or None

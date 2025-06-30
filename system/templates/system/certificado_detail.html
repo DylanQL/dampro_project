@@ -29,7 +29,6 @@
               <span class="font-bold text-dampro-dark w-full sm:w-2/5">Nombre del Titular:</span> 
               <span class="text-gray-700 w-full sm:w-3/5">
                 {{ certificado.usuario.first_name }} 
-                {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
                 {{ certificado.usuario.last_name }}
                 {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
               </span>
