@@ -168,7 +168,6 @@ def add_usuario(request):
         # Crear y guardar
         Usuario.objects.create(
             first_name=first,
-            middle_name=middle,
             last_name=last,
             second_last_name=second_last,
             dni=dni,
