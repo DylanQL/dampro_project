@@ -52,7 +52,7 @@
             
             <div class="flex flex-col sm:flex-row pb-3">
               <span class="font-bold text-dampro-dark w-full sm:w-2/5">Fecha de Emisión:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.creation_date|date:"d/m/Y" }}</span>
+              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>
             </div>
           </div>
           

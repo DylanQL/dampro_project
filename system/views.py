@@ -21,6 +21,27 @@ import requests
 from bs4 import BeautifulSoup
 
 
+def get_mes_completo_espanol(numero_mes):
+    """
+    Convierte un número de mes en el nombre completo en español.
+    """
+    meses_espanol = {
+        1: 'enero',
+        2: 'febrero',
+        3: 'marzo',
+        4: 'abril',
+        5: 'mayo',
+        6: 'junio',
+        7: 'julio',
+        8: 'agosto',
+        9: 'septiembre',
+        10: 'octubre',
+        11: 'noviembre',
+        12: 'diciembre'
+    }
+    return meses_espanol.get(numero_mes, '')
+
+
 def generate_unique_cert_code(length=10):
     """
     Genera un código de certificado aleatorio único.
@@ -85,15 +106,21 @@ def certificado_detail(request, cert_code):
     """
     certificado = None
     error = None
+    mes_espanol = None
     
     try:
         certificado = Certificate.objects.select_related('usuario', 'course', 'empresa').get(cert_code=cert_code)
+        # Obtener el mes en español completo
+        if certificado:
+            mes_numero = certificado.creation_date.month
+            mes_espanol = get_mes_completo_espanol(mes_numero)
     except Certificate.DoesNotExist:
         error = f"No se encontró ningún certificado con el código: {cert_code}"
     
     return render(request, 'system/certificado_detail.html', {
         'certificado': certificado,
-        'error': error
+        'error': error,
+        'mes_espanol': mes_espanol
     })
 
 # Decorador para comprobar sesión
@@ -374,6 +401,10 @@ def certificado_pdf(request, cert_code):
     #     reverse('system:certificado_detail', kwargs={'cert_code': cert_code})
     # )
     
+    # Obtener el mes en español completo
+    mes_numero = certificado.creation_date.month
+    mes_espanol = get_mes_completo_espanol(mes_numero)
+    
     # Generar QR code
     qr = qrcode.QRCode(
         version=1,
@@ -397,6 +428,7 @@ def certificado_pdf(request, cert_code):
         'certificado': certificado,
         'qr_code': qr_image_base64,
         'verification_url': verification_url,
+        'mes_espanol': mes_espanol,
     })
     
     # Configuración de fuentes
