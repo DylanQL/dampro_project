@@ -184,16 +184,14 @@
             <div class="nombre-participante">
                 {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
                 {{ certificado.usuario.first_name }}
-            </div>
-            
-            <!-- Descripción del curso -->
+            </div>                <!-- Descripción del curso -->
             <div class="descripcion-curso">
                 Por haber participado en la Capacitación de "<span class="curso-name">{{ certificado.course.name }}</span>", 
-                realizada por la consultora <span class="empresa-name">RCM Solutions S.A.C.</span>, desarrollada de manera virtual a los trabajadores de 
+                realizada por la consultora <span class="empresa-name">RCM Solutions S.A.C.</span>, 
                 {% if certificado.empresa %}
-                la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,
+                desarrollada de manera virtual a los trabajadores de la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,
                 {% else %}
-                la empresa <span class="empresa-name">MEGAVANS S.A.C</span>, identificada con N° de RUC <span class="empresa-name">20607077810</span>,
+                desarrollada de manera virtual, 
                 {% endif %}
                 realizado el día 
                 <span class="fecha-horas">{{ certificado.creation_date|date:"d" }} de {{ certificado.creation_date|date:"F" }} del {{ certificado.creation_date|date:"Y" }}</span>, 
