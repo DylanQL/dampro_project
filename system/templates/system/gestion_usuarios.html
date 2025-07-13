@@ -21,7 +21,7 @@
           <thead>
             <tr class="bg-rcm-navy text-white">
               <th class="py-3 px-4 text-left font-medium rounded-tl-lg">ID</th>
-              <th class="py-3 px-4 text-left font-medium">Nombre</th>
+              <th class="py-3 px-4 text-left font-medium">Usuarios</th>
               <th class="py-3 px-4 text-left font-medium">DNI</th>
               <th class="py-3 px-4 text-left font-medium">Tipo</th>
               <th class="py-3 px-4 text-left font-medium">Empresa</th>
@@ -32,7 +32,7 @@
             {% for u in usuarios %}
             <tr class="hover:bg-rcm-blue-light/10">
               <td class="py-3 px-4 text-gray-700">{{ u.id }}</td>
-              <td class="py-3 px-4 text-gray-700 font-medium">{{ u.first_name }} {{ u.last_name }}</td>
+              <td class="py-3 px-4 text-gray-700 font-medium">{{ u.first_name }} {{ u.last_name }} {{ u.second_last_name }}</td>
               <td class="py-3 px-4 text-gray-700">
                 {% if u.dni %}
                   {{ u.dni }}

@@ -46,7 +46,6 @@
               <span class="font-bold text-rcm-navy">Nombre del Titular:</span> 
               <span class="text-rcm-black">
                 {{ certificado.usuario.first_name }} 
-                {% if certificado.usuario.middle_name %}{{ certificado.usuario.middle_name }}{% endif %}
                 {{ certificado.usuario.last_name }}
                 {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
               </span>

@@ -22,19 +22,49 @@
       <form method="post" action="" class="space-y-6">
         {% csrf_token %}
         
+        <!-- Mensaje de error general -->
+        {% if error_message %}
+        <div class="bg-red-50 border border-red-300 rounded-md p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">Error al registrar empresa</h3>
+              <div class="mt-2 text-sm text-red-700">
+                <p>{{ error_message }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        
         <div class="space-y-2">
           <label for="ruc" class="block text-sm font-medium text-rcm-navy">RUC:</label>
-          <input
-            type="text"
-            name="ruc"
-            id="ruc"
-            value="{{ empresa.ruc|default_if_none:'' }}"
-            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
-            required
-            pattern="[0-9]{11}"
-            title="El RUC debe tener 11 dígitos numéricos"
-          />
+          <div class="flex space-x-2">
+            <input
+              type="text"
+              name="ruc"
+              id="ruc"
+              value="{{ empresa.ruc|default_if_none:'' }}"
+              class="flex-1 p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
+              required
+              pattern="[0-9]{11}"
+              title="El RUC debe tener 11 dígitos numéricos"
+              maxlength="11"
+            />
+            <button
+              type="button"
+              id="btnBuscarRuc"
+              class="bg-rcm-blue-medium text-white px-4 py-2 rounded-md hover:bg-rcm-blue-dark transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              Buscar
+            </button>
+          </div>
           <p class="text-xs text-rcm-blue-medium">El RUC debe contener 11 dígitos numéricos.</p>
+          <div id="rucMessage" class="text-sm mt-1 hidden"></div>
         </div>
         
         <div class="space-y-2">
@@ -46,7 +76,9 @@
             value="{{ empresa.nombre|default_if_none:'' }}"
             class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
             required
+            placeholder="Ingrese la razón social o búsquela con el RUC"
           />
+          <p class="text-xs text-rcm-blue-medium">Puede ingresar manualmente o usar el botón "Buscar" del RUC para completar automáticamente.</p>
         </div>
         
         <div class="flex justify-between pt-4">
@@ -61,4 +93,118 @@
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rucInput = document.getElementById('ruc');
+    const nombreInput = document.getElementById('nombre');
+    const btnBuscarRuc = document.getElementById('btnBuscarRuc');
+    const rucMessage = document.getElementById('rucMessage');
+
+    // Permitir solo números en el campo RUC
+    rucInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        if (e.target.value.length > 11) {
+            e.target.value = e.target.value.slice(0, 11);
+        }
+        
+        // Limpiar mensajes cuando se modifica el RUC
+        hideMessage();
+    });
+
+    // Función para mostrar mensajes
+    function showMessage(text, isError = false) {
+        rucMessage.textContent = text;
+        rucMessage.classList.remove('hidden', 'text-green-600', 'text-red-600');
+        rucMessage.classList.add(isError ? 'text-red-600' : 'text-green-600');
+    }
+
+    // Función para ocultar mensajes
+    function hideMessage() {
+        rucMessage.classList.add('hidden');
+    }
+
+    // Función para buscar RUC
+    btnBuscarRuc.addEventListener('click', function() {
+        const ruc = rucInput.value.trim();
+        
+        if (!ruc) {
+            showMessage('Por favor, ingrese un RUC.', true);
+            return;
+        }
+        
+        if (ruc.length !== 11) {
+            showMessage('El RUC debe tener exactamente 11 dígitos.', true);
+            return;
+        }
+
+        // Deshabilitar botón y mostrar estado de carga
+        btnBuscarRuc.disabled = true;
+        btnBuscarRuc.textContent = 'Buscando...';
+        hideMessage();
+
+        // Obtener token CSRF
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Realizar petición AJAX
+        fetch('{% url "system:buscar_ruc" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: 'ruc=' + encodeURIComponent(ruc)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showMessage(data.error, true);
+                nombreInput.value = '';
+            } else {
+                // Completar automáticamente la razón social
+                nombreInput.value = data.razon_social;
+                showMessage('✓ Información encontrada: ' + data.razon_social, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error de conexión. Intente nuevamente.', true);
+        })
+        .finally(() => {
+            // Rehabilitar botón
+            btnBuscarRuc.disabled = false;
+            btnBuscarRuc.textContent = 'Buscar';
+        });
+    });
+
+    // Permitir búsqueda con Enter en el campo RUC
+    rucInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            btnBuscarRuc.click();
+        }
+    });
+
+    // Validación antes de enviar el formulario
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const ruc = rucInput.value.trim();
+        const nombre = nombreInput.value.trim();
+
+        if (!ruc || ruc.length !== 11) {
+            e.preventDefault();
+            showMessage('Por favor, ingrese un RUC válido de 11 dígitos.', true);
+            rucInput.focus();
+            return false;
+        }
+
+        if (!nombre) {
+            e.preventDefault();
+            showMessage('Por favor, ingrese la razón social de la empresa.', true);
+            nombreInput.focus();
+            return false;
+        }
+    });
+});
+</script>
 {% endblock %}

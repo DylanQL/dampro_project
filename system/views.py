@@ -4,7 +4,7 @@ from django.urls import reverse
 from functools import wraps
 from .models import *
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from weasyprint.text.fonts import FontConfiguration
@@ -15,6 +15,10 @@ from io import BytesIO
 import base64
 import string
 import random
+import requests
+from bs4 import BeautifulSoup
+import requests
+from bs4 import BeautifulSoup
 
 
 def generate_unique_cert_code(length=10):
@@ -150,12 +154,21 @@ def add_usuario(request):
     if request.method == 'POST':
         # Leer datos del formulario
         first = request.POST.get('first_name', '').strip()
-        middle = request.POST.get('middle_name', '').strip() or None
         last = request.POST.get('last_name', '').strip()
         second_last = request.POST.get('second_last_name', '').strip() or None
         dni = request.POST.get('dni', '').strip() or None
-        utype = request.POST.get('user_type', '').strip()
+        utype = "Empleado"
         empresa_id = request.POST.get('empresa_id', '')
+
+        # Comprobar si el DNI ya existe
+        if dni and Usuario.objects.filter(dni=dni).exists():
+            empresas = Empresa.objects.all()
+            return render(request, 'system/usuario_form.html', {
+                'action': 'add',
+                'usuario': None,
+                'empresas': empresas,
+                'error_message': 'El DNI ingresado ya se encuentra registrado.'
+            })
         
         # Obtener la empresa si se proporcionó un ID
         empresa = None
@@ -168,7 +181,6 @@ def add_usuario(request):
         # Crear y guardar
         Usuario.objects.create(
             first_name=first,
-            middle_name=middle,
             last_name=last,
             second_last_name=second_last,
             dni=dni,
@@ -189,7 +201,6 @@ def edit_usuario(request, pk):
     usuario = Usuario.objects.get(pk=pk)
     if request.method == 'POST':
         usuario.first_name       = request.POST.get('first_name', usuario.first_name).strip()
-        usuario.middle_name      = request.POST.get('middle_name', usuario.middle_name).strip() or None
         usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
         usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
         usuario.dni              = request.POST.get('dni', usuario.dni).strip() or None
@@ -423,22 +434,184 @@ def add_empresa(request):
     """
     Página para añadir una nueva empresa.
     """
+    error_message = None
+    
     if request.method == 'POST':
         # Leer datos del formulario
         ruc = request.POST.get('ruc', '').strip()
         nombre = request.POST.get('nombre', '').strip()
 
-        # Crear y guardar
-        Empresa.objects.create(
-            ruc=ruc,
-            nombre=nombre
-        )
-        return redirect('system:gestion_empresas')
+        # Validar que no exista una empresa con el mismo RUC
+        if Empresa.objects.filter(ruc=ruc).exists():
+            error_message = f'Ya existe una empresa registrada con el RUC {ruc}. Por favor, verifique el número o busque la empresa en la lista.'
+        else:
+            try:
+                # Crear y guardar
+                Empresa.objects.create(
+                    ruc=ruc,
+                    nombre=nombre
+                )
+                return redirect('system:gestion_empresas')
+            except Exception as e:
+                error_message = 'Ocurrió un error al guardar la empresa. Por favor, intente nuevamente.'
 
     return render(request, 'system/empresa_form.html', {
         'action': 'add',
-        'empresa': None
+        'empresa': None,
+        'error_message': error_message
     })
+
+def buscar_dni_view(request):
+    if request.method == 'POST':
+        dni = request.POST.get('dni')
+        if not dni or len(dni) != 8:
+            return JsonResponse({'error': 'DNI inválido'}, status=400)
+
+        url = 'https://eldni.com/pe/buscar-datos-por-dni'
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+
+        try:
+            # Usar una sesión para mantener las cookies
+            with requests.Session() as s:
+                # 1. Obtener la página inicial y el token CSRF
+                get_response = s.get(url, headers=headers)
+                get_response.raise_for_status()
+                
+                soup = BeautifulSoup(get_response.text, 'html.parser')
+                token_input = soup.find('input', {'name': '_token'})
+                
+                if not token_input:
+                    return JsonResponse({'error': 'No se pudo encontrar el token de seguridad.'}, status=500)
+                
+                token = token_input['value']
+
+                # 2. Enviar la petición POST con el DNI y el token
+                payload = {
+                    'dni': dni,
+                    '_token': token
+                }
+                post_response = s.post(url, data=payload, headers=headers)
+                post_response.raise_for_status()
+
+                # 3. Analizar la respuesta
+                soup = BeautifulSoup(post_response.text, 'html.parser')
+                table = soup.find('table', {'class': 'table table-striped table-scroll'})
+
+                if table:
+                    rows = table.find_all('tr')
+                    if len(rows) > 1:
+                        cols = rows[1].find_all('td')
+                        nombres = cols[1].text.strip()
+                        apellido_paterno = cols[2].text.strip()
+                        apellido_materno = cols[3].text.strip()
+                        
+                        return JsonResponse({
+                            'nombres': nombres,
+                            'apellido_paterno': apellido_paterno,
+                            'apellido_materno': apellido_materno
+                        })
+
+                return JsonResponse({'error': 'No se encontraron datos para el DNI ingresado.'}, status=404)
+
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({'error': f'Error de conexión: {e}'}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def buscar_ruc_view(request):
+    """
+    Vista para buscar información de RUC - versión de demostración
+    """
+    if request.method == 'POST':
+        ruc = request.POST.get('ruc', '').strip()
+        
+        # Validar que el RUC tenga 11 dígitos
+        if not ruc or len(ruc) != 11 or not ruc.isdigit():
+            return JsonResponse({'error': 'RUC inválido. Debe contener 11 dígitos numéricos.'}, status=400)
+
+        # Base de datos de demostración con RUCs de empresas conocidas
+        demo_rucs = {
+            '20100017491': {
+                'razon_social': 'TELEFONICA DEL PERU S.A.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. AREQUIPA NRO. 1155 LIMA - LIMA - LIMA'
+            },
+            '20131312955': {
+                'razon_social': 'SAGA FALABELLA S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. PASEO DE LA REPUBLICA NRO. 3220 LIMA - LIMA - SAN ISIDRO'
+            },
+            '20100070970': {
+                'razon_social': 'SUPERMERCADOS PERUANOS SOCIEDAD ANONIMA',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. MORALES DUAREZ NRO. 1760 LIMA - LIMA - MIRAFLORES'
+            },
+            '20547121205': {
+                'razon_social': 'RIPLEY CORP PERU S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. JAVIER PRADO ESTE NRO. 4200 LIMA - LIMA - SURCO'
+            },
+            '20100128056': {
+                'razon_social': 'CORPORACION WONG S.A.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. SANTA CRUZ NRO. 814 LIMA - LIMA - MIRAFLORES'
+            },
+            '20100000001': {
+                'razon_social': 'EMPRESA DE PRUEBA S.A.C.',
+                'estado': 'ACTIVO',
+                'condicion': 'HABIDO',
+                'direccion': 'AV. EJEMPLO NRO. 123 LIMA - LIMA - LIMA'
+            }
+        }
+
+        # Simular delay de consulta para hacerlo más realista
+        import time
+        time.sleep(1)
+
+        # Buscar en la base de datos de demostración
+        if ruc in demo_rucs:
+            empresa_data = demo_rucs[ruc]
+            return JsonResponse({
+                'ruc': ruc,
+                'razon_social': empresa_data['razon_social'],
+                'estado': empresa_data['estado'],
+                'condicion': empresa_data['condicion'],
+                'direccion': empresa_data['direccion']
+            })
+        else:
+            # Para otros RUCs, intentar con API real si está disponible
+            try:
+                url = f'https://api.apis.net.pe/v1/ruc?numero={ruc}'
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json',
+                }
+                
+                response = requests.get(url, headers=headers, timeout=5)
+                response.raise_for_status()
+                
+                data = response.json()
+                if data and 'nombre' in data:
+                    return JsonResponse({
+                        'ruc': data.get('numeroDocumento', ruc),
+                        'razon_social': data.get('nombre', ''),
+                        'estado': data.get('estado', 'ACTIVO'),
+                        'condicion': data.get('condicion', 'HABIDO'),
+                        'direccion': data.get('direccion', ''),
+                    })
+            except:
+                pass
+            
+            return JsonResponse({'error': f'No se encontraron datos para el RUC {ruc}. Intente con uno de los RUCs de prueba: 20100017491, 20131312955, 20100070970, 20547121205, 20100128056, 20100000001'}, status=404)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 @login_required
 def edit_empresa(request, pk):
