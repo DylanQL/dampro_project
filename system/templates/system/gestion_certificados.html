@@ -26,7 +26,7 @@
               <th class="py-3 px-4 text-left font-semibold">Empresa</th>
               <th class="py-3 px-4 text-left font-semibold">Curso</th>
               <th class="py-3 px-4 text-left font-semibold">Emitido</th>
-              <th class="py-3 px-4 text-left font-semibold">Horas</th>
+              <th class="py-3 px-4 text-left font-semibold w-32">Horas</th>
               <th class="py-3 px-4 text-right font-semibold rounded-tr-lg">Acciones</th>
             </tr>
           </thead>
@@ -35,7 +35,8 @@
             <tr class="hover:bg-rcm-blue-light/10 transition-colors">
               <td class="py-3 px-4 text-rcm-navy">{{ c.id }}</td>
               <td class="py-3 px-4 text-rcm-navy font-medium">{{ c.cert_code }}</td>
-              <td class="py-3 px-4 text-rcm-navy">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>              <td class="py-3 px-4 text-rcm-navy">
+              <td class="py-3 px-4 text-rcm-navy">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>              
+              <td class="py-3 px-4 text-rcm-navy">
                 {% if c.empresa %}
                   {{ c.empresa.nombre }}
                 {% else %}
@@ -44,7 +45,7 @@
               </td>
               <td class="py-3 px-4 text-rcm-navy">{{ c.course.name }}</td>
               <td class="py-3 px-4 text-rcm-navy">{{ c.creation_date|date:"d/m/Y H:i" }}</td>
-              <td class="py-3 px-4">
+              <td class="py-3 px-4 w-32">
                 <span class="px-2 py-1 text-xs rounded-full bg-rcm-blue-light text-rcm-white">
                   {{ c.chronological_hours }} horas
                 </span>
