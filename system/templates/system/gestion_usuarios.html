@@ -15,6 +15,33 @@
           Agregar Usuario
         </a>
       </div>
+      
+      <!-- Filtro de Empresas -->
+      <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <form action="{% url 'system:gestion_usuarios' %}" method="GET" class="flex flex-col sm:flex-row items-center gap-4">
+          <label for="empresa_id" class="font-medium text-rcm-navy flex-shrink-0">Filtrar por empresa:</label>
+          <select name="empresa_id" id="empresa_id" class="flex-grow border-gray-300 rounded-md shadow-sm focus:border-rcm-gold focus:ring focus:ring-rcm-gold/20 transition-colors">
+            <option value="todos" {% if empresa_seleccionada == 'todos' %}selected{% endif %}>Todos los usuarios</option>
+            <option value="sin_empresa" {% if empresa_seleccionada == 'sin_empresa' %}selected{% endif %}>Sin empresa asignada</option>
+            {% for empresa in empresas %}
+              <option value="{{ empresa.id }}" {% if empresa_seleccionada == empresa.id %}selected{% endif %}>{{ empresa.nombre }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="bg-rcm-blue-medium hover:bg-rcm-blue-dark text-white py-2 px-4 rounded-md font-medium transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          {% if empresa_seleccionada != 'todos' %}
+            <a href="{% url 'system:gestion_usuarios' %}" class="text-rcm-blue-medium hover:text-rcm-blue-dark flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+              </svg>
+              Limpiar filtros
+            </a>
+          {% endif %}
+        </form>
+      </div>
 
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
@@ -77,7 +104,20 @@
         </table>
       </div>
       
-      <div class="mt-6 flex justify-end">
+      <div class="mt-6 flex justify-between">
+        <div class="text-sm text-gray-600">
+          {% if empresa_seleccionada == 'todos' %}
+            Mostrando todos los usuarios
+          {% elif empresa_seleccionada == 'sin_empresa' %}
+            Mostrando usuarios sin empresa asignada
+          {% else %}
+            {% for empresa in empresas %}
+              {% if empresa.id == empresa_seleccionada %}
+                Mostrando usuarios de: <span class="font-semibold">{{ empresa.nombre }}</span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
         <div class="text-sm text-gray-600">
           Total de usuarios: <span class="font-semibold">{{ usuarios|length }}</span>
         </div>

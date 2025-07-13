@@ -171,9 +171,29 @@ def logout_view(request):
 
 @login_required
 def gestion_usuarios(request):
-    usuarios = Usuario.objects.all()
+    # Obtener todas las empresas para el filtro
+    empresas = Empresa.objects.all()
+    
+    # Filtrar usuarios por empresa si se proporciona un ID de empresa
+    empresa_id = request.GET.get('empresa_id')
+    
+    if empresa_id and empresa_id.isdigit() and int(empresa_id) > 0:
+        # Filtrar por empresa específica
+        usuarios = Usuario.objects.filter(empresa_id=int(empresa_id))
+        empresa_seleccionada = int(empresa_id)
+    elif empresa_id == 'sin_empresa':
+        # Filtrar usuarios sin empresa asignada
+        usuarios = Usuario.objects.filter(empresa__isnull=True)
+        empresa_seleccionada = 'sin_empresa'
+    else:
+        # Mostrar todos los usuarios si no hay filtro o si es "todos"
+        usuarios = Usuario.objects.all()
+        empresa_seleccionada = 'todos'
+    
     return render(request, 'system/gestion_usuarios.html', {
-        'usuarios': usuarios
+        'usuarios': usuarios,
+        'empresas': empresas,
+        'empresa_seleccionada': empresa_seleccionada
     })
 
 @login_required
