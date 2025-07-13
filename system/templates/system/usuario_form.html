@@ -1,7 +1,7 @@
 {% extends 'system/base_logged.html' %}
 
 {% block title %}
-  {% if action == 'add' %}Agregar Usuario{% else %}Editar Usuario{% endif %} – Dampro SAC
+  {% if action == 'add' %}Agregar Cliente{% else %}Editar Cliente{% endif %} – Dampro SAC
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
           </svg>
         </a>
         <h1 class="text-2xl font-bold text-rcm-navy">
-          {% if action == 'add' %}Agregar Usuario{% else %}Editar Usuario{% endif %}
+          {% if action == 'add' %}Agregar Cliente{% else %}Editar Cliente{% endif %}
         </h1>
       </div>
 
@@ -32,7 +32,7 @@
               </svg>
             </div>
             <div class="ml-3">
-              <h3 class="text-sm font-medium text-red-800">Error al registrar usuario</h3>
+              <h3 class="text-sm font-medium text-red-800">Error al registrar cliente</h3>
               <div class="mt-2 text-sm text-red-700">
                 <p>{{ error_message }}</p>
               </div>
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        <!-- Campo oculto para tipo de usuario -->
+        <!-- Campo oculto para tipo de cliente -->
         <input type="hidden" name="user_type" value="Empleado" />
         
         <div class="space-y-2">
@@ -123,7 +123,7 @@
               </option>
             {% endfor %}
           </select>
-          <p class="text-xs text-rcm-blue-medium">Seleccione la empresa a la cual pertenece el usuario (opcional).</p>
+          <p class="text-xs text-rcm-blue-medium">Seleccione la empresa a la cual pertenece el cliente (opcional).</p>
         </div>
         
         <div class="flex justify-between pt-4">
@@ -131,7 +131,7 @@
             Cancelar
           </a>
           <button type="submit" class="bg-rcm-gold text-rcm-black py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">
-            {% if action == 'add' %}Crear Usuario{% else %}Actualizar Usuario{% endif %}
+            {% if action == 'add' %}Crear Cliente{% else %}Actualizar Cliente{% endif %}
           </button>
         </div>
       </form>

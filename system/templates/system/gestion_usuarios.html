@@ -1,18 +1,18 @@
 {% extends 'system/base_logged.html' %}
 
-{% block title %}Gestión Usuarios – RCM Solutions SAC{% endblock %}
+{% block title %}Gestión Clientes – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<section class="gestion-usuarios py-12">
+<section class="gestion-clientes py-12">
   <div class="container mx-auto px-4">
     <div class="bg-white rounded-lg shadow-md p-8 max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-rcm-navy">Gestión de Usuarios</h1>
+        <h1 class="text-2xl font-bold text-rcm-navy">Gestión de Clientes</h1>
         <a href="{% url 'system:add_usuario' %}" class="bg-rcm-gold text-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
-          Agregar Usuario
+          Agregar Cliente
         </a>
       </div>
       
@@ -21,7 +21,7 @@
         <form action="{% url 'system:gestion_usuarios' %}" method="GET" class="flex flex-col sm:flex-row items-center gap-4">
           <label for="empresa_id" class="font-medium text-rcm-navy flex-shrink-0">Filtrar por empresa:</label>
           <select name="empresa_id" id="empresa_id" class="flex-grow border-gray-300 rounded-md shadow-sm focus:border-rcm-gold focus:ring focus:ring-rcm-gold/20 transition-colors">
-            <option value="todos" {% if empresa_seleccionada == 'todos' %}selected{% endif %}>Todos los usuarios</option>
+            <option value="todos" {% if empresa_seleccionada == 'todos' %}selected{% endif %}>Todos los clientes</option>
             <option value="sin_empresa" {% if empresa_seleccionada == 'sin_empresa' %}selected{% endif %}>Sin empresa asignada</option>
             {% for empresa in empresas %}
               <option value="{{ empresa.id }}" {% if empresa_seleccionada == empresa.id %}selected{% endif %}>{{ empresa.nombre }}</option>
@@ -48,7 +48,7 @@
           <thead>
             <tr class="bg-rcm-navy text-white">
               <th class="py-3 px-4 text-left font-medium rounded-tl-lg">ID</th>
-              <th class="py-3 px-4 text-left font-medium">Usuarios</th>
+              <th class="py-3 px-4 text-left font-medium">Clientes</th>
               <th class="py-3 px-4 text-left font-medium">DNI</th>
               <th class="py-3 px-4 text-left font-medium">Tipo</th>
               <th class="py-3 px-4 text-left font-medium">Empresa</th>
@@ -97,7 +97,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="6" class="py-8 text-center text-rcm-blue-light italic">No hay usuarios registrados.</td>
+              <td colspan="6" class="py-8 text-center text-rcm-blue-light italic">No hay clientes registrados.</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -107,9 +107,9 @@
       <div class="mt-6 flex justify-between">
         <div class="text-sm text-gray-600">
           {% if empresa_seleccionada == 'todos' %}
-            Mostrando todos los usuarios
+            Mostrando todos los clientes
           {% elif empresa_seleccionada == 'sin_empresa' %}
-            Mostrando usuarios sin empresa asignada
+            Mostrando clientes sin empresa asignada
           {% else %}
             {% for empresa in empresas %}
               {% if empresa.id == empresa_seleccionada %}
@@ -119,7 +119,7 @@
           {% endif %}
         </div>
         <div class="text-sm text-gray-600">
-          Total de usuarios: <span class="font-semibold">{{ usuarios|length }}</span>
+          Total de clientes: <span class="font-semibold">{{ usuarios|length }}</span>
         </div>
       </div>
     </div>

@@ -53,7 +53,7 @@
           </a>
           <ul class="hidden md:flex space-x-6">
             <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-rcm-gold transition-colors">Home</a></li>
-            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Usuarios</a></li>
+            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Clientes</a></li>
             <li><a href="{% url 'system:gestion_empresas' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
             <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
             <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
@@ -74,7 +74,7 @@
       <div class="md:hidden py-2">
         <ul class="space-y-2">
           <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-rcm-gold transition-colors">Home</a></li>
-          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Usuarios</a></li>
+          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Clientes</a></li>
           <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
           <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
           <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
@@ -91,9 +91,9 @@
       
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold mb-2">Usuarios</h3>
+          <h3 class="text-xl font-bold mb-2">Clientes</h3>
           <p class="text-3xl font-bold">{{ usuarios_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Usuarios →</a>
+          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Clientes →</a>
         </div>
         
         <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
