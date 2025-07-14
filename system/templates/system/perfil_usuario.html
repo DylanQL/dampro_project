@@ -1,0 +1,284 @@
+{% extends 'system/base_logged.html' %}
+
+{% block title %}Mi Perfil – Dampro SAC{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 rounded-lg shadow-lg p-6 bg-opacity-95">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-rcm-navy">Mi Perfil</h1>
+        <a href="{% url 'system:home_logged' %}" class="text-rcm-blue-medium hover:text-rcm-navy transition-colors">
+            ← Volver al Dashboard
+        </a>
+    </div>
+
+    <!-- Información del Usuario -->
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <h2 class="text-xl font-semibold text-rcm-navy mb-4">Información Personal</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Nombres -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nombres</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="first_name" value="{{ usuario.first_name }}" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('first_name')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Apellido Paterno -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="last_name" value="{{ usuario.last_name }}" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('last_name')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Apellido Materno -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Apellido Materno</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="second_last_name" value="{{ usuario.second_last_name|default:'' }}" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('second_last_name')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+
+            <!-- DNI -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">DNI</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="dni" value="{{ usuario.dni|default:'' }}" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('dni')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nombre de Usuario -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="username" value="{{ user_account.username }}" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('username')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <div class="flex items-center space-x-2">
+                    <input type="password" id="password" value="••••••••" 
+                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rcm-blue-medium focus:border-transparent" readonly>
+                    <button onclick="editarCampo('password')" 
+                            class="bg-rcm-blue-medium text-white px-3 py-2 rounded-lg hover:bg-rcm-navy transition-colors text-sm">
+                        ✏️ Editar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar cambios -->
+<div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+        <h3 class="text-lg font-semibold text-rcm-navy mb-4">Confirmar Cambio</h3>
+        <p class="text-gray-700 mb-4">¿Está seguro que desea guardar este cambio?</p>
+        <div class="flex justify-end space-x-3">
+            <button onclick="cancelarEdicion()" 
+                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                Cancelar
+            </button>
+            <button onclick="confirmarCambio()" 
+                    class="px-4 py-2 bg-rcm-blue-medium text-white rounded-lg hover:bg-rcm-navy transition-colors">
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notificaciones -->
+<div id="notification" class="fixed top-4 right-4 z-50 hidden">
+    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        <span id="notificationText"></span>
+    </div>
+</div>
+
+<script>
+let campoActual = null;
+let valorOriginal = null;
+
+function editarCampo(campo) {
+    const input = document.getElementById(campo);
+    const boton = input.nextElementSibling;
+    
+    if (input.readOnly) {
+        // Activar modo edición
+        campoActual = campo;
+        valorOriginal = input.value;
+        input.readOnly = false;
+        input.focus();
+        input.style.borderColor = '#577BC1';
+        input.style.backgroundColor = '#fff';
+        
+        // Cambiar texto del botón
+        boton.innerHTML = '💾 Guardar';
+        boton.onclick = () => guardarCambio(campo);
+        
+        // Si es contraseña, limpiar el campo
+        if (campo === 'password') {
+            input.value = '';
+            input.type = 'text';
+        }
+    }
+}
+
+function guardarCambio(campo) {
+    const input = document.getElementById(campo);
+    const nuevoValor = input.value.trim();
+    
+    // Validaciones básicas
+    if (!nuevoValor && campo !== 'second_last_name') {
+        mostrarNotificacion('Este campo no puede estar vacío', 'error');
+        return;
+    }
+    
+    if (campo === 'dni' && nuevoValor && (nuevoValor.length !== 8 || !/^\d+$/.test(nuevoValor))) {
+        mostrarNotificacion('El DNI debe tener exactamente 8 dígitos', 'error');
+        return;
+    }
+    
+    if (campo === 'username' && nuevoValor.length < 3) {
+        mostrarNotificacion('El nombre de usuario debe tener al menos 3 caracteres', 'error');
+        return;
+    }
+    
+    if (campo === 'password' && nuevoValor.length < 6) {
+        mostrarNotificacion('La contraseña debe tener al menos 6 caracteres', 'error');
+        return;
+    }
+    
+    // Mostrar modal de confirmación
+    document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function confirmarCambio() {
+    const input = document.getElementById(campoActual);
+    const nuevoValor = input.value.trim();
+    
+    // Realizar petición AJAX
+    fetch('{% url "system:actualizar_perfil" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            campo: campoActual,
+            valor: nuevoValor
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            finalizarEdicion(true);
+            mostrarNotificacion('Campo actualizado correctamente', 'success');
+        } else {
+            mostrarNotificacion(data.error || 'Error al actualizar el campo', 'error');
+            finalizarEdicion(false);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        mostrarNotificacion('Error de conexión', 'error');
+        finalizarEdicion(false);
+    });
+    
+    document.getElementById('confirmModal').classList.add('hidden');
+}
+
+function cancelarEdicion() {
+    finalizarEdicion(false);
+    document.getElementById('confirmModal').classList.add('hidden');
+}
+
+function finalizarEdicion(exitoso) {
+    const input = document.getElementById(campoActual);
+    const boton = input.nextElementSibling;
+    
+    if (!exitoso) {
+        // Restaurar valor original
+        input.value = valorOriginal;
+    }
+    
+    // Desactivar modo edición
+    input.readOnly = true;
+    input.style.borderColor = '#d1d5db';
+    input.style.backgroundColor = '#fff';
+    
+    // Si es contraseña, restaurar tipo y mostrar asteriscos
+    if (campoActual === 'password') {
+        input.type = 'password';
+        if (exitoso) {
+            input.value = '••••••••';
+        }
+    }
+    
+    // Restaurar botón
+    boton.innerHTML = '✏️ Editar';
+    boton.onclick = () => editarCampo(campoActual);
+    
+    campoActual = null;
+    valorOriginal = null;
+}
+
+function mostrarNotificacion(mensaje, tipo) {
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notificationText');
+    const notificationDiv = notification.firstElementChild;
+    
+    notificationText.textContent = mensaje;
+    
+    // Cambiar color según el tipo
+    if (tipo === 'error') {
+        notificationDiv.className = 'bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg';
+    } else {
+        notificationDiv.className = 'bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg';
+    }
+    
+    notification.classList.remove('hidden');
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+        notification.classList.add('hidden');
+    }, 3000);
+}
+
+// Manejar tecla Enter para guardar
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && campoActual) {
+        guardarCambio(campoActual);
+    }
+    if (e.key === 'Escape' && campoActual) {
+        cancelarEdicion();
+    }
+});
+</script>
+{% endblock %}

@@ -19,6 +19,8 @@ import requests
 from bs4 import BeautifulSoup
 import requests
 from bs4 import BeautifulSoup
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def get_mes_completo_espanol(numero_mes):
@@ -681,3 +683,80 @@ def edit_empresa(request, pk):
         'action': 'edit',
         'empresa': empresa
     })
+
+@login_required
+def perfil_usuario(request):
+    """
+    Página de perfil del usuario logueado donde puede ver y editar su información.
+    """
+    user_account = UserAccount.objects.select_related('usuario', 'usuario__empresa').get(pk=request.session['user_id'])
+    usuario = user_account.usuario
+    
+    return render(request, 'system/perfil_usuario.html', {
+        'user_account': user_account,
+        'usuario': usuario,
+        'user': user_account  # Para mantener compatibilidad con templates existentes
+    })
+
+@csrf_exempt
+@login_required
+def actualizar_perfil(request):
+    """
+    API endpoint para actualizar los datos del perfil del usuario.
+    """
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_account = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+            usuario = user_account.usuario
+            
+            campo = data.get('campo')
+            valor = data.get('valor', '').strip()
+            
+            # Validar que el campo sea editable
+            campos_editables = ['first_name', 'last_name', 'second_last_name', 'dni', 'username', 'password']
+            
+            if campo not in campos_editables:
+                return JsonResponse({'error': 'Campo no editable'}, status=400)
+            
+            # Validaciones específicas
+            if campo == 'dni':
+                if len(valor) != 8 or not valor.isdigit():
+                    return JsonResponse({'error': 'El DNI debe tener 8 dígitos'}, status=400)
+                # Verificar que el DNI no esté en uso por otro usuario
+                if Usuario.objects.filter(dni=valor).exclude(id=usuario.id).exists():
+                    return JsonResponse({'error': 'Este DNI ya está en uso'}, status=400)
+            
+            if campo == 'username':
+                if len(valor) < 3:
+                    return JsonResponse({'error': 'El nombre de usuario debe tener al menos 3 caracteres'}, status=400)
+                # Verificar que el username no esté en uso por otro usuario
+                if UserAccount.objects.filter(username=valor).exclude(id=user_account.id).exists():
+                    return JsonResponse({'error': 'Este nombre de usuario ya está en uso'}, status=400)
+            
+            if campo == 'password':
+                if len(valor) < 6:
+                    return JsonResponse({'error': 'La contraseña debe tener al menos 6 caracteres'}, status=400)
+            
+            if campo in ['first_name', 'last_name']:
+                if len(valor) < 2:
+                    return JsonResponse({'error': 'Este campo debe tener al menos 2 caracteres'}, status=400)
+            
+            # Actualizar el campo correspondiente
+            if campo in ['first_name', 'last_name', 'second_last_name', 'dni']:
+                setattr(usuario, campo, valor)
+                usuario.save()
+            elif campo in ['username', 'password']:
+                setattr(user_account, campo, valor)
+                user_account.save()
+            
+            return JsonResponse({'success': True, 'mensaje': 'Campo actualizado correctamente'})
+            
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Datos JSON inválidos'}, status=400)
+        except UserAccount.DoesNotExist:
+            return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': f'Error interno: {str(e)}'}, status=500)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

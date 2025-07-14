@@ -33,6 +33,9 @@ urlpatterns = [
     path('dashboard/certificados/add/', views.add_certificado,      name='add_certificado'),
     path('dashboard/certificados/edit/<int:pk>/', views.edit_certificado,   name='edit_certificado'),
 
+    path('dashboard/perfil/', views.perfil_usuario, name='perfil_usuario'),
+    path('api/actualizar-perfil/', views.actualizar_perfil, name='actualizar_perfil'),
+    
     path('api/buscar-dni/', views.buscar_dni_view, name='buscar_dni'),
     path('api/buscar-ruc/', views.buscar_ruc_view, name='buscar_ruc'),
 ]

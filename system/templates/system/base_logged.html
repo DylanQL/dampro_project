@@ -60,7 +60,12 @@
           </ul>
         </div>
         <div>
-          <ul class="flex items-center">
+          <ul class="flex items-center space-x-4">
+            <li>
+              <a href="{% url 'system:perfil_usuario' %}" class="text-rcm-white hover:text-rcm-gold transition-colors font-medium">
+                👤 Mi Perfil
+              </a>
+            </li>
             <li>
               <a href="{% url 'system:logout' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium hover:bg-rcm-white hover:text-rcm-navy transition-colors duration-300">
                 Cerrar Sesión
@@ -78,6 +83,7 @@
           <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
           <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
           <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
+          <li><a href="{% url 'system:perfil_usuario' %}" class="block py-2 hover:text-rcm-gold transition-colors">👤 Mi Perfil</a></li>
         </ul>
       </div>
     </div>
