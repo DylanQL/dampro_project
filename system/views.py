@@ -151,7 +151,7 @@ def home_logged(request):
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
     
     # Count the records for dashboard display
-    usuarios_count = Usuario.objects.count()
+    usuarios_count = Usuario.objects.filter(user_type="Empleado").count()
     empresas_count = Empresa.objects.count()
     cursos_count = Course.objects.count()
     certificados_count = Certificate.objects.count()
@@ -178,16 +178,16 @@ def gestion_usuarios(request):
     empresa_id = request.GET.get('empresa_id')
     
     if empresa_id and empresa_id.isdigit() and int(empresa_id) > 0:
-        # Filtrar por empresa específica
-        usuarios = Usuario.objects.filter(empresa_id=int(empresa_id))
+        # Filtrar por empresa específica y solo usuarios tipo Empleado
+        usuarios = Usuario.objects.filter(empresa_id=int(empresa_id), user_type="Empleado")
         empresa_seleccionada = int(empresa_id)
     elif empresa_id == 'sin_empresa':
-        # Filtrar usuarios sin empresa asignada
-        usuarios = Usuario.objects.filter(empresa__isnull=True)
+        # Filtrar usuarios sin empresa asignada y solo usuarios tipo Empleado
+        usuarios = Usuario.objects.filter(empresa__isnull=True, user_type="Empleado")
         empresa_seleccionada = 'sin_empresa'
     else:
-        # Mostrar todos los usuarios si no hay filtro o si es "todos"
-        usuarios = Usuario.objects.all()
+        # Mostrar todos los usuarios tipo Empleado si no hay filtro o si es "todos"
+        usuarios = Usuario.objects.filter(user_type="Empleado")
         empresa_seleccionada = 'todos'
     
     return render(request, 'system/gestion_usuarios.html', {
