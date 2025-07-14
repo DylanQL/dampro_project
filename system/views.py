@@ -516,28 +516,35 @@ def add_empresa(request):
     })
 
 def buscar_dni_view(request):
+    """
+    Vista para buscar información de DNI usando servicios externos
+    """
     if request.method == 'POST':
-        dni = request.POST.get('dni')
-        if not dni or len(dni) != 8:
-            return JsonResponse({'error': 'DNI inválido'}, status=400)
+        dni = request.POST.get('dni', '').strip()
+        
+        # Validar que el DNI tenga 8 dígitos
+        if not dni or len(dni) != 8 or not dni.isdigit():
+            return JsonResponse({'error': 'DNI inválido. Debe contener 8 dígitos numéricos.'}, status=400)
 
-        url = 'https://eldni.com/pe/buscar-datos-por-dni'
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-
+        # Intentar con el servicio principal
         try:
+            url = 'https://eldni.com/pe/buscar-datos-por-dni'
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            
             # Usar una sesión para mantener las cookies
             with requests.Session() as s:
                 # 1. Obtener la página inicial y el token CSRF
-                get_response = s.get(url, headers=headers)
+                get_response = s.get(url, headers=headers, timeout=5)
                 get_response.raise_for_status()
                 
                 soup = BeautifulSoup(get_response.text, 'html.parser')
                 token_input = soup.find('input', {'name': '_token'})
                 
                 if not token_input:
-                    return JsonResponse({'error': 'No se pudo encontrar el token de seguridad.'}, status=500)
+                    # Si no se puede obtener el token, probar con el segundo servicio
+                    raise ValueError('No se pudo encontrar el token de seguridad')
                 
                 token = token_input['value']
 
@@ -546,7 +553,7 @@ def buscar_dni_view(request):
                     'dni': dni,
                     '_token': token
                 }
-                post_response = s.post(url, data=payload, headers=headers)
+                post_response = s.post(url, data=payload, headers=headers, timeout=5)
                 post_response.raise_for_status()
 
                 # 3. Analizar la respuesta
@@ -561,17 +568,36 @@ def buscar_dni_view(request):
                         apellido_paterno = cols[2].text.strip()
                         apellido_materno = cols[3].text.strip()
                         
-                        return JsonResponse({
-                            'nombres': nombres,
-                            'apellido_paterno': apellido_paterno,
-                            'apellido_materno': apellido_materno
-                        })
-
-                return JsonResponse({'error': 'No se encontraron datos para el DNI ingresado.'}, status=404)
-
-        except requests.exceptions.RequestException as e:
-            return JsonResponse({'error': f'Error de conexión: {e}'}, status=500)
-
+                        # Si encontramos datos, retornarlos
+                        if nombres and apellido_paterno:
+                            return JsonResponse({
+                                'nombres': nombres,
+                                'apellido_paterno': apellido_paterno,
+                                'apellido_materno': apellido_materno
+                            })
+        except Exception as e:
+            # Intentar con un servicio de respaldo
+            try:
+                # Esta URL es un ejemplo, reemplazar con una API real si está disponible
+                url_backup = f'https://api.apis.net.pe/v1/dni?numero={dni}'
+                response_backup = requests.get(url_backup, headers=headers, timeout=5)
+                response_backup.raise_for_status()
+                
+                data_backup = response_backup.json()
+                if data_backup and 'nombres' in data_backup:
+                    return JsonResponse({
+                        'nombres': data_backup.get('nombres', ''),
+                        'apellido_paterno': data_backup.get('apellidoPaterno', ''),
+                        'apellido_materno': data_backup.get('apellidoMaterno', '')
+                    })
+            except:
+                pass
+        
+        # Si no se encontró en ningún servicio, mostrar mensaje informativo
+        return JsonResponse({
+            'error': f'No se encontraron datos para el DNI {dni}. Por favor ingrese los datos manualmente.'
+        }, status=404)
+    
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def buscar_ruc_view(request):
