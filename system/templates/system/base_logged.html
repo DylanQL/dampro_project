@@ -60,15 +60,21 @@
           </ul>
         </div>
         <div>
-          <ul class="flex items-center space-x-4">
+          <ul class="flex items-center space-x-3">
             <li>
-              <a href="{% url 'system:perfil_usuario' %}" class="text-rcm-white hover:text-rcm-gold transition-colors font-medium">
-                👤 Mi Perfil
+              <a href="{% url 'system:perfil_usuario' %}" class="flex items-center space-x-2 bg-rcm-blue-medium hover:bg-rcm-blue-light text-rcm-white px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Mi Perfil</span>
               </a>
             </li>
             <li>
-              <a href="{% url 'system:logout' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium hover:bg-rcm-white hover:text-rcm-navy transition-colors duration-300">
-                Cerrar Sesión
+              <a href="{% url 'system:logout' %}" class="flex items-center space-x-2 bg-rcm-gold hover:bg-yellow-400 text-rcm-navy px-5 py-2 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+                <span>Cerrar Sesión</span>
               </a>
             </li>
           </ul>
@@ -83,7 +89,14 @@
           <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
           <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
           <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
-          <li><a href="{% url 'system:perfil_usuario' %}" class="block py-2 hover:text-rcm-gold transition-colors">👤 Mi Perfil</a></li>
+          <li class="pt-2 border-t border-rcm-blue-medium">
+            <a href="{% url 'system:perfil_usuario' %}" class="flex items-center space-x-2 bg-rcm-blue-medium hover:bg-rcm-blue-light text-rcm-white px-3 py-2 rounded-lg font-medium transition-all duration-300 mb-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
