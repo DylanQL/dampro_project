@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Dashboard – Dampro SAC{% endblock %}</title>
+  <title>{% block title %}Dashboard – RCM Solutions SAC{% endblock %}</title>
   
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{% static 'system/images/favicon02.jpg' %}">
@@ -26,7 +26,58 @@
       }
     }
   </script>
+  
   <style>
+    .sidebar-transition {
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .hover-scale {
+      transition: transform 0.2s ease-in-out;
+    }
+    
+    .hover-scale:hover {
+      transform: scale(1.02);
+    }
+    
+    .menu-item-active {
+      background: linear-gradient(135deg, #ffcf00, #f59e0b);
+      color: #000957;
+    }
+    
+    .menu-item-hover:hover {
+      background: rgba(255, 207, 0, 0.1);
+      color: #ffcf00;
+    }
+    
+    /* Animación para las tarjetas */
+    .card-entrance {
+      animation: cardEntrance 0.6s ease-out forwards;
+    }
+    
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    
+    /* Imagen de fondo fija */
     .background-image {
       position: fixed;
       top: 0;
@@ -38,119 +89,234 @@
       filter: blur(5px);
     }
   </style>
+  {% block extra_head %}{% endblock %}
 </head>
-<body class="flex flex-col min-h-screen relative">
+<body class="bg-gray-50 font-sans">
   <!-- Imagen de fondo fija -->
   <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="background-image">
   
-  <!-- Navbar para usuarios logueados -->
-  <nav class="bg-rcm-navy text-rcm-white shadow-md relative z-10">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-3">
-        <div class="flex items-center">
-          <a href="{% url 'system:home_logged' %}" class="mr-6">
-            <img src="{% static 'system/images/logo03.jpg' %}" alt="Dampro SAC" class="h-8">
-          </a>
-          <ul class="hidden md:flex space-x-6">
-            <li><a href="{% url 'system:home_logged' %}" class="font-medium hover:text-rcm-gold transition-colors">Home</a></li>
-            <li><a href="{% url 'system:gestion_usuarios' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Clientes</a></li>
-            <li><a href="{% url 'system:gestion_empresas' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
-            <li><a href="{% url 'system:gestion_cursos' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
-            <li><a href="{% url 'system:gestion_certificados' %}" class="font-medium hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
-          </ul>
-        </div>
-        <div>
-          <ul class="flex items-center space-x-3">
-            <li>
-              <a href="{% url 'system:perfil_usuario' %}" class="flex items-center space-x-2 bg-rcm-blue-medium hover:bg-rcm-blue-light text-rcm-white px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                </svg>
-                <span>Mi Perfil</span>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'system:logout' %}" class="flex items-center space-x-2 bg-rcm-gold hover:bg-yellow-400 text-rcm-navy px-5 py-2 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                </svg>
-                <span>Cerrar Sesión</span>
-              </a>
-            </li>
-          </ul>
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-rcm-navy sidebar-transition">
+    <!-- Logo y Header del Sidebar -->
+    <div class="flex items-center justify-center h-20  from-rcm-navy to-rcm-blue-medium">
+      <div class="flex items-center space-x-3">
+        <div class="w-25 h-14 rounded-lg flex items-center justify-center p-1">
+          <img src="{% static 'system/images/logo03.jpg' %}" alt="RCM Solutions" class="w-full h-full rounded object-contain">
         </div>
       </div>
-      
-      <!-- Mobile menu (hidden by default) -->
-      <div class="md:hidden py-2">
-        <ul class="space-y-2">
-          <li><a href="{% url 'system:home_logged' %}" class="block py-2 hover:text-rcm-gold transition-colors">Home</a></li>
-          <li><a href="{% url 'system:gestion_usuarios' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Clientes</a></li>
-          <li><a href="{% url 'system:gestion_empresas' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Empresas</a></li>
-          <li><a href="{% url 'system:gestion_cursos' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Cursos</a></li>
-          <li><a href="{% url 'system:gestion_certificados' %}" class="block py-2 hover:text-rcm-gold transition-colors">Gestión Certificados</a></li>
-          <li class="pt-2 border-t border-rcm-blue-medium">
-            <a href="{% url 'system:perfil_usuario' %}" class="flex items-center space-x-2 bg-rcm-blue-medium hover:bg-rcm-blue-light text-rcm-white px-3 py-2 rounded-lg font-medium transition-all duration-300 mb-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+    </div>
+    
+    <!-- Información del Usuario -->
+    <div class="px-4 py-6 border-b border-rcm-blue-medium">
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 bg-rcm-gold rounded-full flex items-center justify-center">
+          <svg class="w-6 h-6 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-white font-medium text-sm">
+            {% if user.usuario.first_name %}
+              {{ user.usuario.first_name }} {{ user.usuario.last_name }}
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </h3>
+          <p class="text-rcm-blue-light text-xs">Administrador</p>
+          <div class="flex items-center mt-1">
+            <div class="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+            <span class="text-green-400 text-xs">En línea</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navegación -->
+    <nav class="mt-6 px-4">
+      <div class="space-y-2">
+        <!-- Dashboard -->
+        <a href="{% url 'system:home_logged' %}" 
+           class="flex items-center px-4 py-3 text-white rounded-lg {% if request.resolver_match.url_name == 'home_logged' %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+          </svg>
+          <span class="font-medium">Dashboard</span>
+        </a>
+        
+        <!-- Gestión de Clientes -->
+        <a href="{% url 'system:gestion_usuarios' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'usuarios' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+          </svg>
+          <span class="font-medium">Gestión de Clientes</span>
+        </a>
+        
+        <!-- Gestión de Empresas -->
+        <a href="{% url 'system:gestion_empresas' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'empresas' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-medium">Gestión de Empresas</span>
+        </a>
+        
+        <!-- Gestión de Cursos -->
+        <a href="{% url 'system:gestion_cursos' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'cursos' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+          </svg>
+          <span class="font-medium">Gestión de Cursos</span>
+        </a>
+        
+        <!-- Gestión de Certificados -->
+        <a href="{% url 'system:gestion_certificados' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'certificados' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-medium">Gestión de Certificados</span>
+        </a>
+        
+        <!-- Separador -->
+        <div class="border-t border-rcm-blue-medium my-4"></div>
+        
+        <!-- Mi Perfil -->
+        <a href="{% url 'system:perfil_usuario' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'perfil' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-medium">Mi Perfil</span>
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Botón de Cerrar Sesión -->
+    <div class="absolute bottom-6 left-4 right-4">
+      <a href="{% url 'system:logout' %}" class="flex items-center justify-center w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-medium">Cerrar Sesión</span>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Contenido Principal -->
+  <div class="ml-64 min-h-screen">
+    <!-- Header Superior -->
+    <header class="bg-rcm-navy shadow-lg border-b border-rcm-blue-medium sticky top-0 z-40">
+      <div class="px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <!-- Botón de menú móvil -->
+            <button id="mobile-menu-toggle" class="lg:hidden mr-4 p-2 text-rcm-gold hover:text-white">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
               </svg>
-              <span>Mi Perfil</span>
-            </a>
-          </li>
-        </ul>
+            </button>
+            
+            <div class="flex items-center space-x-4">
+              <div>
+                <h1 class="text-2xl font-bold text-rcm-gold">Panel de Administración</h1>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <!-- Fecha y Hora -->
+            <div class="text-right hidden md:block">
+              <p class="text-sm font-medium text-white" id="current-date"></p>
+              <p class="text-xs text-rcm-blue-light" id="current-time"></p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </nav>
+    </header>
+    
+    <!-- Contenido de la página -->
+    <main class="p-6 relative z-10">
+      {% block content %}
+      <!-- El contenido específico de cada página va aquí -->
+      {% endblock %}
+    </main>
+  </div>
+  
+  <!-- Overlay para móviles -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
 
-  <main class="flex-grow container mx-auto px-4 py-6 relative z-10">
-    {% block content %}
-    <!-- Dashboard content default -->
-    <div class="bg-gray-50 rounded-lg shadow-lg p-6 bg-opacity-95">
-      <h1 class="text-2xl font-bold text-rcm-navy mb-6">Dashboard</h1>
+  <script>
+    // Función para actualizar fecha y hora
+    function updateDateTime() {
+      const now = new Date();
+      const dateOptions = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      const timeOptions = { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+      };
       
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold mb-2">Clientes</h3>
-          <p class="text-3xl font-bold">{{ usuarios_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_usuarios' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Clientes →</a>
-        </div>
-        
-        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold mb-2">Empresas</h3>
-          <p class="text-3xl font-bold">{{ empresas_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_empresas' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Empresas →</a>
-        </div>
-        
-        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold mb-2">Cursos</h3>
-          <p class="text-3xl font-bold">{{ cursos_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_cursos' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Cursos →</a>
-        </div>
-        
-        <div class="bg-rcm-navy text-rcm-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold mb-2">Certificados</h3>
-          <p class="text-3xl font-bold">{{ certificados_count|default:"0" }}</p>
-          <a href="{% url 'system:gestion_certificados' %}" class="mt-4 inline-block text-sm text-rcm-gold hover:underline font-medium">Gestionar Certificados →</a>
-        </div>
-      </div>
+      const dateElement = document.getElementById('current-date');
+      const timeElement = document.getElementById('current-time');
       
-      <div class="mt-8">
-        <h2 class="text-xl font-bold text-rcm-navy mb-4">Actividad Reciente</h2>
-        <div class="bg-rcm-blue-light bg-opacity-10 p-4 rounded-lg">
-          <p class="text-rcm-navy">No hay actividad reciente para mostrar.</p>
-        </div>
-      </div>
-    </div>
-    {% endblock %}
-  </main>
-
-  <footer class="bg-rcm-navy text-rcm-white py-4 mt-auto relative z-10">
-    <div class="container mx-auto px-4">
-      <div class="text-center">
-        <p>&copy; {% now "Y" %} Dampro SAC. Todos los derechos reservados.</p>
-      </div>
-    </div>
-  </footer>
-
+      if (dateElement) {
+        dateElement.textContent = now.toLocaleDateString('es-ES', dateOptions);
+      }
+      if (timeElement) {
+        timeElement.textContent = now.toLocaleTimeString('es-ES', timeOptions);
+      }
+    }
+    
+    // Actualizar cada segundo
+    setInterval(updateDateTime, 1000);
+    updateDateTime(); // Llamar inmediatamente
+    
+    // Toggle sidebar en móviles
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+      });
+    }
+    
+    if (overlay) {
+      overlay.addEventListener('click', function() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      });
+    }
+    
+    // Responsive sidebar
+    function handleResize() {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('-translate-x-full');
+        document.querySelector('.ml-64').classList.remove('ml-64');
+        document.querySelector('.ml-64, main').parentElement.classList.add('ml-0');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Inicializar en móviles
+    if (window.innerWidth < 1024) {
+      sidebar.classList.add('-translate-x-full');
+    }
+  </script>
+  
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>
