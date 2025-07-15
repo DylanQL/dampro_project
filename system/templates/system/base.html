@@ -33,33 +33,220 @@
       object-fit: cover;
       filter: blur(5px);
     }
+    
+    /* Efectos del navbar */
+    .navbar-shadow {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .nav-link {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 207, 0, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .nav-link:hover::before {
+      left: 100%;
+    }
+    
+    .nav-link:hover {
+      transform: translateY(-2px);
+    }
+    
+    .login-btn {
+      background: linear-gradient(135deg, #ffcf00, #f59e0b);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Efectos del footer */
+    .footer-gradient {
+      background: linear-gradient(135deg, #000957, #344CB7);
+    }
+    
+    .social-link {
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      transform: translateY(-3px) scale(1.1);
+    }
+    
+    .contact-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .contact-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    /* Animaciones de aparición */
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Efectos de los botones flotantes */
+    .floating-btn {
+      animation: float 3s ease-in-out infinite;
+      transition: all 0.3s ease;
+    }
+    
+    .floating-btn:hover {
+      animation-play-state: paused;
+      transform: translateY(-5px) scale(1.1);
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Efecto de scroll del navbar */
+    .navbar-scroll {
+      backdrop-filter: blur(20px);
+      background: rgba(0, 9, 87, 0.95);
+    }
   </style>
-  <!-- Añadido el favicon -->
+  
+  <!-- Favicon -->
   <link rel="icon" href="{% static 'system/images/favicon02.jpg' %}" type="image/jpg">
 </head>
+<body class="bg-rcm-white flex flex-col min-h-screen">
   <!-- Imagen de fondo fija -->
   <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="background-image">
-<body class="bg-rcm-white flex flex-col min-h-screen">
 
-  <!-- NAVBAR -->
-  <nav class="bg-rcm-navy text-rcm-white">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="{% url 'system:home' %}" class="flex items-center">
-        <img src="{% static 'system/images/logo03.jpg' %}" alt="RCM Solutions SAC" class="h-10">
-      </a>
-        <div class="hidden md:flex space-x-4">
-          <a href="{% url 'system:home' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Inicio</a>
-          <a href="{% url 'system:quienes_somos' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Quienes Somos</a>
-          <a href="{% url 'system:contactanos' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Contáctanos</a>
-          <a href="{% url 'system:servicios' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Servicios</a>
-          <a href="{% url 'system:cursos' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Cursos</a>
-          <a href="{% url 'system:certificados' %}" class="font-medium px-3 py-2 rounded-md hover:bg-rcm-gold hover:text-rcm-navy transition">Certificados</a>
+  <!-- NAVBAR MEJORADO -->
+  <nav id="navbar" class="bg-rcm-navy text-rcm-white navbar-shadow sticky top-0 z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <!-- Logo -->
+        <a href="{% url 'system:home' %}" class="flex items-center group">
+          <img src="{% static 'system/images/logo03.jpg' %}" alt="RCM Solutions SAC" class="h-10 group-hover:scale-105 transition-transform duration-300">
+        </a>
+        
+        <!-- Menú de navegación -->
+        <div class="hidden lg:flex space-x-2">
+          <a href="{% url 'system:home' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+            </svg>
+            Inicio
+          </a>
+          <a href="{% url 'system:quienes_somos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+            Quienes Somos
+          </a>
+          <a href="{% url 'system:contactanos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+            </svg>
+            Contáctanos
+          </a>
+          <a href="{% url 'system:servicios' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Servicios
+          </a>
+          <a href="{% url 'system:cursos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+            </svg>
+            Cursos
+          </a>
+          <a href="{% url 'system:certificados' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/>
+            </svg>
+            Certificados
+          </a>
         </div>
-      <a href="{% url 'system:login' %}" class="bg-rcm-gold rounded-full p-2 flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rcm-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      </a>
+        
+        <!-- Botón de login -->
+        <a href="{% url 'system:login' %}" class="login-btn rounded-full p-3 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rcm-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </a>
+        
+        <!-- Botón de menú móvil -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-md hover:bg-rcm-blue-medium transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Menú móvil -->
+      <div id="mobile-menu" class="lg:hidden hidden mt-4 pb-4 border-t border-rcm-blue-medium">
+        <div class="flex flex-col space-y-2 pt-4">
+          <a href="{% url 'system:home' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+            </svg>
+            Inicio
+          </a>
+          <a href="{% url 'system:quienes_somos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+            Quienes Somos
+          </a>
+          <a href="{% url 'system:contactanos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+            </svg>
+            Contáctanos
+          </a>
+          <a href="{% url 'system:servicios' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Servicios
+          </a>
+          <a href="{% url 'system:cursos' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+            </svg>
+            Cursos
+          </a>
+          <a href="{% url 'system:certificados' %}" class="nav-link font-medium px-4 py-2 rounded-lg hover:bg-rcm-gold hover:text-rcm-navy flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/>
+            </svg>
+            Certificados
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -84,7 +271,7 @@
       <div class="w-full md:w-1/2 p-4">
         <h3 class="text-xl font-bold text-rcm-black mb-4">Ofrecemos servicios de Auditorias, Monitoreos y Sistema de gestión de seguridad y salud en el trabajo a diversas empresas y capacitaciones.</h3>
         <div class="mt-4">
-          <a href="{% url 'system:servicios' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium">Certificate</a>
+          <a href="{% url 'system:servicios' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium">Servicios</a>
         </div>
       </div>
       <div class="w-full md:w-1/2">
@@ -97,7 +284,7 @@
       <div class="container mx-auto px-4">
         <h3 class="text-xl font-bold mb-4">Contamos con profesionales para auditorias en el MINTRA</h3>
         <div class="mt-4">
-          <a href="{% url 'system:contratos' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium">Ver nuestros contratos</a>
+          <a href="{% url 'system:contactanos' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium">Contáctanos</a>
         </div>
       </div>
     </section>
@@ -123,40 +310,193 @@
     {% endblock %}
   </main>
 
-  <!-- FOOTER -->
-  <footer class="bg-rcm-navy text-rcm-white py-6">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row justify-between">
-        <div class="mb-4 md:mb-0">
-          <h4 class="font-bold mb-2">Contáctanos</h4>
-          <p>Número:<br>Roberto Contreras - 958 729 308</p>
-          <p>Correo electrónico:<br>rcontreras@damprosac.com</p>
+  <!-- FOOTER SIMPLIFICADO -->
+  <footer class="bg-rcm-navy text-rcm-white py-8 relative overflow-hidden">
+    <!-- Decoración de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-rcm-gold to-transparent"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        
+        <!-- Información de la empresa -->
+        <div class="fade-in text-center md:text-left mb-6 md:mb-0">
+          <div class="flex items-center justify-center md:justify-start mb-4">
+            <img src="{% static 'system/images/logo03.jpg' %}" alt="RCM Solutions" class="h-12 mr-3">
+            <div>
+              <h3 class="text-xl font-bold text-rcm-gold">RCM Solutions SAC</h3>
+              <p class="text-sm text-rcm-blue-light">Consultoría Especializada SSOMA</p>
+            </div>
+          </div>
+          <p class="text-sm text-gray-300 max-w-md">
+            Especialistas en seguridad, salud ocupacional y capacitación profesional con certificación.
+          </p>
         </div>
-        <div>
-          <h4 class="font-bold mb-2">Nuestras redes</h4>
-          <ul>
-            <li><a href="#" class="hover:text-rcm-gold">Facebook</a></li>
-            <li><a href="#" class="hover:text-rcm-gold">LinkedIn</a></li>
-            <li><a href="#" class="hover:text-rcm-gold">Instagram</a></li>
-          </ul>
+        
+        <!-- Redes sociales -->
+        <div class="fade-in">
+          <h4 class="text-lg font-bold text-rcm-gold mb-4 text-center">Síguenos</h4>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-link bg-blue-600 hover:bg-blue-700 p-3 rounded-full transition-all duration-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link bg-blue-800 hover:bg-blue-900 p-3 rounded-full transition-all duration-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link bg-blue-700 hover:bg-blue-800 p-3 rounded-full transition-all duration-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" class="social-link bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 p-3 rounded-full transition-all duration-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+          
+          <!-- Información de contacto simple -->
+          <div class="mt-4 text-center">
+            <p class="text-sm text-gray-300 mb-1">
+              <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              +51 958 729 308
+            </p>
+            <p class="text-sm text-gray-300">
+              <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+              rcontreras@rcmsolutionssac.com.pe
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Separador y copyright -->
+      <div class="border-t border-rcm-blue-light mt-6 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center text-center">
+          <p class="text-sm text-gray-300 mb-2 md:mb-0">
+            &copy; {% now "Y" %} RCM Solutions SAC. Todos los derechos reservados.
+          </p>
+          <div class="flex items-center space-x-4 text-xs text-gray-400">
+            <a href="{% url 'system:certificados' %}" class="hover:text-rcm-gold transition-colors">Verificar Certificado</a>
+            <span>|</span>
+            <span>Lima, Perú</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="fixed bottom-6 right-6">
-      <a href="https://wa.me/51958729308" class="bg-green-500 text-rcm-white p-3 rounded-full flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-        </svg>
-      </a>
-    </div>
-    <div class="fixed bottom-6 right-20">
-      <a href="#" class="bg-rcm-gold text-rcm-navy p-3 rounded-full flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
-        </svg>
-      </a>
-    </div>
   </footer>
+  
+  <!-- Botones flotantes mejorados -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/51958729308" class="floating-btn bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 group">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+      </svg>
+      <div class="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+        Contáctanos por WhatsApp
+      </div>
+    </a>
+    
+    <!-- Ir arriba -->
+    <button id="scrollToTop" class="floating-btn bg-rcm-gold hover:bg-yellow-400 text-rcm-navy p-4 rounded-full shadow-lg transition-all duration-300 group hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+      <div class="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+        Ir arriba
+      </div>
+    </button>
+
+  <!-- JavaScript mejorado -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Toggle del menú móvil
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+      
+      // Efecto de scroll del navbar
+      const navbar = document.getElementById('navbar');
+      let lastScrollY = window.scrollY;
+      
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+          navbar.classList.add('navbar-scroll');
+        } else {
+          navbar.classList.remove('navbar-scroll');
+        }
+        lastScrollY = window.scrollY;
+      });
+      
+      // Botón de ir arriba
+      const scrollToTopBtn = document.getElementById('scrollToTop');
+      
+      if (scrollToTopBtn) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 500) {
+            scrollToTopBtn.classList.remove('hidden');
+          } else {
+            scrollToTopBtn.classList.add('hidden');
+          }
+        });
+        
+        scrollToTopBtn.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+      
+      // Animación de entrada para elementos
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+          }
+        });
+      }, observerOptions);
+      
+      // Observar elementos con animación
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
+      
+      // Smooth scroll para enlaces internos
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
