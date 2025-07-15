@@ -1,0 +1,4 @@
+# Media Files Directory
+
+This directory is used for user-uploaded files.
+Django will store media files in this directory.
