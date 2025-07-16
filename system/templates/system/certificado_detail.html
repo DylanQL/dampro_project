@@ -1,63 +1,79 @@
 {% extends 'system/base.html' %}
 
-{% block title %}Detalle del Certificado – Dampro SAC{% endblock %}
+{% block title %}Detalle del Certificado – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<section id="certificado-detail" class="bg-white py-12">
+<section id="certificado-detail" class="py-12 min-h-screen">
   <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold text-center text-dampro-dark mb-8">Resultado de la Búsqueda</h1>
+    <h1 class="text-3xl font-bold text-center text-rcm-navy mb-8">Resultado de la Búsqueda</h1>
     
     <div class="max-w-2xl mx-auto">
       {% if error %}
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 rounded-lg mb-6" role="alert">
-          <p class="mb-4">{{ error }}</p>
-          <a href="{% url 'system:certificados' %}" class="inline-block bg-dampro-orange text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Volver a Buscar</a>
+        <div class="bg-white/90 backdrop-blur-sm border border-rcm-blue-light rounded-lg shadow-md p-8 mb-6">
+          <div class="border-l-4 border-red-500 bg-red-50 p-6 rounded-r-lg">
+            <div class="flex items-start">
+              <div class="w-6 h-6 text-red-500 mr-3 mt-1">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-red-700 mb-2">Certificado no encontrado</h3>
+                <p class="text-red-600 mb-4">{{ error }}</p>
+                <a href="{% url 'system:certificados' %}" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">
+                  Volver a Buscar
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       {% endif %}
       
       {% if certificado %}
-        <div class="bg-white p-8 rounded-lg shadow-md border border-gray-200">
-          <h2 class="text-2xl font-bold text-dampro-dark mb-6 pb-2 border-b border-gray-200">Certificado Encontrado</h2>
+        <div class="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-md border border-rcm-blue-light">
+          <h2 class="text-2xl font-bold text-rcm-navy mb-6 pb-2 border-b border-rcm-blue-light">Certificado Encontrado</h2>
           
           <div class="space-y-4 mb-8">
-            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Código de Certificado:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.cert_code }}</span>
+            <div class="flex flex-col sm:flex-row border-b border-rcm-blue-light/30 pb-3">
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Código de Certificado:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5 font-medium">{{ certificado.cert_code }}</span>
             </div>
             
-            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Nombre del Cliente:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">
+            <div class="flex flex-col sm:flex-row border-b border-rcm-blue-light/30 pb-3">
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Nombre del Cliente:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5">
                 {{ certificado.usuario.first_name }} 
                 {{ certificado.usuario.last_name }}
                 {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
               </span>
             </div>
-              {% if certificado.empresa %}
-            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Empresa:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.empresa.nombre }}</span>
+            
+            {% if certificado.empresa %}
+            <div class="flex flex-col sm:flex-row border-b border-rcm-blue-light/30 pb-3">
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Empresa:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.empresa.nombre }}</span>
             </div>
             {% endif %}
             
-            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Curso:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.course.name }}</span>
+            <div class="flex flex-col sm:flex-row border-b border-rcm-blue-light/30 pb-3">
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Curso:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.course.name }}</span>
             </div>
             
-            <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Horas Cronológicas:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.chronological_hours }}</span>
+            <div class="flex flex-col sm:flex-row border-b border-rcm-blue-light/30 pb-3">
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Horas Cronológicas:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.chronological_hours }}</span>
             </div>
             
             <div class="flex flex-col sm:flex-row pb-3">
-              <span class="font-bold text-dampro-dark w-full sm:w-2/5">Fecha de Emisión:</span> 
-              <span class="text-gray-700 w-full sm:w-3/5">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>
+              <span class="font-bold text-rcm-navy w-full sm:w-2/5">Fecha de Emisión:</span> 
+              <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>
             </div>
           </div>
           
-          <div class="flex justify-between items-center mt-8">
-            <a href="{% url 'system:certificados' %}" class="inline-block bg-dampro-dark text-white py-2 px-6 rounded-md font-medium hover:bg-opacity-90 transition-colors">Volver a Buscar</a>
+          <div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
+            <a href="{% url 'system:certificados' %}" class="inline-block bg-rcm-navy text-white py-2 px-6 rounded-md font-medium hover:bg-rcm-blue-medium transition-colors">Volver a Buscar</a>
+            <a href="{% url 'system:certificado_pdf' certificado.cert_code %}" target="_blank" class="inline-block bg-rcm-gold text-rcm-navy py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">Descargar Certificado</a>
           </div>
         </div>
       {% endif %}
