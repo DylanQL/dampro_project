@@ -1,189 +1,215 @@
 {% extends 'system/base.html' %}
+{% load static %}
 
 {% block title %}Quiénes Somos – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-rcm-navy via-rcm-blue-medium to-rcm-blue-light text-white py-20 overflow-hidden">
-  <!-- Decoración de fondo -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute top-0 right-0 w-96 h-96 bg-rcm-gold rounded-full transform translate-x-32 -translate-y-32"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-rcm-gold rounded-full transform -translate-x-16 translate-y-16"></div>
-  </div>
-  
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="text-center max-w-4xl mx-auto">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-rcm-gold rounded-full mb-6">
-        <svg class="w-10 h-10 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-        </svg>
-      </div>
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-rcm-gold bg-clip-text text-transparent">
-        QUIÉNES SOMOS
-      </h1>
+<!-- Imagen de fondo fija con blur -->
+<div class="fixed inset-0 w-full h-full z-0">
+  <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="w-full h-full object-cover filter blur-sm">
+  <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+</div>
+
+<!-- Contenido con z-index superior -->
+<div class="relative z-10">
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-rcm-navy/90 via-rcm-blue-medium/90 to-rcm-blue-light/90 text-white py-20 overflow-hidden">
+    <!-- Decoración de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-rcm-gold rounded-full transform translate-x-32 -translate-y-32"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-rcm-gold rounded-full transform -translate-x-16 translate-y-16"></div>
     </div>
-  </div>
-</section>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-rcm-gold rounded-full mb-6">
+          <svg class="w-10 h-10 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-rcm-gold bg-clip-text text-transparent">
+          QUIÉNES SOMOS
+        </h1>
+      </div>
+    </div>
+  </section>
 
-
-<!-- Misión y Visión -->
-<section class="py-16 bg-white">
-  <div class="container mx-auto px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-8">
-        
-        <!-- Misión -->
-        <div class="group hover:scale-105 transition-transform duration-300">
-          <div class="bg-gradient-to-br from-rcm-navy to-rcm-blue-medium text-white rounded-2xl p-8 h-full relative overflow-hidden">
-            <!-- Decoración -->
-            <div class="absolute top-0 right-0 w-24 h-24 bg-rcm-gold opacity-20 rounded-full transform translate-x-8 -translate-y-8"></div>
-            
-            <div class="relative z-10">
-              <div class="flex items-center mb-6">
-                <div class="w-12 h-12 bg-rcm-gold rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-6 h-6 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-bold">MISIÓN</h2>
-              </div>
+  <!-- Misión y Visión -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-8">
+          
+          <!-- Misión -->
+          <div class="group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-rcm-navy/95 to-rcm-blue-medium/95 backdrop-blur-sm text-white rounded-2xl p-8 h-full relative overflow-hidden shadow-2xl border border-white/20">
+              <!-- Decoración -->
+              <div class="absolute top-0 right-0 w-24 h-24 bg-rcm-gold opacity-20 rounded-full transform translate-x-8 -translate-y-8"></div>
               
-              <div class="space-y-4 text-gray-100">
-                <p class="leading-relaxed">
-                  En nuestra organización, nos dedicamos fervientemente a <span class="text-rcm-gold font-semibold">generar confianza</span> 
-                  tanto interna como externamente. Nuestra búsqueda constante de la excelencia en la prestación de 
-                  servicios refleja nuestro compromiso inquebrantable con el crecimiento y desarrollo de 
-                  aquellos que depositan su confianza en nosotros.
-                </p>
-                <p class="leading-relaxed">
-                  Nos esforzamos por ser un <span class="text-rcm-gold font-semibold">referente en la generación de confianza</span>, 
-                  trabajando de manera ética y transparente en todas nuestras interacciones.
-                </p>
+              <div class="relative z-10">
+                <div class="flex items-center mb-6">
+                  <div class="w-12 h-12 bg-rcm-gold rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <h2 class="text-2xl md:text-3xl font-bold">MISIÓN</h2>
+                </div>
+                
+                <div class="space-y-4 text-gray-100">
+                  <p class="leading-relaxed">
+                    En nuestra organización, nos dedicamos fervientemente a <span class="text-rcm-gold font-semibold">generar confianza</span> 
+                    tanto interna como externamente. Nuestra búsqueda constante de la excelencia en la prestación de 
+                    servicios refleja nuestro compromiso inquebrantable con el crecimiento y desarrollo de 
+                    aquellos que depositan su confianza en nosotros.
+                  </p>
+                  <p class="leading-relaxed">
+                    Nos esforzamos por ser un <span class="text-rcm-gold font-semibold">referente en la generación de confianza</span>, 
+                    trabajando de manera ética y transparente en todas nuestras interacciones.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visión -->
+          <div class="group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-rcm-gold/95 to-yellow-400/95 backdrop-blur-sm text-rcm-navy rounded-2xl p-8 h-full relative overflow-hidden shadow-2xl border border-white/20">
+              <!-- Decoración -->
+              <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-20 rounded-full transform -translate-x-8 translate-y-8"></div>
+              
+              <div class="relative z-10">
+                <div class="flex items-center mb-6">
+                  <div class="w-12 h-12 bg-rcm-navy rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-rcm-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                  </div>
+                  <h2 class="text-2xl md:text-3xl font-bold">VISIÓN</h2>
+                </div>
+                
+                <div class="space-y-4 text-rcm-navy">
+                  <p class="leading-relaxed font-medium">
+                    Aspiramos a ser reconocidos como una <span class="font-bold">consultora internacional líder</span> en nuestro rubro. 
+                    Nos destacamos al proporcionar <span class="font-bold">soluciones innovadoras</span> a nuestros socios estratégicos, 
+                    contribuyendo así al éxito sostenible de sus operaciones y al crecimiento continuo de 
+                    sus metas y objetivos.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Visión -->
-        <div class="group hover:scale-105 transition-transform duration-300">
-          <div class="bg-gradient-to-br from-rcm-gold to-yellow-400 text-rcm-navy rounded-2xl p-8 h-full relative overflow-hidden">
-            <!-- Decoración -->
-            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-20 rounded-full transform -translate-x-8 translate-y-8"></div>
-            
-            <div class="relative z-10">
-              <div class="flex items-center mb-6">
-                <div class="w-12 h-12 bg-rcm-navy rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-6 h-6 text-rcm-gold" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-bold">VISIÓN</h2>
-              </div>
-              
-              <div class="space-y-4 text-rcm-navy">
-                <p class="leading-relaxed font-medium">
-                  Aspiramos a ser reconocidos como una <span class="font-bold">consultora internacional líder</span> en nuestro rubro. 
-                  Nos destacamos al proporcionar <span class="font-bold">soluciones innovadoras</span> a nuestros socios estratégicos, 
-                  contribuyendo así al éxito sostenible de sus operaciones y al crecimiento continuo de 
-                  sus metas y objetivos.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Valores y Compromiso -->
-<section class="py-16 bg-gray-50">
-  <div class="container mx-auto px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-rcm-navy mb-4">Nuestros Valores</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Los principios que guían nuestro trabajo y definen nuestra cultura empresarial
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Excelencia -->
-        <div class="text-center group hover:scale-105 transition-transform duration-300">
-          <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="w-16 h-16 bg-gradient-to-br from-rcm-navy to-rcm-blue-medium rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-rcm-navy mb-4">Excelencia</h3>
-            <p class="text-gray-600 leading-relaxed">
-              Buscamos la perfección en cada proyecto, superando las expectativas de nuestros clientes con soluciones de alta calidad.
+  <!-- Valores y Compromiso -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20">
+            <h2 class="text-3xl md:text-4xl font-bold text-rcm-navy mb-4">Nuestros Valores</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+              Los principios que guían nuestro trabajo y definen nuestra cultura empresarial
             </p>
           </div>
         </div>
         
-        <!-- Confianza -->
-        <div class="text-center group hover:scale-105 transition-transform duration-300">
-          <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="w-16 h-16 bg-gradient-to-br from-rcm-gold to-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg class="w-8 h-8 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Excelencia -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-white/20">
+              <div class="w-16 h-16 bg-gradient-to-br from-rcm-navy to-rcm-blue-medium rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-rcm-navy mb-4">Excelencia</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Buscamos la perfección en cada proyecto, superando las expectativas de nuestros clientes con soluciones de alta calidad.
+              </p>
             </div>
-            <h3 class="text-xl font-bold text-rcm-navy mb-4">Confianza</h3>
-            <p class="text-gray-600 leading-relaxed">
-              Construimos relaciones sólidas basadas en la transparencia, honestidad e integridad en todas nuestras interacciones.
-            </p>
+          </div>
+          
+          <!-- Confianza -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-white/20">
+              <div class="w-16 h-16 bg-gradient-to-br from-rcm-gold to-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-rcm-navy mb-4">Confianza</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Construimos relaciones sólidas basadas en la transparencia, honestidad e integridad en todas nuestras interacciones.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Innovación -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-white/20">
+              <div class="w-16 h-16 bg-gradient-to-br from-rcm-blue-medium to-rcm-blue-light rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-rcm-navy mb-4">Innovación</h3>
+              <p class="text-gray-600 leading-relaxed">
+                Adoptamos tecnologías avanzadas y metodologías innovadoras para ofrecer soluciones efectivas y modernas.
+              </p>
+            </div>
           </div>
         </div>
-        
-        <!-- Innovación -->
-        <div class="text-center group hover:scale-105 transition-transform duration-300">
-          <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="w-16 h-16 bg-gradient-to-br from-rcm-blue-medium to-rcm-blue-light rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+      </div>
+    </div>
+  </section>
+
+  <!-- Llamada a la Acción -->
+  <section class="py-16">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-gradient-to-r from-rcm-navy/95 to-rcm-blue-medium/95 backdrop-blur-sm text-white rounded-2xl p-8 shadow-2xl border border-white/20">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            ¿Listo para transformar tu empresa?
+          </h2>
+          <p class="text-xl mb-8 text-rcm-blue-light">
+            Únete a más de 100 empresas que han confiado en nosotros para mejorar sus estándares de seguridad y calidad
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'system:contactanos' %}" class="bg-rcm-gold text-rcm-navy py-3 px-8 rounded-lg font-bold hover:bg-yellow-400 transition-colors inline-flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+              Contáctanos Ahora
+            </a>
+            <a href="{% url 'system:servicios' %}" class="border-2 border-white text-white py-3 px-8 rounded-lg font-bold hover:bg-white hover:text-rcm-navy transition-colors inline-flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-            </div>
-            <h3 class="text-xl font-bold text-rcm-navy mb-4">Innovación</h3>
-            <p class="text-gray-600 leading-relaxed">
-              Adoptamos tecnologías avanzadas y metodologías innovadoras para ofrecer soluciones efectivas y modernas.
-            </p>
+              Ver Nuestros Servicios
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- Llamada a la Acción -->
-<section class="py-16 bg-gradient-to-r from-rcm-navy to-rcm-blue-medium text-white">
-  <div class="container mx-auto px-4 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">
-        ¿Listo para transformar tu empresa?
-      </h2>
-      <p class="text-xl mb-8 text-rcm-blue-light">
-        Únete a más de 100 empresas que han confiado en nosotros para mejorar sus estándares de seguridad y calidad
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="{% url 'system:contactanos' %}" class="bg-rcm-gold text-rcm-navy py-3 px-8 rounded-lg font-bold hover:bg-yellow-400 transition-colors inline-flex items-center">
-          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-          </svg>
-          Contáctanos Ahora
-        </a>
-        <a href="{% url 'system:servicios' %}" class="border-2 border-white text-white py-3 px-8 rounded-lg font-bold hover:bg-white hover:text-rcm-navy transition-colors inline-flex items-center">
-          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Ver Nuestros Servicios
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
+<style>
+/* Efectos adicionales para el background blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Asegurar que el contenido se vea bien sobre el fondo */
+.z-10 {
+  position: relative;
+  z-index: 10;
+}
+</style>
 {% endblock %}

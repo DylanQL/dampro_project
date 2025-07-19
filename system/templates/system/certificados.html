@@ -1,76 +1,261 @@
 {% extends 'system/base.html' %}
+{% load static %}
 
-{% block title %}Certificados – Dampro SAC{% endblock %}
+{% block title %}Verificar Certificados – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<section id="certificados" class="py-12">
-  <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold text-center text-rcm-navy mb-8">
-      <span class="bg-gradient-to-r from-rcm-blue-medium to-rcm-navy bg-clip-text text-transparent">Verificar Certificado</span>
-    </h1>
-    
-    <div class="max-w-2xl mx-auto bg-rcm-white p-8 rounded-lg shadow-md border border-rcm-blue-light">
-      <form method="get" action="" class="mb-8">
-        <div class="mb-4">
-          <label for="id_cert_code" class="block text-rcm-navy font-medium mb-2">Código de certificado:</label>
-          <input
-            type="text"
-            id="id_cert_code"
-            name="cert_code"
-            placeholder="Ingrese el código de su certificado"
-            value="{{ request.GET.cert_code }}"
-            required
-            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
-          />
-        </div>
-        <button type="submit" class="bg-rcm-gold text-rcm-black py-2 px-6 rounded-md font-medium hover:bg-yellow-400 transition-colors">
-          Buscar
-        </button>
-      </form>
+<!-- Imagen de fondo fija con blur -->
+<div class="fixed inset-0 w-full h-full z-0">
+  <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="w-full h-full object-cover filter blur-sm">
+  <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+</div>
+
+<!-- Contenido con z-index superior -->
+<div class="relative z-10">
+  <section id="certificados" class="py-16 min-h-screen">
+    <div class="container mx-auto px-4">
       
-      {% if error %}
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-          <p>{{ error }}</p>
+      <!-- Formulario de búsqueda -->
+      <div class="max-w-2xl mx-auto">
+        <div class="bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-white/20">
+          <form method="get" action="" class="space-y-6">
+            <div class="space-y-4">
+              <label for="id_cert_code" class="block text-rcm-navy font-semibold text-lg">Verificar código de certificado:</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  id="id_cert_code"
+                  name="cert_code"
+                  placeholder="Ej: CERT-ABC123XYZ"
+                  value="{{ request.GET.cert_code }}"
+                  required
+                  class="w-full pl-10 pr-4 py-4 border-2 border-rcm-blue-light rounded-xl focus:outline-none focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black text-lg placeholder-gray-400 bg-white/90 backdrop-blur-sm"
+                />
+              </div>
+              <p class="text-sm text-gray-500 flex items-center">
+                <svg class="w-4 h-4 mr-1 text-rcm-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+                El código se encuentra en tu certificado emitido por RCM Solutions SAC
+              </p>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-rcm-gold to-yellow-400 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-yellow-400 hover:to-rcm-gold transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl">
+              <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+              </svg>
+              Verificar Certificado
+            </button>
+          </form>
         </div>
-      {% endif %}
-      
-      {% if certificado %}
-        <div class="bg-rcm-white p-6 rounded-lg shadow-md border border-rcm-blue-light">
-          <h2 class="text-2xl font-bold text-rcm-blue-medium mb-4">Certificado Encontrado</h2>
-          <div class="space-y-3">
-            <p class="border-b border-rcm-blue-light pb-2">
-              <span class="font-bold text-rcm-navy">Código de Certificado:</span> 
-              <span class="text-rcm-black">{{ certificado.cert_code }}</span>
-            </p>
-            <p class="border-b border-rcm-blue-light pb-2">
-              <span class="font-bold text-rcm-navy">Nombre del Cliente:</span> 
-              <span class="text-rcm-black">
-                {{ certificado.usuario.first_name }} 
-                {{ certificado.usuario.last_name }}
-                {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
-              </span>
-            </p>
-            <p class="border-b border-rcm-blue-light pb-2">
-              <span class="font-bold text-rcm-navy">Curso:</span> 
-              <span class="text-rcm-black">{{ certificado.course.name }}</span>
-            </p>
-            <p class="border-b border-rcm-blue-light pb-2">
-              <span class="font-bold text-rcm-navy">Horas Cronológicas:</span> 
-              <span class="text-rcm-black">{{ certificado.chronological_hours }}</span>
-            </p>
-            <p>
-              <span class="font-bold text-rcm-navy">Fecha de Emisión:</span> 
-              <span class="text-rcm-black">{{ certificado.creation_date|date:"d/m/Y" }}</span>
-            </p>
+        
+        <!-- Mensaje de error -->
+        {% if error %}
+          <div class="mt-6">
+            <div class="bg-red-50/95 backdrop-blur-sm border-l-4 border-red-500 text-red-700 p-6 rounded-xl shadow-lg border border-red-200/50" role="alert">
+              <div class="flex items-start">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-lg font-semibold">Certificado no encontrado</h3>
+                  <p class="mt-2">{{ error }}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="mt-6 text-center">
-            <a href="#" class="inline-block bg-rcm-blue-medium text-rcm-white py-2 px-6 rounded-md font-medium hover:bg-rcm-navy transition-colors">
-              Descargar Certificado
-            </a>
+        {% endif %}
+        
+        <!-- Resultado del certificado -->
+        {% if certificado %}
+          <div class="mt-8">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+              <!-- Header del resultado -->
+              <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <svg class="h-12 w-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-2xl font-bold">✅ Certificado Válido</h2>
+                    <p class="text-green-100">Este certificado es auténtico y está verificado</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Contenido del certificado -->
+              <div class="p-8">
+                <div class="grid gap-6">
+                  <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Código de Certificado:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5 font-mono bg-gray-50 px-3 py-1 rounded">{{ certificado.cert_code }}</span>
+                  </div>
+                  
+                  <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Nombre del Cliente:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5 font-semibold">
+                      {{ certificado.usuario.first_name }} 
+                      {{ certificado.usuario.last_name }}
+                      {% if certificado.usuario.second_last_name %}{{ certificado.usuario.second_last_name }}{% endif %}
+                    </span>
+                  </div>
+                  
+                  {% if certificado.empresa %}
+                  <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Empresa:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.empresa.nombre }}</span>
+                  </div>
+                  {% endif %}
+                  
+                  <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Curso:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5 font-semibold">{{ certificado.course.name }}</span>
+                  </div>
+                  
+                  <div class="flex flex-col sm:flex-row border-b border-gray-200 pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Horas Cronológicas:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5">
+                      <span class="bg-rcm-blue-light text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        {{ certificado.chronological_hours }} horas
+                      </span>
+                    </span>
+                  </div>
+                  
+                  <div class="flex flex-col sm:flex-row pb-4">
+                    <span class="font-bold text-rcm-navy w-full sm:w-2/5 mb-2 sm:mb-0">Fecha de Emisión:</span> 
+                    <span class="text-rcm-blue-medium w-full sm:w-3/5">{{ certificado.creation_date|date:"d/m/Y" }}</span>
+                  </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 pt-6 border-t border-gray-200">
+                  <a href="{% url 'system:certificados' %}" class="inline-flex items-center bg-rcm-navy text-white py-3 px-6 rounded-lg font-medium hover:bg-rcm-blue-medium transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    Nueva Búsqueda
+                  </a>
+                  <a href="{% url 'system:certificado_pdf' certificado.cert_code %}" target="_blank" class="inline-flex items-center bg-rcm-gold text-rcm-navy py-3 px-6 rounded-lg font-medium hover:bg-yellow-400 transition-colors shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    Descargar Certificado
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        
+        <!-- Información adicional -->
+        <div class="mt-12">
+          <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+            <h3 class="text-2xl font-bold text-rcm-navy mb-6 text-center">¿Cómo verificar tu certificado?</h3>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+              <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-rcm-gold to-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span class="text-2xl font-bold text-white">1</span>
+                </div>
+                <h4 class="text-lg font-semibold text-rcm-navy mb-2">Localiza tu código</h4>
+                <p class="text-gray-600 text-sm">Encuentra el código único en tu certificado físico o digital</p>
+              </div>
+              
+              <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-rcm-blue-medium to-rcm-blue-light rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span class="text-2xl font-bold text-white">2</span>
+                </div>
+                <h4 class="text-lg font-semibold text-rcm-navy mb-2">Ingresa el código</h4>
+                <p class="text-gray-600 text-sm">Escribe el código completo en el formulario de búsqueda</p>
+              </div>
+              
+              <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span class="text-2xl font-bold text-white">3</span>
+                </div>
+                <h4 class="text-lg font-semibold text-rcm-navy mb-2">Verifica y descarga</h4>
+                <p class="text-gray-600 text-sm">Confirma la autenticidad y descarga una copia de tu certificado</p>
+              </div>
+            </div>
           </div>
         </div>
-      {% endif %}
+        
+        <!-- Contacto de soporte -->
+        <div class="mt-8">
+          <div class="bg-gradient-to-r from-rcm-navy/95 to-rcm-blue-medium/95 backdrop-blur-sm text-white rounded-2xl p-6 shadow-lg border border-white/20">
+            <div class="text-center">
+              <div class="flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-rcm-gold mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
+                </svg>
+                <h3 class="text-lg font-semibold">¿Necesitas ayuda?</h3>
+              </div>
+              <p class="mb-4 text-gray-200">Si tienes problemas para verificar tu certificado o no encuentras el código, contáctanos.</p>
+              <a href="{% url 'system:contactanos' %}" class="inline-flex items-center bg-rcm-gold text-rcm-navy py-2 px-6 rounded-lg font-medium hover:bg-yellow-400 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+                Contactar Soporte
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
+
+<style>
+/* Efectos backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Asegurar que el contenido se vea bien sobre el fondo */
+.z-10 {
+  position: relative;
+  z-index: 10;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Efectos de hover mejorados */
+.transform:hover {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Gradientes personalizados */
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+/* Efectos de focus para el input */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 207, 0, 0.1);
+}
+</style>
 {% endblock %}

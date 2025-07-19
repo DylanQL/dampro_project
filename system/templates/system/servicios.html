@@ -1,81 +1,187 @@
 {% extends 'system/base.html' %}
+{% load static %}
 
-{% block title %}Servicios – Dampro SAC{% endblock %}
+{% block title %}Servicios – RCM Solutions SAC{% endblock %}
 
 {% block content %}
-<section id="servicios" class="max-w-5xl mx-auto px-4 py-12">
-  <h1 class="text-3xl md:text-4xl font-bold text-rcm-navy mb-10 text-center">
-    <span class="bg-gradient-to-r from-rcm-blue-medium to-rcm-navy bg-clip-text text-transparent">Nuestros Servicios</span>
-  </h1>
+<!-- Imagen de fondo fija con blur -->
+<div class="fixed inset-0 w-full h-full z-0">
+  <img src="{% static 'system/images/RCM_view_3.jpg' %}" alt="Fondo" class="w-full h-full object-cover filter blur-sm">
+  <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+</div>
 
-  <!-- Monitoreos -->
-  <div class="bg-rcm-white shadow-md rounded-lg p-6 mb-8 border border-rcm-blue-light">
-    <h2 class="text-2xl font-bold text-rcm-blue-medium mb-4 flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-rcm-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-      Monitoreos
-    </h2>
-    <ul class="mb-4 pl-6 list-disc text-rcm-black space-y-2">
-      <li>Monitoreos Ocupacionales</li>
-      <li>Monitoreos Ambientales</li>
-    </ul>
-    <p class="text-rcm-black italic bg-rcm-white p-3 rounded border-l-4 border-rcm-gold">
-      Identificamos el nivel de riesgo de los factores a los que se encuentran expuestos tus colaboradores.
-    </p>
-  </div>
-
-  <!-- Auditorías -->
-  <div class="bg-rcm-white shadow-md rounded-lg p-6 mb-8 border border-rcm-blue-light">
-    <h2 class="text-2xl font-bold text-rcm-blue-medium mb-4 flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-rcm-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-      </svg>
-      Auditorías
-    </h2>
-
-    <div class="space-y-4 text-rcm-black">
-      <div class="p-4 border-l-4 border-rcm-gold bg-rcm-white rounded">
-        <p><span class="font-semibold">Auditorías de Diagnóstico:</span><br>
-          Determina la brecha existente entre lo que deseas y tu situación actual como organización.
-        </p>
+<!-- Contenido con z-index superior -->
+<div class="relative z-10">
+  <section id="servicios" class="py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <!-- Header principal -->
+      <div class="text-center mb-12">
+        <div class="rounded-2xl">
+          <h1 class="text-3xl md:text-4xl font-bold text-rcm-white mb-4">
+            <span class="">Nuestros Servicios</span>
+          </h1>
+          <div class="w-24 h-1 bg-rcm-gold mx-auto mb-4"></div>
+          <p class="text-white max-w-2xl mx-auto">
+            Ofrecemos soluciones integrales en seguridad, salud ocupacional y gestión empresarial
+          </p>
+        </div>
       </div>
 
-      <div class="p-4 border-l-4 border-rcm-gold bg-rcm-white rounded">
-        <p><span class="font-semibold">Auditorías Mintra:</span><br>
-          En base a la Ley 29783 y el D.S. 014-2013-TR. Contamos con un staff de asesores acreditados por Mintra.
-        </p>
+      <!-- Monitoreos -->
+      <div class="bg-white/95 backdrop-blur-sm shadow-lg rounded-2xl p-8 mb-8 border border-white/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <h2 class="text-2xl font-bold text-rcm-blue-medium mb-6 flex items-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-rcm-gold to-yellow-400 rounded-full flex items-center justify-center mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          Monitoreos
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black font-medium">Monitoreos Ocupacionales</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black font-medium">Monitoreos Ambientales</span>
+          </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-rcm-gold/20 to-yellow-100/50 backdrop-blur-sm p-6 rounded-xl border-l-4 border-rcm-gold">
+          <p class="text-rcm-navy font-medium italic">
+            💡 Identificamos el nivel de riesgo de los factores a los que se encuentran expuestos tus colaboradores.
+          </p>
+        </div>
       </div>
 
-      <div class="p-4 border-l-4 border-rcm-gold bg-rcm-white rounded">
-        <p><span class="font-semibold">Auditorías Internas:</span><br>
-          Para los Sistemas de Gestión en las Normas ISO 9001:2015; ISO 45001:2015; ISO 14001:2015.
-        </p>
+      <!-- Auditorías -->
+      <div class="bg-white/95 backdrop-blur-sm shadow-lg rounded-2xl p-8 mb-8 border border-white/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <h2 class="text-2xl font-bold text-rcm-blue-medium mb-6 flex items-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-rcm-blue-medium to-rcm-blue-light rounded-full flex items-center justify-center mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          Auditorías
+        </h2>
+
+        <div class="space-y-6 text-rcm-black">
+          <div class="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm p-6 border-l-4 border-rcm-gold rounded-xl shadow-sm">
+            <h3 class="font-bold text-rcm-navy mb-2 flex items-center">
+              <svg class="w-5 h-5 text-rcm-gold mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Auditorías de Diagnóstico
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Determina la brecha existente entre lo que deseas y tu situación actual como organización.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-r from-green-50/80 to-emerald-50/80 backdrop-blur-sm p-6 border-l-4 border-rcm-gold rounded-xl shadow-sm">
+            <h3 class="font-bold text-rcm-navy mb-2 flex items-center">
+              <svg class="w-5 h-5 text-rcm-gold mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Auditorías MINTRA
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              En base a la Ley 29783 y el D.S. 014-2013-TR. Contamos con un staff de asesores acreditados por MINTRA.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-r from-purple-50/80 to-violet-50/80 backdrop-blur-sm p-6 border-l-4 border-rcm-gold rounded-xl shadow-sm">
+            <h3 class="font-bold text-rcm-navy mb-2 flex items-center">
+              <svg class="w-5 h-5 text-rcm-gold mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+              </svg>
+              Auditorías Internas
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Para los Sistemas de Gestión en las Normas ISO 9001:2015; ISO 45001:2015; ISO 14001:2015.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sistema de Gestión SST -->
+      <div class="bg-white/95 backdrop-blur-sm shadow-lg rounded-2xl p-8 border border-white/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <h2 class="text-2xl font-bold text-rcm-blue-medium mb-6 flex items-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-rcm-navy to-rcm-blue-dark rounded-full flex items-center justify-center mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          Sistema de Gestión Seguridad y Salud en el Trabajo
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black">Elaboración del Sistema de Gestión de Seguridad y Salud en el Trabajo.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black">Elaboración de IPERC, PETS, Plan de Emergencia.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black">Implementación del Comité de Prevención y Sanción del Hostigamiento Sexual.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 bg-rcm-gold rounded-full mt-2 flex-shrink-0"></div>
+            <span class="text-rcm-black">Supervisión de trabajos de alto riesgo para subcontratistas e inspecciones.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="mt-12">
+        <div class="bg-gradient-to-r from-rcm-navy/95 to-rcm-blue-medium/95 backdrop-blur-sm text-white p-8 rounded-2xl text-center shadow-2xl border border-white/20">
+          <div class="flex items-center justify-center mb-4">
+            <div class="w-16 h-16 bg-rcm-gold rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-rcm-navy" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">¿Necesitas alguno de nuestros servicios?</h3>
+          <p class="text-lg mb-6 opacity-90">Contáctanos para obtener una evaluación personalizada para tu empresa</p>
+          <a href="{% url 'system:contactanos' %}" class="inline-flex items-center bg-rcm-gold text-rcm-navy hover:bg-yellow-400 py-3 px-8 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+            </svg>
+            Solicitar información
+          </a>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+</div>
 
-  <!-- Sistema de Gestión SST -->
-  <div class="bg-rcm-white shadow-md rounded-lg p-6 border border-rcm-blue-light">
-    <h2 class="text-2xl font-bold text-rcm-blue-medium mb-4 flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-rcm-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-      Sistema de Gestión Seguridad y Salud en el Trabajo
-    </h2>
-    <ul class="pl-6 list-disc text-rcm-black space-y-3">
-      <li>Elaboración del Sistema de Gestión de Seguridad y Salud en el Trabajo.</li>
-      <li>Elaboración de IPERC, PETS, Plan de Emergencia.</li>
-      <li>Implementación del Comité de Prevención y Sanción del Hostigamiento Sexual.</li>
-      <li>Supervisión de trabajos de alto riesgo para subcontratistas e inspecciones.</li>
-    </ul>
-  </div>
+<style>
+/* Efectos backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
 
-  <!-- CTA Section -->
-  <div class="mt-12 bg-rcm-navy text-rcm-white p-8 rounded-lg text-center shadow-md">
-    <h3 class="text-xl font-bold mb-3">¿Necesitas alguno de nuestros servicios?</h3>
-    <p class="mb-4">Contáctanos para obtener una evaluación personalizada a tu empresa</p>
-    <a href="{% url 'system:contactanos' %}" class="inline-block bg-rcm-gold text-rcm-black hover:bg-yellow-400 py-2 px-6 rounded-md font-semibold transition duration-300">Solicitar información</a>
-  </div>
-</section>
+/* Asegurar que el contenido se vea bien sobre el fondo */
+.z-10 {
+  position: relative;
+  z-index: 10;
+}
+
+/* Animaciones de hover mejoradas */
+.transform:hover {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Gradientes personalizados */
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+</style>
 {% endblock %}
