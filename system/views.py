@@ -415,7 +415,7 @@ def certificado_pdf(request, cert_code):
     
     # Generar URL para el QR con un dominio personalizado
     # Puedes cambiarlo al dominio que prefieras, por ejemplo 'https://dampro.com.pe'
-    custom_domain = 'https://rcm-solutions-s-a-c.onrender.com'  # Cambia esto a tu dominio real
+    custom_domain = 'https://rcmsolutionssac.com.pe'  # Cambia esto a tu dominio real
     verification_url = f"{custom_domain}/certificados/{cert_code}/"
     
     # Alternativamente, si prefieres seguir usando el dominio actual del servidor (desarrollo/producción):
