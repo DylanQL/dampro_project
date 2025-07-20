@@ -149,19 +149,43 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
     
     // Precargar valores existentes en modo edición
     {% if action == 'edit' and certificado %}
-      // Precargar usuario
-      document.getElementById('usuario_display').value = '{{ certificado.usuario.first_name }} {{ certificado.usuario.last_name }}{% if certificado.usuario.empresa %} - {{ certificado.usuario.empresa.nombre }}{% else %} - Sin empresa asignada{% endif %}';
-      document.getElementById('usuario_id').value = '{{ certificado.usuario.id }}';
-      
-      // Precargar curso
-      document.getElementById('curso_display').value = '{{ certificado.course.name }} - ({{ certificado.course.course_hours }} horas)';
-      document.getElementById('course_id').value = '{{ certificado.course.id }}';
-      
-      // Precargar empresa (si existe)
-      {% if certificado.empresa %}
-        document.getElementById('empresa_display').value = '{{ certificado.empresa.nombre }} - RUC: {{ certificado.empresa.ruc }}';
-        document.getElementById('empresa_id').value = '{{ certificado.empresa.id }}';
-      {% endif %}
+      // Usar setTimeout para asegurar que los elementos existan
+      setTimeout(() => {
+        // Precargar usuario
+        const usuarioDisplay = document.getElementById('usuario_display');
+        const usuarioId = document.getElementById('usuario_id');
+        if (usuarioDisplay && usuarioId) {
+          usuarioDisplay.value = '{{ certificado.usuario.first_name }} {{ certificado.usuario.last_name }}{% if certificado.usuario.empresa %} - {{ certificado.usuario.empresa.nombre }}{% else %} - Sin empresa asignada{% endif %}';
+          usuarioId.value = '{{ certificado.usuario.id }}';
+          // Aplicar estilos de éxito
+          usuarioDisplay.style.borderColor = '#10b981';
+          usuarioDisplay.style.backgroundColor = '#f0fdf4';
+        }
+        
+        // Precargar curso
+        const cursoDisplay = document.getElementById('curso_display');
+        const cursoId = document.getElementById('course_id');
+        if (cursoDisplay && cursoId) {
+          cursoDisplay.value = '{{ certificado.course.name }} - ({{ certificado.course.course_hours }} horas)';
+          cursoId.value = '{{ certificado.course.id }}';
+          // Aplicar estilos de éxito
+          cursoDisplay.style.borderColor = '#10b981';
+          cursoDisplay.style.backgroundColor = '#f0fdf4';
+        }
+        
+        // Precargar empresa (si existe)
+        {% if certificado.empresa %}
+          const empresaDisplay = document.getElementById('empresa_display');
+          const empresaId = document.getElementById('empresa_id');
+          if (empresaDisplay && empresaId) {
+            empresaDisplay.value = '{{ certificado.empresa.nombre }} - RUC: {{ certificado.empresa.ruc }}';
+            empresaId.value = '{{ certificado.empresa.id }}';
+            // Aplicar estilos de éxito
+            empresaDisplay.style.borderColor = '#10b981';
+            empresaDisplay.style.backgroundColor = '#f0fdf4';
+          }
+        {% endif %}
+      }, 100);
     {% endif %}
   };
   
@@ -208,7 +232,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(data => {
-            const key = config.apiUrl.includes('usuarios') ? 'usuarios' : 'cursos';
+            let key;
+            if (config.apiUrl.includes('usuarios')) {
+              key = 'usuarios';
+            } else if (config.apiUrl.includes('cursos')) {
+              key = 'cursos';
+            } else if (config.apiUrl.includes('empresas')) {
+              key = 'empresas';
+            }
             items = data[key] || [];
             showDropdown(items);
           })
@@ -267,7 +298,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         fetch(`${config.apiUrl}?q=`)
           .then(response => response.json())
           .then(data => {
-            const key = config.apiUrl.includes('usuarios') ? 'usuarios' : 'cursos';
+            let key;
+            if (config.apiUrl.includes('usuarios')) {
+              key = 'usuarios';
+            } else if (config.apiUrl.includes('cursos')) {
+              key = 'cursos';
+            } else if (config.apiUrl.includes('empresas')) {
+              key = 'empresas';
+            }
             items = data[key] || [];
             if (items.length > 0) {
               showDropdown(items);
@@ -289,7 +327,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(data => {
-            const key = config.apiUrl.includes('usuarios') ? 'usuarios' : 'cursos';
+            let key;
+            if (config.apiUrl.includes('usuarios')) {
+              key = 'usuarios';
+            } else if (config.apiUrl.includes('cursos')) {
+              key = 'cursos';
+            } else if (config.apiUrl.includes('empresas')) {
+              key = 'empresas';
+            }
             items = data[key] || [];
             if (items.length > 0) {
               showDropdown(items);
