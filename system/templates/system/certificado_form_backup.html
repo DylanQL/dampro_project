@@ -14,8 +14,78 @@
 
 .autocomplete-input {
   width: 100%;
-  padding: 8px 16px;
-  border: 1px solid #577BC1;
+  padding: 8px 16p    }
+  }
+  
+  // Función para validar el formulario antes del envío
+  function validateForm() {
+    const usuarioInput = document.getElementById('usuario_display');
+    const cursoInput = document.getElementById('curso_display');
+    const usuarioHidden = document.getElementById('usuario_id');
+    const cursoHidden = document.getElementById('course_id');
+    
+    let isValid = true;
+    
+    // Validar usuario
+    if (!usuarioHidden.value || usuarioHidden.value.trim() === '') {
+      usuarioInput.style.borderColor = '#ef4444';
+      usuarioInput.style.backgroundColor = '#fef2f2';
+      showFormErrorMessage(usuarioInput, 'Debe seleccionar un cliente válido');
+      isValid = false;
+    }
+    
+    // Validar curso
+    if (!cursoHidden.value || cursoHidden.value.trim() === '') {
+      cursoInput.style.borderColor = '#ef4444';
+      cursoInput.style.backgroundColor = '#fef2f2';
+      showFormErrorMessage(cursoInput, 'Debe seleccionar un curso válido');
+      isValid = false;
+    }
+    
+    if (!isValid) {
+      // Scroll al primer campo con error
+      const firstError = document.querySelector('input[style*="border-color: rgb(239, 68, 68)"]');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstError.focus();
+      }
+    }
+    
+    return isValid;
+  }
+  
+  function showFormErrorMessage(inputElement, message) {
+    // Remover mensaje anterior si existe
+    const existingError = inputElement.parentElement.querySelector('.form-error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'form-error-message';
+    errorDiv.style.cssText = `
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 4px;
+      padding: 4px 8px;
+      background-color: #fef2f2;
+      border-radius: 4px;
+      border: 1px solid #fecaca;
+      font-weight: 500;
+    `;
+    errorDiv.textContent = message;
+    
+    inputElement.parentElement.appendChild(errorDiv);
+    
+    // Remover el mensaje después de 5 segundos
+    setTimeout(() => {
+      if (errorDiv.parentElement) {
+        errorDiv.remove();
+      }
+    }, 5000);
+  }
+</script>
+{% endblock %} border: 1px solid #577BC1;
   border-radius: 6px;
   font-size: 14px;
   background-color: white;
@@ -359,74 +429,6 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       this.style.backgroundColor = '';
       removeErrorMessage(this);
     };
-  }
-  
-  // Función para validar el formulario antes del envío
-  function validateForm() {
-    const usuarioInput = document.getElementById('usuario_display');
-    const cursoInput = document.getElementById('curso_display');
-    const usuarioHidden = document.getElementById('usuario_id');
-    const cursoHidden = document.getElementById('course_id');
-    
-    let isValid = true;
-    
-    // Validar usuario
-    if (!usuarioHidden.value || usuarioHidden.value.trim() === '') {
-      usuarioInput.style.borderColor = '#ef4444';
-      usuarioInput.style.backgroundColor = '#fef2f2';
-      showFormErrorMessage(usuarioInput, 'Debe seleccionar un cliente válido');
-      isValid = false;
-    }
-    
-    // Validar curso
-    if (!cursoHidden.value || cursoHidden.value.trim() === '') {
-      cursoInput.style.borderColor = '#ef4444';
-      cursoInput.style.backgroundColor = '#fef2f2';
-      showFormErrorMessage(cursoInput, 'Debe seleccionar un curso válido');
-      isValid = false;
-    }
-    
-    if (!isValid) {
-      // Scroll al primer campo con error
-      const firstError = document.querySelector('input[style*="border-color: rgb(239, 68, 68)"]');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        firstError.focus();
-      }
-    }
-    
-    return isValid;
-  }
-  
-  function showFormErrorMessage(inputElement, message) {
-    // Remover mensaje anterior si existe
-    const existingError = inputElement.parentElement.querySelector('.form-error-message');
-    if (existingError) {
-      existingError.remove();
-    }
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'form-error-message';
-    errorDiv.style.cssText = `
-      color: #ef4444;
-      font-size: 12px;
-      margin-top: 4px;
-      padding: 4px 8px;
-      background-color: #fef2f2;
-      border-radius: 4px;
-      border: 1px solid #fecaca;
-      font-weight: 500;
-    `;
-    errorDiv.textContent = message;
-    
-    inputElement.parentElement.appendChild(errorDiv);
-    
-    // Remover el mensaje después de 5 segundos
-    setTimeout(() => {
-      if (errorDiv.parentElement) {
-        errorDiv.remove();
-      }
-    }, 5000);
   }
 </script>
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from functools import wraps
 from .models import *
+from django.db import models
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
@@ -380,8 +381,51 @@ def add_certificado(request):
         horas      = request.POST.get('chronological_hours', '0').strip() or '0'
         creation_date = request.POST.get('creation_date')
 
-        usuario = get_object_or_404(Usuario, pk=int(usuario_id))
-        course  = get_object_or_404(Course,  pk=int(course_id))
+        # Validaciones de seguridad
+        if not usuario_id or not course_id:
+            usuarios = Usuario.objects.all()
+            cursos   = Course.objects.all()
+            empresas = Empresa.objects.all()
+            
+            from django.utils import timezone
+            from zoneinfo import ZoneInfo
+            lima_tz = ZoneInfo('America/Lima')
+            fecha_actual_peru = timezone.now().astimezone(lima_tz)
+            
+            return render(request, 'system/certificado_form.html', {
+                'user': user,
+                'action': 'add',
+                'certificado': None,
+                'usuarios': usuarios,
+                'cursos': cursos,
+                'empresas': empresas,
+                'fecha_actual': fecha_actual_peru,
+                'error_message': 'Debe seleccionar un cliente y un curso válidos.'
+            })
+
+        try:
+            usuario = get_object_or_404(Usuario, pk=int(usuario_id), user_type="Empleado")
+            course  = get_object_or_404(Course,  pk=int(course_id))
+        except (ValueError, Usuario.DoesNotExist, Course.DoesNotExist):
+            usuarios = Usuario.objects.all()
+            cursos   = Course.objects.all()
+            empresas = Empresa.objects.all()
+            
+            from django.utils import timezone
+            from zoneinfo import ZoneInfo
+            lima_tz = ZoneInfo('America/Lima')
+            fecha_actual_peru = timezone.now().astimezone(lima_tz)
+            
+            return render(request, 'system/certificado_form.html', {
+                'user': user,
+                'action': 'add',
+                'certificado': None,
+                'usuarios': usuarios,
+                'cursos': cursos,
+                'empresas': empresas,
+                'fecha_actual': fecha_actual_peru,
+                'error_message': 'El cliente o curso seleccionado no es válido.'
+            })
 
         # Generar un código aleatorio único para el certificado
         cert_code = generate_unique_cert_code()
@@ -451,9 +495,38 @@ def edit_certificado(request, pk):
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
         creation_date = request.POST.get('creation_date')
 
-        usuario = get_object_or_404(Usuario, pk=int(usuario_id))
-        certificado.usuario = usuario
-        certificado.course = get_object_or_404(Course, pk=int(course_id))
+        # Validaciones de seguridad
+        if not usuario_id or not course_id:
+            usuarios = Usuario.objects.all()
+            cursos   = Course.objects.all()
+            empresas = Empresa.objects.all()
+            return render(request, 'system/certificado_form.html', {
+                'user': user,
+                'action': 'edit',
+                'certificado': certificado,
+                'usuarios': usuarios,
+                'cursos': cursos,
+                'empresas': empresas,
+                'error_message': 'Debe seleccionar un cliente y un curso válidos.'
+            })
+
+        try:
+            usuario = get_object_or_404(Usuario, pk=int(usuario_id), user_type="Empleado")
+            certificado.usuario = usuario
+            certificado.course = get_object_or_404(Course, pk=int(course_id))
+        except (ValueError, Usuario.DoesNotExist, Course.DoesNotExist):
+            usuarios = Usuario.objects.all()
+            cursos   = Course.objects.all()
+            empresas = Empresa.objects.all()
+            return render(request, 'system/certificado_form.html', {
+                'user': user,
+                'action': 'edit',
+                'certificado': certificado,
+                'usuarios': usuarios,
+                'cursos': cursos,
+                'empresas': empresas,
+                'error_message': 'El cliente o curso seleccionado no es válido.'
+            })
         
         # Permitir la selección manual de la empresa
         if empresa_id:
@@ -895,5 +968,67 @@ def actualizar_perfil(request):
             return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
         except Exception as e:
             return JsonResponse({'error': f'Error interno: {str(e)}'}, status=500)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@login_required
+def api_buscar_usuarios(request):
+    """
+    API para buscar usuarios por nombre para autocompletado
+    """
+    if request.method == 'GET':
+        query = request.GET.get('q', '').strip()
+        
+        if len(query) < 2:
+            return JsonResponse({'usuarios': []})
+        
+        # Buscar usuarios que coincidan con el query en nombre o apellido
+        usuarios = Usuario.objects.filter(
+            user_type="Empleado"
+        ).filter(
+            models.Q(first_name__icontains=query) |
+            models.Q(last_name__icontains=query) |
+            models.Q(second_last_name__icontains=query)
+        ).select_related('empresa')[:10]  # Limitar a 10 resultados
+        
+        usuarios_data = []
+        for usuario in usuarios:
+            usuarios_data.append({
+                'id': usuario.id,
+                'nombre_completo': f"{usuario.first_name} {usuario.last_name}",
+                'empresa': usuario.empresa.nombre if usuario.empresa else 'Sin empresa asignada',
+                'texto_display': f"{usuario.first_name} {usuario.last_name}{' - ' + usuario.empresa.nombre if usuario.empresa else ' - Sin empresa asignada'}"
+            })
+        
+        return JsonResponse({'usuarios': usuarios_data})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@login_required 
+def api_buscar_cursos(request):
+    """
+    API para buscar cursos por nombre para autocompletado
+    """
+    if request.method == 'GET':
+        query = request.GET.get('q', '').strip()
+        
+        if len(query) < 2:
+            return JsonResponse({'cursos': []})
+        
+        # Buscar cursos que coincidan con el query en nombre
+        cursos = Course.objects.filter(
+            name__icontains=query
+        )[:10]  # Limitar a 10 resultados
+        
+        cursos_data = []
+        for curso in cursos:
+            cursos_data.append({
+                'id': curso.id,
+                'name': curso.name,
+                'course_hours': curso.course_hours,
+                'texto_display': f"{curso.name} - ({curso.course_hours} horas)"
+            })
+        
+        return JsonResponse({'cursos': cursos_data})
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
