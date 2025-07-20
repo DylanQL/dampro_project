@@ -184,11 +184,7 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       
       clearTimeout(debounceTimer);
       
-      if (query.length < 2) {
-        hideDropdown();
-        return;
-      }
-      
+      // Hacer búsqueda incluso si el query está vacío o es muy corto
       debounceTimer = setTimeout(() => {
         fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
           .then(response => response.json())
@@ -244,6 +240,46 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       this.style.borderColor = '';
       this.style.backgroundColor = '';
       removeErrorMessage(this);
+      
+      // Si el campo está vacío o solo tiene 1 carácter, cargar todos los datos
+      const query = this.value.trim();
+      if (query.length <= 1) {
+        // Hacer una búsqueda vacía para obtener todos los resultados
+        fetch(`${config.apiUrl}?q=`)
+          .then(response => response.json())
+          .then(data => {
+            const key = config.apiUrl.includes('usuarios') ? 'usuarios' : 'cursos';
+            items = data[key] || [];
+            if (items.length > 0) {
+              showDropdown(items);
+            }
+          })
+          .catch(error => {
+            console.error('Error al cargar datos completos:', error);
+          });
+      }
+    });
+    
+    // Event listener para cuando se hace clic en el campo
+    input.addEventListener('click', function() {
+      // Si no hay dropdown visible, intentar mostrarlo
+      if (dropdown.style.display !== 'block') {
+        const query = this.value.trim();
+        
+        // Hacer búsqueda con el texto actual (o vacía si no hay texto)
+        fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            const key = config.apiUrl.includes('usuarios') ? 'usuarios' : 'cursos';
+            items = data[key] || [];
+            if (items.length > 0) {
+              showDropdown(items);
+            }
+          })
+          .catch(error => {
+            console.error('Error al cargar datos:', error);
+          });
+      }
     });
     
     // Event listeners para navegación con teclado

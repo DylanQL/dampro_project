@@ -979,17 +979,20 @@ def api_buscar_usuarios(request):
     if request.method == 'GET':
         query = request.GET.get('q', '').strip()
         
+        # Si no hay query o es muy corto, devolver todos los usuarios (para mostrar lista completa)
         if len(query) < 2:
-            return JsonResponse({'usuarios': []})
-        
-        # Buscar usuarios que coincidan con el query en nombre o apellido
-        usuarios = Usuario.objects.filter(
-            user_type="Empleado"
-        ).filter(
-            models.Q(first_name__icontains=query) |
-            models.Q(last_name__icontains=query) |
-            models.Q(second_last_name__icontains=query)
-        ).select_related('empresa')[:10]  # Limitar a 10 resultados
+            usuarios = Usuario.objects.filter(
+                user_type="Empleado"
+            ).select_related('empresa')[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
+        else:
+            # Buscar usuarios que coincidan con el query en nombre o apellido
+            usuarios = Usuario.objects.filter(
+                user_type="Empleado"
+            ).filter(
+                models.Q(first_name__icontains=query) |
+                models.Q(last_name__icontains=query) |
+                models.Q(second_last_name__icontains=query)
+            ).select_related('empresa')[:10]  # Limitar a 10 resultados cuando se filtra
         
         usuarios_data = []
         for usuario in usuarios:
@@ -1012,13 +1015,14 @@ def api_buscar_cursos(request):
     if request.method == 'GET':
         query = request.GET.get('q', '').strip()
         
+        # Si no hay query o es muy corto, devolver todos los cursos (para mostrar lista completa)
         if len(query) < 2:
-            return JsonResponse({'cursos': []})
-        
-        # Buscar cursos que coincidan con el query en nombre
-        cursos = Course.objects.filter(
-            name__icontains=query
-        )[:10]  # Limitar a 10 resultados
+            cursos = Course.objects.all()[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
+        else:
+            # Buscar cursos que coincidan con el query en nombre
+            cursos = Course.objects.filter(
+                name__icontains=query
+            )[:10]  # Limitar a 10 resultados cuando se filtra
         
         cursos_data = []
         for curso in cursos:
