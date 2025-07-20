@@ -348,8 +348,14 @@ def add_certificado(request):
         # Establecer la fecha si se proporcionó una personalizada
         if creation_date:
             from datetime import datetime
+            from django.utils import timezone
+            from zoneinfo import ZoneInfo
             try:
-                certificado.creation_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+                # Parsear la fecha como naive datetime
+                naive_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+                # Convertir a timezone-aware con zona horaria de Perú
+                lima_tz = ZoneInfo('America/Lima')
+                certificado.creation_date = naive_date.replace(tzinfo=lima_tz)
             except ValueError:
                 # Si hay un problema con el formato, usar la fecha actual (valor por defecto)
                 pass
@@ -360,12 +366,22 @@ def add_certificado(request):
     usuarios = Usuario.objects.all()
     cursos   = Course.objects.all()
     empresas = Empresa.objects.all()
+    
+    # Obtener la fecha y hora actual en zona horaria de Perú
+    from django.utils import timezone
+    from zoneinfo import ZoneInfo
+    
+    # Crear datetime actual en zona horaria de Perú
+    lima_tz = ZoneInfo('America/Lima')
+    fecha_actual_peru = timezone.now().astimezone(lima_tz)
+    
     return render(request, 'system/certificado_form.html', {
         'action': 'add',
         'certificado': None,
         'usuarios': usuarios,
         'cursos': cursos,
         'empresas': empresas,
+        'fecha_actual': fecha_actual_peru,
     })
 
 @login_required
@@ -396,10 +412,16 @@ def edit_certificado(request, pk):
         # Actualizar la fecha si se proporcionó una nueva
         if creation_date:
             from datetime import datetime
+            from django.utils import timezone
+            from zoneinfo import ZoneInfo
             # Convertir la cadena de fecha-hora en un objeto datetime
             # El formato debe ser compatible con el formato datetime-local de HTML5
             try:
-                certificado.creation_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+                # Parsear la fecha como naive datetime
+                naive_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+                # Convertir a timezone-aware con zona horaria de Perú
+                lima_tz = ZoneInfo('America/Lima')
+                certificado.creation_date = naive_date.replace(tzinfo=lima_tz)
             except ValueError:
                 # Si hay un problema con el formato, mantenemos la fecha actual
                 pass

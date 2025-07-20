@@ -190,20 +190,24 @@
 
         <div class="space-y-2">
           <label for="creation_date" class="block text-sm font-medium text-rcm-navy">Fecha del certificado:</label>
-          <input
-            type="datetime-local"
-            name="creation_date"
-            id="creation_date"
-            {% if certificado %}
-            value="{{ certificado.creation_date|date:'Y-m-d\TH:i' }}"
-            {% endif %}
-            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
-          />          
+          <div class="date-input-container">
+            <input
+              type="datetime-local"
+              name="creation_date"
+              id="creation_date"
+              {% if certificado %}
+              value="{{ certificado.creation_date|date:'Y-m-d\TH:i' }}"
+              {% else %}
+              value="{{ fecha_actual|date:'Y-m-d\TH:i' }}"
+              {% endif %}
+              class="w-full"
+            />          
+          </div>
           <p class="text-xs text-gray-500 italic">
             {% if action == 'add' %}
-            Deje vacío para usar la fecha y hora actual.
+            <i class="fas fa-info-circle mr-1"></i>Fecha y hora pre-cargada con la actual. Puede modificarla si es necesario.
             {% else %}
-            Modifique la fecha del certificado si es necesario.
+            <i class="fas fa-edit mr-1"></i>Modifique la fecha del certificado si es necesario.
             {% endif %}
           </p>
         </div>
