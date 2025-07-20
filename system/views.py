@@ -175,6 +175,9 @@ def logout_view(request):
 def gestion_usuarios(request):
     from django.core.paginator import Paginator
     
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     # Obtener todas las empresas para el filtro
     empresas = Empresa.objects.all()
     
@@ -200,6 +203,7 @@ def gestion_usuarios(request):
     usuarios = paginator.get_page(page_number)
     
     return render(request, 'system/gestion_usuarios.html', {
+        'user': user,
         'usuarios': usuarios,
         'empresas': empresas,
         'empresa_seleccionada': empresa_seleccionada
@@ -207,6 +211,9 @@ def gestion_usuarios(request):
 
 @login_required
 def add_usuario(request):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     if request.method == 'POST':
         # Leer datos del formulario
         first = request.POST.get('first_name', '').strip()
@@ -220,6 +227,7 @@ def add_usuario(request):
         if dni and Usuario.objects.filter(dni=dni).exists():
             empresas = Empresa.objects.all()
             return render(request, 'system/usuario_form.html', {
+                'user': user,
                 'action': 'add',
                 'usuario': None,
                 'empresas': empresas,
@@ -247,6 +255,7 @@ def add_usuario(request):
     
     empresas = Empresa.objects.all()
     return render(request, 'system/usuario_form.html', {
+        'user': user,
         'action': 'add',
         'usuario': None,
         'empresas': empresas
@@ -254,6 +263,9 @@ def add_usuario(request):
 
 @login_required
 def edit_usuario(request, pk):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     usuario = Usuario.objects.get(pk=pk)
     if request.method == 'POST':
         usuario.first_name       = request.POST.get('first_name', usuario.first_name).strip()
@@ -277,6 +289,7 @@ def edit_usuario(request, pk):
 
     empresas = Empresa.objects.all()
     return render(request, 'system/usuario_form.html', {
+        'user': user,
         'action': 'edit',
         'usuario': usuario,
         'empresas': empresas
@@ -287,6 +300,9 @@ def edit_usuario(request, pk):
 def gestion_cursos(request):
     from django.core.paginator import Paginator
     
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     cursos_list = Course.objects.all()
     paginator = Paginator(cursos_list, 10)  # 10 cursos por página
     
@@ -294,11 +310,15 @@ def gestion_cursos(request):
     cursos = paginator.get_page(page_number)
     
     return render(request, 'system/gestion_cursos.html', {
+        'user': user,
         'cursos': cursos
     })
 
 @login_required
 def add_curso(request):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     if request.method == 'POST':
         name  = request.POST.get('name', '').strip()
         hours = request.POST.get('course_hours', '0').strip()
@@ -308,12 +328,16 @@ def add_curso(request):
         )
         return redirect('system:gestion_cursos')
     return render(request, 'system/curso_form.html', {
+        'user': user,
         'action': 'add',
         'curso': None
     })
 
 @login_required
 def edit_curso(request, pk):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     curso = Course.objects.get(pk=pk)
     if request.method == 'POST':
         curso.name = request.POST.get('name', curso.name).strip()
@@ -321,6 +345,7 @@ def edit_curso(request, pk):
         curso.save()
         return redirect('system:gestion_cursos')
     return render(request, 'system/curso_form.html', {
+        'user': user,
         'action': 'edit',
         'curso': curso
     })
@@ -330,6 +355,9 @@ def edit_curso(request, pk):
 def gestion_certificados(request):
     from django.core.paginator import Paginator
     
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     certificados_list = Certificate.objects.select_related('usuario', 'course', 'empresa').all().order_by('-creation_date')
     paginator = Paginator(certificados_list, 10)  # 10 certificados por página
     
@@ -337,11 +365,15 @@ def gestion_certificados(request):
     certificados = paginator.get_page(page_number)
     
     return render(request, 'system/gestion_certificados.html', {
+        'user': user,
         'certificados': certificados
     })
 
 @login_required
 def add_certificado(request):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
         course_id  = request.POST.get('course_id')
@@ -397,6 +429,7 @@ def add_certificado(request):
     fecha_actual_peru = timezone.now().astimezone(lima_tz)
     
     return render(request, 'system/certificado_form.html', {
+        'user': user,
         'action': 'add',
         'certificado': None,
         'usuarios': usuarios,
@@ -407,6 +440,9 @@ def add_certificado(request):
 
 @login_required
 def edit_certificado(request, pk):
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     certificado = get_object_or_404(Certificate, pk=pk)
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
@@ -454,6 +490,7 @@ def edit_certificado(request, pk):
     cursos   = Course.objects.all()
     empresas = Empresa.objects.all()
     return render(request, 'system/certificado_form.html', {
+        'user': user,
         'action': 'edit',
         'certificado': certificado,
         'usuarios': usuarios,
@@ -535,6 +572,9 @@ def gestion_empresas(request):
     """
     from django.core.paginator import Paginator
     
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     empresas_list = Empresa.objects.all()
     paginator = Paginator(empresas_list, 10)  # 10 empresas por página
     
@@ -542,6 +582,7 @@ def gestion_empresas(request):
     empresas = paginator.get_page(page_number)
     
     return render(request, 'system/gestion_empresas.html', {
+        'user': user,
         'empresas': empresas
     })
 
@@ -550,6 +591,9 @@ def add_empresa(request):
     """
     Página para añadir una nueva empresa.
     """
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     error_message = None
     
     if request.method == 'POST':
@@ -572,6 +616,7 @@ def add_empresa(request):
                 error_message = 'Ocurrió un error al guardar la empresa. Por favor, intente nuevamente.'
 
     return render(request, 'system/empresa_form.html', {
+        'user': user,
         'action': 'add',
         'empresa': None,
         'error_message': error_message
@@ -760,6 +805,9 @@ def edit_empresa(request, pk):
     """
     Página para editar una empresa existente.
     """
+    # Obtener información del usuario logueado
+    user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
+    
     empresa = get_object_or_404(Empresa, pk=pk)
     if request.method == 'POST':
         empresa.ruc = request.POST.get('ruc', empresa.ruc).strip()
@@ -768,6 +816,7 @@ def edit_empresa(request, pk):
         return redirect('system:gestion_empresas')
 
     return render(request, 'system/empresa_form.html', {
+        'user': user,
         'action': 'edit',
         'empresa': empresa
     })
