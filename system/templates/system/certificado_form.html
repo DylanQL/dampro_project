@@ -134,6 +134,19 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       }
     });
     
+    // Inicializar autocompletado para empresas (solo en modo edición)
+    {% if action == 'edit' %}
+    initAutocomplete({
+      inputId: 'empresa_display',
+      hiddenInputId: 'empresa_id',
+      apiUrl: '{% url "system:api_buscar_empresas" %}',
+      placeholder: 'Escriba el nombre de la empresa...',
+      onSelect: function(item) {
+        console.log('Empresa seleccionada:', item);
+      }
+    });
+    {% endif %}
+    
     // Precargar valores existentes en modo edición
     {% if action == 'edit' and certificado %}
       // Precargar usuario
@@ -143,6 +156,12 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       // Precargar curso
       document.getElementById('curso_display').value = '{{ certificado.course.name }} - ({{ certificado.course.course_hours }} horas)';
       document.getElementById('course_id').value = '{{ certificado.course.id }}';
+      
+      // Precargar empresa (si existe)
+      {% if certificado.empresa %}
+        document.getElementById('empresa_display').value = '{{ certificado.empresa.nombre }} - RUC: {{ certificado.empresa.ruc }}';
+        document.getElementById('empresa_id').value = '{{ certificado.empresa.id }}';
+      {% endif %}
     {% endif %}
   };
   
@@ -533,20 +552,17 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
 
         {% if action == 'edit' %}
         <div class="space-y-2">
-          <label for="empresa_id" class="block text-sm font-medium text-rcm-navy">Empresa:</label>
-          <select 
-            name="empresa_id" 
-            id="empresa_id" 
-            class="w-full px-4 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black"
-          >
-            <option value="">-- sin empresa --</option>
-            {% for emp in empresas %}
-              <option value="{{ emp.id }}"
-                {% if certificado and certificado.empresa and certificado.empresa.id == emp.id %}selected{% endif %}>
-                {{ emp.nombre }}
-              </option>
-            {% endfor %}
-          </select>
+          <label for="empresa_display" class="block text-sm font-medium text-rcm-navy">Empresa:</label>
+          <div class="autocomplete-container">
+            <input
+              type="text"
+              id="empresa_display"
+              class="autocomplete-input"
+              placeholder="Escriba el nombre de la empresa..."
+              autocomplete="off"
+            />
+            <input type="hidden" name="empresa_id" id="empresa_id" />
+          </div>
         </div>
         {% endif %}
 

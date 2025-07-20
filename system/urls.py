@@ -40,4 +40,5 @@ urlpatterns = [
     path('api/buscar-ruc/', views.buscar_ruc_view, name='buscar_ruc'),
     path('api/buscar-usuarios/', views.api_buscar_usuarios, name='api_buscar_usuarios'),
     path('api/buscar-cursos/', views.api_buscar_cursos, name='api_buscar_cursos'),
+    path('api/buscar-empresas/', views.api_buscar_empresas, name='api_buscar_empresas'),
 ]

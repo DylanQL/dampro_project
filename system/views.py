@@ -1036,3 +1036,34 @@ def api_buscar_cursos(request):
         return JsonResponse({'cursos': cursos_data})
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@login_required 
+def api_buscar_empresas(request):
+    """
+    API para buscar empresas por nombre o RUC para autocompletado
+    """
+    if request.method == 'GET':
+        query = request.GET.get('q', '').strip()
+        
+        # Si no hay query o es muy corto, devolver todas las empresas (para mostrar lista completa)
+        if len(query) < 2:
+            empresas = Empresa.objects.all()[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
+        else:
+            # Buscar empresas que coincidan con el query en nombre o RUC
+            empresas = Empresa.objects.filter(
+                models.Q(nombre__icontains=query) |
+                models.Q(ruc__icontains=query)
+            )[:10]  # Limitar a 10 resultados cuando se filtra
+        
+        empresas_data = []
+        for empresa in empresas:
+            empresas_data.append({
+                'id': empresa.id,
+                'nombre': empresa.nombre,
+                'ruc': empresa.ruc,
+                'texto_display': f"{empresa.nombre} - RUC: {empresa.ruc}"
+            })
+        
+        return JsonResponse({'empresas': empresas_data})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

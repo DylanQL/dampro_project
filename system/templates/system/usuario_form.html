@@ -4,6 +4,66 @@
   {% if action == 'add' %}Agregar Cliente{% else %}Editar Cliente{% endif %} – Dampro SAC
 {% endblock %}
 
+{% block extra_head %}
+<style>
+/* Estilos para el autocomplete */
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.autocomplete-input {
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid #577BC1;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  color: #1a202c;
+}
+
+.autocomplete-input:focus {
+  outline: none;
+  border-color: #ffcf00;
+  box-shadow: 0 0 0 2px rgba(255, 207, 0, 0.3);
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #577BC1;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.autocomplete-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.autocomplete-item:hover {
+  background-color: #f7fafc;
+}
+
+.autocomplete-item.selected {
+  background-color: #ffcf00;
+  color: #000957;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="py-12">
   <div class="container mx-auto px-4">
@@ -110,19 +170,17 @@
         <input type="hidden" name="user_type" value="Empleado" />
         
         <div class="space-y-2">
-          <label for="empresa_id" class="block text-sm font-medium text-rcm-navy">Empresa:</label>
-          <select 
-            name="empresa_id" 
-            id="empresa_id"
-            class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
-          >
-            <option value="">-- Sin empresa --</option>
-            {% for empresa in empresas %}
-              <option value="{{ empresa.id }}" {% if usuario.empresa.id == empresa.id %}selected{% endif %}>
-                {{ empresa.nombre }} ({{ empresa.ruc }})
-              </option>
-            {% endfor %}
-          </select>
+          <label for="empresa_display" class="block text-sm font-medium text-rcm-navy">Empresa:</label>
+          <div class="autocomplete-container">
+            <input
+              type="text"
+              id="empresa_display"
+              class="autocomplete-input"
+              placeholder="Escriba el nombre de la empresa..."
+              autocomplete="off"
+            />
+            <input type="hidden" name="empresa_id" id="empresa_id" />
+          </div>
           <p class="text-xs text-rcm-blue-medium">Seleccione la empresa a la cual pertenece el cliente (opcional).</p>
         </div>
         
@@ -229,6 +287,237 @@ document.addEventListener('DOMContentLoaded', function() {
             btnBuscarDni.click();
         }
     });
+
+    // Inicializar autocompletado para empresas
+    initAutocomplete({
+        inputId: 'empresa_display',
+        hiddenInputId: 'empresa_id',
+        apiUrl: '{% url "system:api_buscar_empresas" %}',
+        placeholder: 'Escriba el nombre de la empresa...',
+        onSelect: function(item) {
+            console.log('Empresa seleccionada:', item);
+        }
+    });
+
+    // Precargar empresa en modo edición
+    {% if action == 'edit' and usuario.empresa %}
+        document.getElementById('empresa_display').value = '{{ usuario.empresa.nombre }} - RUC: {{ usuario.empresa.ruc }}';
+        document.getElementById('empresa_id').value = '{{ usuario.empresa.id }}';
+    {% endif %}
+
+    // Función para inicializar autocompletado (copiada del formulario de certificados)
+    function initAutocomplete(config) {
+        const input = document.getElementById(config.inputId);
+        const hiddenInput = document.getElementById(config.hiddenInputId);
+        const container = input.parentElement;
+        
+        // Crear dropdown
+        const dropdown = document.createElement('div');
+        dropdown.className = 'autocomplete-dropdown';
+        container.appendChild(dropdown);
+        
+        let debounceTimer;
+        let selectedIndex = -1;
+        let items = [];
+        let isValidSelection = false;
+        
+        // Verificar si es modo edición y el campo ya tiene valores precargados
+        const isEditMode = {% if action == 'edit' %}true{% else %}false{% endif %};
+        if (isEditMode && input.value && hiddenInput.value) {
+            isValidSelection = true;
+            input.style.borderColor = '#10b981';
+            input.style.backgroundColor = '#f0fdf4';
+        }
+        
+        input.placeholder = config.placeholder;
+        
+        // Event listener para input
+        input.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            // Resetear validación cuando el usuario escriba
+            isValidSelection = false;
+            hiddenInput.value = '';
+            this.style.borderColor = '';
+            this.style.backgroundColor = '';
+            
+            clearTimeout(debounceTimer);
+            
+            // Hacer búsqueda incluso si el query está vacío o es muy corto
+            debounceTimer = setTimeout(() => {
+                fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        items = data.empresas || [];
+                        showDropdown(items);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        hideDropdown();
+                    });
+            }, 300);
+        });
+        
+        // Event listener para cuando el campo recibe el foco
+        input.addEventListener('focus', function() {
+            // Limpiar estilos de error al hacer focus
+            this.style.borderColor = '';
+            this.style.backgroundColor = '';
+            
+            // Si el campo está vacío o solo tiene 1 carácter, cargar todos los datos
+            const query = this.value.trim();
+            if (query.length <= 1) {
+                // Hacer una búsqueda vacía para obtener todos los resultados
+                fetch(`${config.apiUrl}?q=`)
+                    .then(response => response.json())
+                    .then(data => {
+                        items = data.empresas || [];
+                        if (items.length > 0) {
+                            showDropdown(items);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar datos completos:', error);
+                    });
+            }
+        });
+        
+        // Event listener para cuando se hace clic en el campo
+        input.addEventListener('click', function() {
+            // Si no hay dropdown visible, intentar mostrarlo
+            if (dropdown.style.display !== 'block') {
+                const query = this.value.trim();
+                
+                // Hacer búsqueda con el texto actual (o vacía si no hay texto)
+                fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        items = data.empresas || [];
+                        if (items.length > 0) {
+                            showDropdown(items);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar datos:', error);
+                    });
+            }
+        });
+        
+        // Event listener para cuando el campo pierde el foco
+        input.addEventListener('blur', function() {
+            // Usar setTimeout para permitir que el click en dropdown funcione
+            setTimeout(() => {
+                // En modo edición, si el campo tiene valor y hiddenInput tiene valor, es válido
+                const currentInputValue = this.value.trim();
+                const currentHiddenValue = hiddenInput.value.trim();
+                
+                // Si hay valor en ambos campos, asumir que es una selección válida (útil para modo edición)
+                if (currentInputValue !== '' && currentHiddenValue !== '') {
+                    isValidSelection = true;
+                    this.style.borderColor = '#10b981';
+                    this.style.backgroundColor = '#f0fdf4';
+                } else if (!isValidSelection && currentInputValue !== '') {
+                    // Si no hay selección válida y hay texto, limpiar el campo
+                    this.value = '';
+                    hiddenInput.value = '';
+                    this.style.borderColor = '#ef4444'; // Rojo para indicar error
+                    this.style.backgroundColor = '#fef2f2'; // Fondo rojo claro
+                } else if (currentInputValue === '') {
+                    // Si el campo está vacío, resetear estilos
+                    this.style.borderColor = '';
+                    this.style.backgroundColor = '';
+                    hiddenInput.value = '';
+                    isValidSelection = false;
+                }
+                hideDropdown();
+            }, 150);
+        });
+        
+        // Event listeners para navegación con teclado
+        input.addEventListener('keydown', function(e) {
+            if (!dropdown.style.display || dropdown.style.display === 'none') return;
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateSelection();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateSelection();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selectedIndex >= 0 && items[selectedIndex]) {
+                    selectItem(items[selectedIndex]);
+                }
+            } else if (e.key === 'Escape') {
+                hideDropdown();
+            }
+        });
+        
+        // Ocultar dropdown al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (!container.contains(e.target)) {
+                hideDropdown();
+            }
+        });
+        
+        function showDropdown(itemList) {
+            dropdown.innerHTML = '';
+            selectedIndex = -1;
+            
+            if (itemList.length === 0) {
+                // Mostrar mensaje de "no encontrado"
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'autocomplete-item';
+                noResultsDiv.textContent = 'No se encontraron resultados';
+                noResultsDiv.style.fontStyle = 'italic';
+                noResultsDiv.style.color = '#9ca3af';
+                dropdown.appendChild(noResultsDiv);
+                dropdown.style.display = 'block';
+                return;
+            }
+            
+            itemList.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'autocomplete-item';
+                div.textContent = item.texto_display;
+                div.addEventListener('click', () => selectItem(item));
+                dropdown.appendChild(div);
+            });
+            
+            dropdown.style.display = 'block';
+        }
+        
+        function hideDropdown() {
+            dropdown.style.display = 'none';
+            selectedIndex = -1;
+        }
+        
+        function updateSelection() {
+            const dropdownItems = dropdown.querySelectorAll('.autocomplete-item');
+            dropdownItems.forEach((item, index) => {
+                item.classList.toggle('selected', index === selectedIndex);
+            });
+        }
+        
+        function selectItem(item) {
+            input.value = item.texto_display;
+            hiddenInput.value = item.id;
+            isValidSelection = true;
+            
+            // Aplicar estilos de éxito
+            input.style.borderColor = '#10b981'; // Verde para indicar éxito
+            input.style.backgroundColor = '#f0fdf4'; // Fondo verde claro
+            
+            hideDropdown();
+            
+            // Llamar callback si existe
+            if (config.onSelect) {
+                config.onSelect(item);
+            }
+        }
+    }
 });
 </script>
 {% endblock %}
