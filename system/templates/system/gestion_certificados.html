@@ -20,8 +20,7 @@
         <table class="min-w-full bg-rcm-white">
           <thead>
             <tr class="bg-rcm-navy text-rcm-white">
-              <th class="py-3 px-4 text-left font-semibold rounded-tl-lg">ID</th>
-              <th class="py-3 px-4 text-left font-semibold">Código</th>
+              <th class="py-3 px-4 text-left font-semibold rounded-tl-lg">Código</th>
               <th class="py-3 px-4 text-left font-semibold">Cliente</th>
               <th class="py-3 px-4 text-left font-semibold">Empresa</th>
               <th class="py-3 px-4 text-left font-semibold">Curso</th>
@@ -33,7 +32,6 @@
           <tbody class="divide-y divide-gray-200">
             {% for c in certificados %}
             <tr class="hover:bg-rcm-blue-light/10 transition-colors">
-              <td class="py-3 px-4 text-rcm-navy">{{ c.id }}</td>
               <td class="py-3 px-4 text-rcm-navy font-medium">{{ c.cert_code }}</td>
               <td class="py-3 px-4 text-rcm-navy">{{ c.usuario.first_name }} {{ c.usuario.last_name }}</td>              
               <td class="py-3 px-4 text-rcm-navy">
@@ -69,7 +67,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="8" class="py-8 text-center text-rcm-blue-medium italic">No hay certificados registrados.</td>
+              <td colspan="7" class="py-8 text-center text-rcm-blue-medium italic">No hay certificados registrados.</td>
             </tr>
             {% endfor %}
           </tbody>
