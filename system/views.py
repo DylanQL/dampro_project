@@ -325,6 +325,7 @@ def add_certificado(request):
         usuario_id = request.POST.get('usuario_id')
         course_id  = request.POST.get('course_id')
         horas      = request.POST.get('chronological_hours', '0').strip() or '0'
+        creation_date = request.POST.get('creation_date')
 
         usuario = get_object_or_404(Usuario, pk=int(usuario_id))
         course  = get_object_or_404(Course,  pk=int(course_id))
@@ -335,14 +336,25 @@ def add_certificado(request):
         # Obtener automáticamente la empresa del usuario
         empresa = usuario.empresa
         
-        # Crear el certificado con la fecha automática y la empresa del usuario
-        Certificate.objects.create(
+        # Crear el certificado
+        certificado = Certificate(
             usuario=usuario,
             course=course,
             empresa=empresa,
             chronological_hours=int(horas),
             cert_code=cert_code
         )
+        
+        # Establecer la fecha si se proporcionó una personalizada
+        if creation_date:
+            from datetime import datetime
+            try:
+                certificado.creation_date = datetime.strptime(creation_date, '%Y-%m-%dT%H:%M')
+            except ValueError:
+                # Si hay un problema con el formato, usar la fecha actual (valor por defecto)
+                pass
+        
+        certificado.save()
         return redirect('system:gestion_certificados')
 
     usuarios = Usuario.objects.all()
