@@ -314,7 +314,7 @@ def edit_curso(request, pk):
 
 @login_required
 def gestion_certificados(request):
-    certificados = Certificate.objects.select_related('usuario', 'course', 'empresa').all()
+    certificados = Certificate.objects.select_related('usuario', 'course', 'empresa').all().order_by('-creation_date')
     return render(request, 'system/gestion_certificados.html', {
         'certificados': certificados
     })
