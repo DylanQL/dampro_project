@@ -48,9 +48,50 @@
         </table>
       </div>
       
+      <!-- Paginación -->
+      {% if empresas.has_other_pages %}
+      <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+        <div class="text-sm text-gray-600 mb-4 sm:mb-0">
+          Mostrando {{ empresas.start_index }} - {{ empresas.end_index }} de {{ empresas.paginator.count }} empresas
+        </div>
+        
+        <nav class="flex items-center space-x-2">
+          {% if empresas.has_previous %}
+            <a href="?page=1" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ««
+            </a>
+            <a href="?page={{ empresas.previous_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ‹
+            </a>
+          {% endif %}
+
+          {% for num in empresas.paginator.page_range %}
+            {% if empresas.number == num %}
+              <span class="px-3 py-2 text-sm font-medium text-white bg-rcm-navy border border-rcm-navy rounded-md">
+                {{ num }}
+              </span>
+            {% elif num > empresas.number|add:'-3' and num < empresas.number|add:'3' %}
+              <a href="?page={{ num }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                {{ num }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          {% if empresas.has_next %}
+            <a href="?page={{ empresas.next_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ›
+            </a>
+            <a href="?page={{ empresas.paginator.num_pages }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              »»
+            </a>
+          {% endif %}
+        </nav>
+      </div>
+      {% endif %}
+      
       <div class="mt-6 flex justify-end">
         <div class="text-sm text-gray-600">
-          Total de empresas: <span class="font-semibold">{{ empresas|length }}</span>
+          Total de empresas: <span class="font-semibold">{{ empresas.paginator.count }}</span>
         </div>
       </div>
     </div>

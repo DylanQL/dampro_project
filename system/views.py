@@ -173,6 +173,8 @@ def logout_view(request):
 
 @login_required
 def gestion_usuarios(request):
+    from django.core.paginator import Paginator
+    
     # Obtener todas las empresas para el filtro
     empresas = Empresa.objects.all()
     
@@ -181,16 +183,21 @@ def gestion_usuarios(request):
     
     if empresa_id and empresa_id.isdigit() and int(empresa_id) > 0:
         # Filtrar por empresa específica y solo usuarios tipo Empleado
-        usuarios = Usuario.objects.filter(empresa_id=int(empresa_id), user_type="Empleado")
+        usuarios_list = Usuario.objects.filter(empresa_id=int(empresa_id), user_type="Empleado")
         empresa_seleccionada = int(empresa_id)
     elif empresa_id == 'sin_empresa':
         # Filtrar usuarios sin empresa asignada y solo usuarios tipo Empleado
-        usuarios = Usuario.objects.filter(empresa__isnull=True, user_type="Empleado")
+        usuarios_list = Usuario.objects.filter(empresa__isnull=True, user_type="Empleado")
         empresa_seleccionada = 'sin_empresa'
     else:
         # Mostrar todos los usuarios tipo Empleado si no hay filtro o si es "todos"
-        usuarios = Usuario.objects.filter(user_type="Empleado")
+        usuarios_list = Usuario.objects.filter(user_type="Empleado")
         empresa_seleccionada = 'todos'
+    
+    # Aplicar paginación
+    paginator = Paginator(usuarios_list, 10)  # 10 usuarios por página
+    page_number = request.GET.get('page')
+    usuarios = paginator.get_page(page_number)
     
     return render(request, 'system/gestion_usuarios.html', {
         'usuarios': usuarios,
@@ -278,7 +285,14 @@ def edit_usuario(request, pk):
 
 @login_required
 def gestion_cursos(request):
-    cursos = Course.objects.all()
+    from django.core.paginator import Paginator
+    
+    cursos_list = Course.objects.all()
+    paginator = Paginator(cursos_list, 10)  # 10 cursos por página
+    
+    page_number = request.GET.get('page')
+    cursos = paginator.get_page(page_number)
+    
     return render(request, 'system/gestion_cursos.html', {
         'cursos': cursos
     })
@@ -314,7 +328,14 @@ def edit_curso(request, pk):
 
 @login_required
 def gestion_certificados(request):
-    certificados = Certificate.objects.select_related('usuario', 'course', 'empresa').all().order_by('-creation_date')
+    from django.core.paginator import Paginator
+    
+    certificados_list = Certificate.objects.select_related('usuario', 'course', 'empresa').all().order_by('-creation_date')
+    paginator = Paginator(certificados_list, 10)  # 10 certificados por página
+    
+    page_number = request.GET.get('page')
+    certificados = paginator.get_page(page_number)
+    
     return render(request, 'system/gestion_certificados.html', {
         'certificados': certificados
     })
@@ -512,7 +533,14 @@ def gestion_empresas(request):
     Página para gestionar las empresas.
     Muestra todas las empresas registradas.
     """
-    empresas = Empresa.objects.all()
+    from django.core.paginator import Paginator
+    
+    empresas_list = Empresa.objects.all()
+    paginator = Paginator(empresas_list, 10)  # 10 empresas por página
+    
+    page_number = request.GET.get('page')
+    empresas = paginator.get_page(page_number)
+    
     return render(request, 'system/gestion_empresas.html', {
         'empresas': empresas
     })

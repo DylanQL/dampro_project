@@ -103,8 +103,50 @@
             {% endfor %}
           {% endif %}
         </div>
+        
+        <!-- Paginación -->
+        {% if usuarios.has_other_pages %}
+        <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+          <div class="text-sm text-gray-600 mb-4 sm:mb-0">
+            Mostrando {{ usuarios.start_index }} - {{ usuarios.end_index }} de {{ usuarios.paginator.count }} clientes
+          </div>
+          
+          <nav class="flex items-center space-x-2">
+            {% if usuarios.has_previous %}
+              <a href="?{% if empresa_seleccionada != 'todos' %}empresa_id={{ empresa_seleccionada }}&{% endif %}page=1" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                ««
+              </a>
+              <a href="?{% if empresa_seleccionada != 'todos' %}empresa_id={{ empresa_seleccionada }}&{% endif %}page={{ usuarios.previous_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                ‹
+              </a>
+            {% endif %}
+
+            {% for num in usuarios.paginator.page_range %}
+              {% if usuarios.number == num %}
+                <span class="px-3 py-2 text-sm font-medium text-white bg-rcm-navy border border-rcm-navy rounded-md">
+                  {{ num }}
+                </span>
+              {% elif num > usuarios.number|add:'-3' and num < usuarios.number|add:'3' %}
+                <a href="?{% if empresa_seleccionada != 'todos' %}empresa_id={{ empresa_seleccionada }}&{% endif %}page={{ num }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                  {{ num }}
+                </a>
+              {% endif %}
+            {% endfor %}
+
+            {% if usuarios.has_next %}
+              <a href="?{% if empresa_seleccionada != 'todos' %}empresa_id={{ empresa_seleccionada }}&{% endif %}page={{ usuarios.next_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                ›
+              </a>
+              <a href="?{% if empresa_seleccionada != 'todos' %}empresa_id={{ empresa_seleccionada }}&{% endif %}page={{ usuarios.paginator.num_pages }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                »»
+              </a>
+            {% endif %}
+          </nav>
+        </div>
+        {% endif %}
+        
         <div class="text-sm text-gray-600">
-          Total de clientes: <span class="font-semibold">{{ usuarios|length }}</span>
+          Total de clientes: <span class="font-semibold">{{ usuarios.paginator.count }}</span>
         </div>
       </div>
     </div>

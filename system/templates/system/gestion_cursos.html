@@ -53,9 +53,50 @@
         </table>
       </div>
       
+      <!-- Paginación -->
+      {% if cursos.has_other_pages %}
+      <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+        <div class="text-sm text-rcm-blue-medium mb-4 sm:mb-0">
+          Mostrando {{ cursos.start_index }} - {{ cursos.end_index }} de {{ cursos.paginator.count }} cursos
+        </div>
+        
+        <nav class="flex items-center space-x-2">
+          {% if cursos.has_previous %}
+            <a href="?page=1" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ««
+            </a>
+            <a href="?page={{ cursos.previous_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ‹
+            </a>
+          {% endif %}
+
+          {% for num in cursos.paginator.page_range %}
+            {% if cursos.number == num %}
+              <span class="px-3 py-2 text-sm font-medium text-white bg-rcm-navy border border-rcm-navy rounded-md">
+                {{ num }}
+              </span>
+            {% elif num > cursos.number|add:'-3' and num < cursos.number|add:'3' %}
+              <a href="?page={{ num }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                {{ num }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          {% if cursos.has_next %}
+            <a href="?page={{ cursos.next_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ›
+            </a>
+            <a href="?page={{ cursos.paginator.num_pages }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              »»
+            </a>
+          {% endif %}
+        </nav>
+      </div>
+      {% endif %}
+      
       <div class="mt-6 flex justify-end">
         <div class="text-sm text-rcm-blue-medium">
-          Total de cursos: <span class="font-semibold">{{ cursos|length }}</span>
+          Total de cursos: <span class="font-semibold">{{ cursos.paginator.count }}</span>
         </div>
       </div>
     </div>

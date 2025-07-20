@@ -74,9 +74,50 @@
         </table>
       </div>
 
+      <!-- Paginación -->
+      {% if certificados.has_other_pages %}
+      <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+        <div class="text-sm text-rcm-blue-medium mb-4 sm:mb-0">
+          Mostrando {{ certificados.start_index }} - {{ certificados.end_index }} de {{ certificados.paginator.count }} certificados
+        </div>
+        
+        <nav class="flex items-center space-x-2">
+          {% if certificados.has_previous %}
+            <a href="?page=1" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ««
+            </a>
+            <a href="?page={{ certificados.previous_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ‹
+            </a>
+          {% endif %}
+
+          {% for num in certificados.paginator.page_range %}
+            {% if certificados.number == num %}
+              <span class="px-3 py-2 text-sm font-medium text-white bg-rcm-navy border border-rcm-navy rounded-md">
+                {{ num }}
+              </span>
+            {% elif num > certificados.number|add:'-3' and num < certificados.number|add:'3' %}
+              <a href="?page={{ num }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                {{ num }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          {% if certificados.has_next %}
+            <a href="?page={{ certificados.next_page_number }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              ›
+            </a>
+            <a href="?page={{ certificados.paginator.num_pages }}" class="px-3 py-2 text-sm font-medium text-rcm-blue-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              »»
+            </a>
+          {% endif %}
+        </nav>
+      </div>
+      {% endif %}
+
       <div class="mt-6 flex justify-end">
         <div class="text-sm text-rcm-blue-medium">
-          Total de certificados: <span class="font-semibold">{{ certificados|length }}</span>
+          Total de certificados: <span class="font-semibold">{{ certificados.paginator.count }}</span>
         </div>
       </div>
     </div>
