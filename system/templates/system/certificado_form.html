@@ -162,6 +162,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
     let items = [];
     let isValidSelection = false;
     
+    // Verificar si es modo edición y el campo ya tiene valores precargados
+    const isEditMode = {% if action == 'edit' %}true{% else %}false{% endif %};
+    if (isEditMode && input.value && hiddenInput.value) {
+      isValidSelection = true;
+      input.style.borderColor = '#10b981';
+      input.style.backgroundColor = '#f0fdf4';
+    }
+    
     input.placeholder = config.placeholder;
     
     // Event listener para input
@@ -200,7 +208,17 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
     input.addEventListener('blur', function() {
       // Usar setTimeout para permitir que el click en dropdown funcione
       setTimeout(() => {
-        if (!isValidSelection && this.value.trim() !== '') {
+        // En modo edición, si el campo tiene valor y hiddenInput tiene valor, es válido
+        const currentInputValue = this.value.trim();
+        const currentHiddenValue = hiddenInput.value.trim();
+        
+        // Si hay valor en ambos campos, asumir que es una selección válida (útil para modo edición)
+        if (currentInputValue !== '' && currentHiddenValue !== '') {
+          isValidSelection = true;
+          this.style.borderColor = '#10b981';
+          this.style.backgroundColor = '#f0fdf4';
+          removeErrorMessage(this);
+        } else if (!isValidSelection && currentInputValue !== '') {
           // Si no hay selección válida y hay texto, limpiar el campo
           this.value = '';
           hiddenInput.value = '';
@@ -209,7 +227,7 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
           
           // Mostrar mensaje de error temporal
           showErrorMessage(this, 'Debe seleccionar una opción válida de la lista');
-        } else if (this.value.trim() === '') {
+        } else if (currentInputValue === '') {
           // Si el campo está vacío, resetear estilos
           this.style.borderColor = '';
           this.style.backgroundColor = '';
