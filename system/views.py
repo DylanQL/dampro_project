@@ -225,8 +225,18 @@ def add_usuario(request):
         utype = "Empleado"
         empresa_id = request.POST.get('empresa_id', '')
 
+        # Validar que el número de documento no esté vacío
+        if not numero_documento:
+            empresas = Empresa.objects.all()
+            return render(request, 'system/usuario_form.html', {
+                'user': user,
+                'action': 'add',
+                'usuario': None,
+                'empresas': empresas,
+                'error_message': 'El número de documento es obligatorio.'
+            })
         # Comprobar si el número de documento ya existe
-        if numero_documento and Usuario.objects.filter(numero_documento=numero_documento).exists():
+        if Usuario.objects.filter(numero_documento=numero_documento).exists():
             empresas = Empresa.objects.all()
             return render(request, 'system/usuario_form.html', {
                 'user': user,
@@ -274,9 +284,21 @@ def edit_usuario(request, pk):
         usuario.first_name       = request.POST.get('first_name', usuario.first_name).strip()
         usuario.last_name        = request.POST.get('last_name', usuario.last_name).strip()
         usuario.second_last_name = request.POST.get('second_last_name', usuario.second_last_name).strip() or None
-        usuario.numero_documento = request.POST.get('numero_documento', usuario.numero_documento).strip() or None
+        numero_documento         = request.POST.get('numero_documento', usuario.numero_documento).strip() or None
         usuario.tipo_documento   = request.POST.get('tipo_documento', usuario.tipo_documento).strip() or 'DNI'
         usuario.user_type        = request.POST.get('user_type', usuario.user_type).strip()
+        
+        # Validar que el número de documento no esté vacío
+        if not numero_documento:
+            empresas = Empresa.objects.all()
+            return render(request, 'system/usuario_form.html', {
+                'user': user,
+                'action': 'edit',
+                'usuario': usuario,
+                'empresas': empresas,
+                'error_message': 'El número de documento es obligatorio.'
+            })
+        usuario.numero_documento = numero_documento
         
         # Actualizar la relación con la empresa
         empresa_id = request.POST.get('empresa_id', '')
