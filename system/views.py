@@ -405,7 +405,7 @@ def add_certificado(request):
     
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
-        program_id  = request.POST.get('course_id')  # Mantenemos el nombre del campo para compatibilidad
+        program_id  = request.POST.get('program_id')  # Cambiado de course_id a program_id para coincidir con el formulario
         horas      = request.POST.get('chronological_hours', '0').strip() or '0'
         creation_date = request.POST.get('creation_date')
 
@@ -518,7 +518,7 @@ def edit_certificado(request, pk):
     certificado = get_object_or_404(Certificate, pk=pk)
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
-        program_id = request.POST.get('course_id')  # Mantenemos el nombre del campo para compatibilidad
+        program_id = request.POST.get('program_id')  # Cambiado de course_id a program_id para coincidir con el formulario
         empresa_id = request.POST.get('empresa_id')
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
         creation_date = request.POST.get('creation_date')
