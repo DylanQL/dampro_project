@@ -186,7 +186,7 @@
                 {{ certificado.usuario.first_name }}
             </div>                <!-- Descripción del programa -->
 <div class="descripcion-programa">
-Por haber participado en la Capacitación de "<span class="programa-name">{{ certificado.program.name }}</span>", 
+Por haber participado {% if certificado.program.program_type == "Capacitación" %}en la{% else %}en el{% endif %} <strong>{{ certificado.program.program_type }}</strong> de "<span class="programa-name">{{ certificado.program.name }}</span>", 
                 realizada por la consultora <span class="empresa-name">RCM Solutions S.A.C.</span>, 
                 {% if certificado.empresa %}
                 desarrollada de manera virtual a los trabajadores de la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,
