@@ -168,41 +168,52 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
     
     // Precargar valores existentes en modo edición
     {% if action == 'edit' and certificado %}
-      // Usar setTimeout para asegurar que los elementos existan
-      setTimeout(() => {
+      setTimeout(function() {
         // Precargar usuario
         const usuarioDisplay = document.getElementById('usuario_display');
         const usuarioId = document.getElementById('usuario_id');
         if (usuarioDisplay && usuarioId) {
           usuarioDisplay.value = '{{ certificado.usuario.first_name }} {{ certificado.usuario.last_name }}{% if certificado.usuario.empresa %} - {{ certificado.usuario.empresa.nombre }}{% else %} - Sin empresa asignada{% endif %}';
           usuarioId.value = '{{ certificado.usuario.id }}';
-          // Aplicar estilos de éxito
           usuarioDisplay.style.borderColor = '#10b981';
           usuarioDisplay.style.backgroundColor = '#f0fdf4';
         }
-        
+
         // Precargar programa
         const programaDisplay = document.getElementById('programa_display');
         const programaId = document.getElementById('program_id');
         if (programaDisplay && programaId) {
           programaDisplay.value = '{{ certificado.program.name }} - ({{ certificado.program.hours }} horas)';
           programaId.value = '{{ certificado.program.id }}';
-          // Aplicar estilos de éxito
           programaDisplay.style.borderColor = '#10b981';
           programaDisplay.style.backgroundColor = '#f0fdf4';
         }
-        
+
+        // Precargar tipo de programa y activar botón
+        const tipoFiltroInput = document.getElementById('tipo_programa_filtro');
+        const tipoBtns = document.querySelectorAll('.tipo-btn');
+        const tipo = '{{ certificado.program.program_type|escapejs }}';
+        tipoFiltroInput.value = tipo;
+        tipoBtns.forEach(function(btn) {
+          if (btn.dataset.tipo === tipo) {
+            btn.classList.add('bg-yellow-300', 'text-black');
+          } else {
+            btn.classList.remove('bg-yellow-300', 'text-black');
+          }
+        });
+        // Habilitar el input de programa
+        programaDisplay.disabled = false;
+
         // Precargar empresa (si existe)
         {% if certificado.empresa %}
-          const empresaDisplay = document.getElementById('empresa_display');
-          const empresaId = document.getElementById('empresa_id');
-          if (empresaDisplay && empresaId) {
-            empresaDisplay.value = '{{ certificado.empresa.nombre }} - RUC: {{ certificado.empresa.ruc }}';
-            empresaId.value = '{{ certificado.empresa.id }}';
-            // Aplicar estilos de éxito
-            empresaDisplay.style.borderColor = '#10b981';
-            empresaDisplay.style.backgroundColor = '#f0fdf4';
-          }
+        const empresaDisplay = document.getElementById('empresa_display');
+        const empresaId = document.getElementById('empresa_id');
+        if (empresaDisplay && empresaId) {
+          empresaDisplay.value = '{{ certificado.empresa.nombre }} - RUC: {{ certificado.empresa.ruc }}';
+          empresaId.value = '{{ certificado.empresa.id }}';
+          empresaDisplay.style.borderColor = '#10b981';
+          empresaDisplay.style.backgroundColor = '#f0fdf4';
+        }
         {% endif %}
       }, 100);
     {% endif %}
