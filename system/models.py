@@ -10,7 +10,8 @@ class Usuario(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     second_last_name = models.CharField(max_length=100, blank=True, null=True)
-    dni = models.CharField(max_length=8, unique=True, null=True, blank=True)  # DNI peruano estándar de 8 dígitos
+    numero_documento = models.CharField(max_length=12, unique=True, null=True, blank=True)  # Número de documento (DNI o CE)
+    tipo_documento = models.CharField(max_length=20, null=True)  # Tipo de documento
     user_type = models.CharField(max_length=50)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='usuarios', null=True, blank=True)
 

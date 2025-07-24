@@ -48,7 +48,7 @@
           <thead>
             <tr class="bg-rcm-navy text-white">
               <th class="py-3 px-4 text-left font-medium rounded-tl-lg">Clientes</th>
-              <th class="py-3 px-4 text-left font-medium">DNI</th>
+              <th class="py-3 px-4 text-left font-medium">DNI / CE</th>
               <th class="py-3 px-4 text-left font-medium">Empresa</th>
               <th class="py-3 px-4 text-right font-medium rounded-tr-lg">Acciones</th>
             </tr>
@@ -58,8 +58,8 @@
             <tr class="hover:bg-rcm-blue-light/10">
               <td class="py-3 px-4 text-gray-700 font-medium">{{ u.first_name }} {{ u.last_name }} {{ u.second_last_name }}</td>
               <td class="py-3 px-4 text-gray-700">
-                {% if u.dni %}
-                  {{ u.dni }}
+                {% if u.numero_documento %}
+                  <span class="font-semibold">{{ u.tipo_documento }}</span> — {{ u.numero_documento }}
                 {% else %}
                   <span class="text-gray-400">-</span>
                 {% endif %}

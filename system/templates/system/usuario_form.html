@@ -102,29 +102,56 @@
         {% endif %}
 
         <div class="space-y-2">
-          <label for="dni" class="block text-sm font-medium text-rcm-navy">DNI:</label>
+          <label for="tipo_documento" class="block text-sm font-medium text-rcm-navy">Tipo de documento:</label>
+          <select name="tipo_documento" id="tipo_documento" class="w-full p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black" required>
+            <option value="DNI" {% if usuario.tipo_documento == 'DNI' or not usuario.tipo_documento %}selected{% endif %}>DNI</option>
+            <option value="CE" {% if usuario.tipo_documento == 'CE' %}selected{% endif %}>Carnet de extranjería</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label for="numero_documento" class="block text-sm font-medium text-rcm-navy">Número de documento:</label>
           <div class="flex items-center space-x-2">
             <input
               type="text"
-              name="dni"
-              id="dni"
-              value="{{ usuario.dni|default_if_none:'' }}"
+              name="numero_documento"
+              id="numero_documento"
+              value="{{ usuario.numero_documento|default_if_none:'' }}"
               class="flex-1 p-2 border border-rcm-blue-light rounded-md focus:outline-none focus:ring-2 focus:ring-rcm-gold text-rcm-black"
-              maxlength="8"
-              placeholder="Ingrese el DNI (8 dígitos)"
-              pattern="[0-9]{8}"
+              maxlength="12"
+              placeholder="Ingrese el número de documento"
             />
             <button 
               type="button" 
-              id="buscar-dni" 
+              id="buscar-documento" 
               class="bg-rcm-blue-medium text-white py-2 px-4 rounded-md font-medium hover:bg-rcm-blue-dark transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Buscar
             </button>
           </div>
-          <p class="text-xs text-rcm-blue-medium">Ingrese el DNI y presione "Buscar" para completar automáticamente los datos.</p>
-          <div id="dniMessage" class="text-sm mt-1 hidden"></div>
+          <p class="text-xs text-rcm-blue-medium" id="documento-help">Seleccione el tipo de documento. Si es DNI, puede buscar automáticamente. Si es CE, ingrese los datos manualmente.</p>
+          <div id="documentoMessage" class="text-sm mt-1 hidden"></div>
         </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var tipoDoc = document.getElementById('tipo_documento');
+          var buscarBtn = document.getElementById('buscar-documento');
+          var helpText = document.getElementById('documento-help');
+          tipoDoc.addEventListener('change', function() {
+            if (tipoDoc.value === 'CE') {
+              buscarBtn.disabled = true;
+              helpText.textContent = 'Con CE, ingrese todos los datos manualmente.';
+            } else {
+              buscarBtn.disabled = false;
+              helpText.textContent = 'Ingrese el DNI y presione "Buscar" para completar automáticamente los datos.';
+            }
+          });
+          // Inicializar estado
+          if (tipoDoc.value === 'CE') {
+            buscarBtn.disabled = true;
+            helpText.textContent = 'Con CE, ingrese todos los datos manualmente.';
+          }
+        });
+        </script>
 
         <div class="space-y-2">
           <label for="first_name" class="block text-sm font-medium text-rcm-navy">Nombres:</label>
@@ -198,57 +225,53 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const dniInput = document.getElementById('dni');
-    const btnBuscarDni = document.getElementById('buscar-dni');
-    const dniMessage = document.getElementById('dniMessage');
+    const tipoDoc = document.getElementById('tipo_documento');
+    const numeroDocInput = document.getElementById('numero_documento');
+    const btnBuscarDoc = document.getElementById('buscar-documento');
+    const docMessage = document.getElementById('documentoMessage');
     const firstNameInput = document.getElementById('first_name');
     const lastNameInput = document.getElementById('last_name');
     const secondLastNameInput = document.getElementById('second_last_name');
 
-    // Permitir solo números en el campo DNI
-    dniInput.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        if (e.target.value.length > 8) {
-            e.target.value = e.target.value.slice(0, 8);
+    // Permitir solo números y longitud 8 si es DNI
+    numeroDocInput.addEventListener('input', function(e) {
+        if (tipoDoc.value === 'DNI') {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            if (e.target.value.length > 8) {
+                e.target.value = e.target.value.slice(0, 8);
+            }
         }
         hideMessage();
     });
 
     // Función para mostrar mensajes
     function showMessage(text, isError = false) {
-        dniMessage.textContent = text;
-        dniMessage.classList.remove('hidden', 'text-green-600', 'text-red-600');
-        dniMessage.classList.add(isError ? 'text-red-600' : 'text-green-600');
+        docMessage.textContent = text;
+        docMessage.classList.remove('hidden', 'text-green-600', 'text-red-600');
+        docMessage.classList.add(isError ? 'text-red-600' : 'text-green-600');
     }
 
     // Función para ocultar mensajes
     function hideMessage() {
-        dniMessage.classList.add('hidden');
+        docMessage.classList.add('hidden');
     }
 
     // Función para buscar DNI
-    btnBuscarDni.addEventListener('click', function() {
-        const dni = dniInput.value.trim();
-        
+    btnBuscarDoc.addEventListener('click', function() {
+        if (tipoDoc.value !== 'DNI') return;
+        const dni = numeroDocInput.value.trim();
         if (!dni) {
             showMessage('Por favor, ingrese un DNI.', true);
             return;
         }
-        
         if (dni.length !== 8) {
             showMessage('El DNI debe tener exactamente 8 dígitos.', true);
             return;
         }
-
-        // Deshabilitar botón y mostrar estado de carga
-        btnBuscarDni.disabled = true;
-        btnBuscarDni.textContent = 'Buscando...';
+        btnBuscarDoc.disabled = true;
+        btnBuscarDoc.textContent = 'Buscando...';
         hideMessage();
-
-        // Obtener token CSRF
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        // Realizar petición AJAX
         fetch('{% url "system:buscar_dni" %}', {
             method: 'POST',
             headers: {
@@ -262,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.error) {
                 showMessage(data.error, true);
             } else {
-                // Completar automáticamente los campos
                 firstNameInput.value = data.nombres || '';
                 lastNameInput.value = data.apellido_paterno || '';
                 secondLastNameInput.value = data.apellido_materno || '';
@@ -274,17 +296,16 @@ document.addEventListener('DOMContentLoaded', function() {
             showMessage('Error de conexión. Intente nuevamente.', true);
         })
         .finally(() => {
-            // Rehabilitar botón
-            btnBuscarDni.disabled = false;
-            btnBuscarDni.textContent = 'Buscar';
+            btnBuscarDoc.disabled = false;
+            btnBuscarDoc.textContent = 'Buscar';
         });
     });
 
-    // Permitir búsqueda con Enter en el campo DNI
-    dniInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
+    // Permitir búsqueda con Enter en el campo número de documento si es DNI
+    numeroDocInput.addEventListener('keypress', function(e) {
+        if (tipoDoc.value === 'DNI' && e.key === 'Enter') {
             e.preventDefault();
-            btnBuscarDni.click();
+            btnBuscarDoc.click();
         }
     });
 
