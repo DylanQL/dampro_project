@@ -1050,16 +1050,15 @@ def api_buscar_programas(request):
     """
     if request.method == 'GET':
         query = request.GET.get('q', '').strip()
-        
-        # Si no hay query o es muy corto, devolver todos los programas (para mostrar lista completa)
-        if len(query) < 2:
-            programas = TrainingProgram.objects.all()[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
+        tipo = request.GET.get('tipo', '').strip()
+        programas_qs = TrainingProgram.objects.all()
+        if tipo:
+            programas_qs = programas_qs.filter(program_type__iexact=tipo)
+        if len(query) >= 2:
+            programas_qs = programas_qs.filter(name__icontains=query)
+            programas = programas_qs[:10]
         else:
-            # Buscar programas que coincidan con el query en nombre
-            programas = TrainingProgram.objects.filter(
-                name__icontains=query
-            )[:10]  # Limitar a 10 resultados cuando se filtra
-        
+            programas = programas_qs[:20]
         programas_data = []
         for programa in programas:
             programas_data.append({
@@ -1069,9 +1068,7 @@ def api_buscar_programas(request):
                 'program_type': programa.program_type,
                 'texto_display': f"{programa.name} - {programa.program_type} ({programa.hours} horas)"
             })
-        
         return JsonResponse({'programas': programas_data})
-    
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 @login_required 

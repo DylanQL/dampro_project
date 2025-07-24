@@ -116,12 +116,31 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       }
     });
     
+    // Botones de tipo de programa
+    const tipoBtns = document.querySelectorAll('.tipo-btn');
+    const tipoFiltroInput = document.getElementById('tipo_programa_filtro');
+    const programaInput = document.getElementById('programa_display');
+    tipoBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tipoBtns.forEach(b => b.classList.remove('bg-yellow-300', 'text-black'));
+        this.classList.add('bg-yellow-300', 'text-black');
+        tipoFiltroInput.value = this.dataset.tipo;
+        programaInput.disabled = false;
+        programaInput.value = '';
+        document.getElementById('program_id').value = '';
+        programaInput.focus();
+      });
+    });
+    
     // Inicializar autocompletado para programas
     initAutocomplete({
       inputId: 'programa_display',
       hiddenInputId: 'program_id',
       apiUrl: '{% url "system:api_buscar_programas" %}',
       placeholder: 'Escriba el nombre del programa...',
+      extraParams: function() {
+        return { tipo: document.getElementById('tipo_programa_filtro').value };
+      },
       onSelect: function(item) {
         // Actualizar las horas automáticamente al seleccionar programa
         if (item.hours && horasInput) {
@@ -229,7 +248,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       
       // Hacer búsqueda incluso si el query está vacío o es muy corto
       debounceTimer = setTimeout(() => {
-        fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
+        let url = `${config.apiUrl}?q=${encodeURIComponent(query)}`;
+        if (config.extraParams) {
+          const params = config.extraParams();
+          for (const key in params) {
+            url += `&${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
+          }
+        }
+        fetch(url)
           .then(response => response.json())
           .then(data => {
             let key;
@@ -295,7 +321,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       const query = this.value.trim();
       if (query.length <= 1) {
         // Hacer una búsqueda vacía para obtener todos los resultados
-        fetch(`${config.apiUrl}?q=`)
+        let url = `${config.apiUrl}?q=`;
+        if (config.extraParams) {
+          const params = config.extraParams();
+          for (const key in params) {
+            url += `&${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
+          }
+        }
+        fetch(url)
           .then(response => response.json())
           .then(data => {
             let key;
@@ -324,7 +357,14 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         const query = this.value.trim();
         
         // Hacer búsqueda con el texto actual (o vacía si no hay texto)
-        fetch(`${config.apiUrl}?q=${encodeURIComponent(query)}`)
+        let url = `${config.apiUrl}?q=${encodeURIComponent(query)}`;
+        if (config.extraParams) {
+          const params = config.extraParams();
+          for (const key in params) {
+            url += `&${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
+          }
+        }
+        fetch(url)
           .then(response => response.json())
           .then(data => {
             let key;
@@ -582,6 +622,16 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         </div>
 
         <div class="space-y-2">
+          <label class="block text-sm font-medium text-rcm-navy">Tipo de programa:</label>
+          <div id="tipo-programa-btns" class="flex flex-row gap-4 mb-2">
+            <button type="button" class="tipo-btn bg-gray-200 px-4 py-2 rounded-md font-medium" data-tipo="Diplomado">Diplomado</button>
+            <button type="button" class="tipo-btn bg-gray-200 px-4 py-2 rounded-md font-medium" data-tipo="Curso">Curso</button>
+            <button type="button" class="tipo-btn bg-gray-200 px-4 py-2 rounded-md font-medium" data-tipo="Capacitación">Capacitación</button>
+          </div>
+          <input type="hidden" name="tipo_programa_filtro" id="tipo_programa_filtro" />
+        </div>
+
+        <div class="space-y-2">
           <label for="programa_display" class="block text-sm font-medium text-rcm-navy">Programa:</label>
           <div class="autocomplete-container">
             <input
@@ -590,6 +640,7 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
               class="autocomplete-input"
               placeholder="Escriba el nombre del programa..."
               autocomplete="off"
+              disabled
             />
             <input type="hidden" name="program_id" id="program_id" required />
           </div>
