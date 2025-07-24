@@ -325,19 +325,18 @@ def edit_usuario(request, pk):
 @login_required
 def gestion_programas(request):
     from django.core.paginator import Paginator
-    
-    # Obtener información del usuario logueado
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
-    
+    tipo = request.GET.get('tipo', '').strip()
     programas_list = TrainingProgram.objects.all()
-    paginator = Paginator(programas_list, 10)  # 10 programas por página
-    
+    if tipo:
+        programas_list = programas_list.filter(program_type__iexact=tipo)
+    paginator = Paginator(programas_list, 10)
     page_number = request.GET.get('page')
     programas = paginator.get_page(page_number)
-    
     return render(request, 'system/gestion_programas.html', {
         'user': user,
-        'programas': programas
+        'programas': programas,
+        'tipo_filtro': tipo
     })
 
 @login_required

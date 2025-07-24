@@ -6,8 +6,17 @@
 <section class="gestion-programas py-12">
   <div class="container mx-auto px-4">
     <div class="bg-rcm-white rounded-xl shadow-md p-8 max-w-6xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-rcm-navy">Gestión de Programas</h1>
+      <div class="flex flex-wrap items-center justify-between mb-4 gap-4">
+        <form method="get" class="flex flex-row gap-2 items-center">
+          <label for="tipo_filtro" class="text-sm font-medium text-rcm-navy mr-2">Filtrar por tipo:</label>
+          <select name="tipo" id="tipo_filtro" class="px-3 py-2 border border-rcm-blue-light rounded-md focus:ring-2 focus:ring-rcm-gold focus:border-transparent text-rcm-black">
+            <option value="">Todos</option>
+            <option value="Curso" {% if tipo_filtro == 'Curso' %}selected{% endif %}>Curso</option>
+            <option value="Diplomado" {% if tipo_filtro == 'Diplomado' %}selected{% endif %}>Diplomado</option>
+            <option value="Capacitación" {% if tipo_filtro == 'Capacitación' %}selected{% endif %}>Capacitación</option>
+          </select>
+          <button type="submit" class="bg-rcm-gold text-rcm-black px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition-colors">Filtrar</button>
+        </form>
         <a href="{% url 'system:add_programa' %}" class="bg-rcm-gold text-rcm-white py-2 px-4 rounded-md font-medium hover:bg-opacity-90 transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
