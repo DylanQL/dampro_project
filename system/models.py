@@ -33,3 +33,4 @@ class Certificate(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='certificates', null=True, blank=True)
     creation_date = models.DateTimeField(default=models.functions.Now)  # Se cambió de auto_now_add=True para permitir edición
     chronological_hours = models.PositiveIntegerField()
+    modality = models.CharField(max_length=50, null=True)
