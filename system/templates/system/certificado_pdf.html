@@ -189,9 +189,9 @@
 Por haber participado {% if certificado.program.program_type == "Capacitación" %}en la{% else %}en el{% endif %} <strong>{{ certificado.program.program_type }}</strong> de "<span class="programa-name">{{ certificado.program.name }}</span>", 
                 realizada por la consultora <span class="empresa-name">RCM Solutions S.A.C.</span>, 
                 {% if certificado.empresa %}
-                desarrollada de manera virtual a los trabajadores de la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,
+                desarrollada de manera {% if certificado.modality %}{{ certificado.modality|lower }}{% else %}virtual{% endif %} a los trabajadores de la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,
                 {% else %}
-                desarrollada de manera virtual, 
+                desarrollada de manera {% if certificado.modality %}{{ certificado.modality|lower }}{% else %}virtual{% endif %}, 
                 {% endif %}
                 realizado el día 
                 <span class="fecha-horas">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>, 

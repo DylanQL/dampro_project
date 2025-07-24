@@ -461,13 +461,17 @@ def add_certificado(request):
         # Obtener automáticamente la empresa del usuario
         empresa = usuario.empresa
         
+        # Obtener la modalidad seleccionada
+        modality = request.POST.get('modality')
+        
         # Crear el certificado
         certificado = Certificate(
             usuario=usuario,
             program=program,
             empresa=empresa,
             chronological_hours=int(horas),
-            cert_code=cert_code
+            cert_code=cert_code,
+            modality=modality
         )
         
         # Establecer la fecha si se proporcionó una personalizada
@@ -566,6 +570,10 @@ def edit_certificado(request, pk):
             certificado.empresa = None
         
         certificado.chronological_hours = int(horas)
+        
+        # Actualizar la modalidad
+        modality = request.POST.get('modality')
+        certificado.modality = modality
         
         # Actualizar la fecha si se proporcionó una nueva
         if creation_date:
