@@ -23,7 +23,7 @@
               <th class="py-3 px-4 text-left font-semibold rounded-tl-lg">Código</th>
               <th class="py-3 px-4 text-left font-semibold">Cliente</th>
               <th class="py-3 px-4 text-left font-semibold">Empresa</th>
-              <th class="py-3 px-4 text-left font-semibold">Curso</th>
+              <th class="py-3 px-4 text-left font-semibold">Programa</th>
               <th class="py-3 px-4 text-left font-semibold">Emitido</th>
               <th class="py-3 px-4 text-left font-semibold w-32">Horas</th>
               <th class="py-3 px-4 text-right font-semibold rounded-tr-lg">Acciones</th>
@@ -41,7 +41,7 @@
                   <span class="text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full text-xs font-medium">Sin empresa asignada</span>
                 {% endif %}
               </td>
-              <td class="py-3 px-4 text-rcm-navy">{{ c.course.name }}</td>
+              <td class="py-3 px-4 text-rcm-navy">{{ c.program.name }}</td>
               <td class="py-3 px-4 text-rcm-navy">{{ c.creation_date|date:"d/m/Y H:i" }}</td>
               <td class="py-3 px-4 w-32">
                 <span class="px-2 py-1 text-xs rounded-full bg-rcm-blue-light text-rcm-white">

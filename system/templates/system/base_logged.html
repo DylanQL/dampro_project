@@ -161,13 +161,13 @@
           <span class="font-medium">Gestión de Empresas</span>
         </a>
         
-        <!-- Gestión de Cursos -->
-        <a href="{% url 'system:gestion_cursos' %}" 
-           class="flex items-center px-4 py-3 rounded-lg {% if 'cursos' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
+        <!-- Gestión de Programas -->
+        <a href="{% url 'system:gestion_programas' %}" 
+           class="flex items-center px-4 py-3 rounded-lg {% if 'programa' in request.resolver_match.url_name %}menu-item-active{% else %}text-rcm-blue-light menu-item-hover{% endif %} sidebar-transition">
           <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
           </svg>
-          <span class="font-medium">Gestión de Cursos</span>
+          <span class="font-medium">Gestión de Programas</span>
         </a>
         
         <!-- Gestión de Certificados -->

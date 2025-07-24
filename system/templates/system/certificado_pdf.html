@@ -62,7 +62,7 @@
             font-family: 'Times New Roman', serif;
         }
         
-        .descripcion-curso {
+        .descripcion-programa {
             font-size: 16px;
             line-height: 1.6;
             color: #333;
@@ -70,7 +70,7 @@
             text-align: center;
         }
         
-        .curso-name {
+        .programa-name {
             font-weight: bold;
             color: #000957;
         }
@@ -184,9 +184,9 @@
             <div class="nombre-participante">
                 {{ certificado.usuario.last_name }} {{ certificado.usuario.second_last_name|default:"" }} 
                 {{ certificado.usuario.first_name }}
-            </div>                <!-- Descripción del curso -->
-            <div class="descripcion-curso">
-                Por haber participado en la Capacitación de "<span class="curso-name">{{ certificado.course.name }}</span>", 
+            </div>                <!-- Descripción del programa -->
+<div class="descripcion-programa">
+Por haber participado en la Capacitación de "<span class="programa-name">{{ certificado.program.name }}</span>", 
                 realizada por la consultora <span class="empresa-name">RCM Solutions S.A.C.</span>, 
                 {% if certificado.empresa %}
                 desarrollada de manera virtual a los trabajadores de la empresa <span class="empresa-name">{{ certificado.empresa.nombre }}</span>, identificada con N° de RUC <span class="empresa-name">{{ certificado.empresa.ruc }}</span>,

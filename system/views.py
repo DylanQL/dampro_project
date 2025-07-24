@@ -89,8 +89,8 @@ def servicios(request):
 def contactanos(request):
     return render(request, 'system/contactanos.html')
 
-def cursos(request):
-    return render(request, 'system/cursos.html')
+def programas(request):
+    return render(request, 'system/programas.html')
 
 def certificados(request):
     """
@@ -112,7 +112,7 @@ def certificado_detail(request, cert_code):
     mes_espanol = None
     
     try:
-        certificado = Certificate.objects.select_related('usuario', 'course', 'empresa').get(cert_code=cert_code)
+        certificado = Certificate.objects.select_related('usuario', 'program', 'empresa').get(cert_code=cert_code)
         # Obtener el mes en español completo
         if certificado:
             mes_numero = certificado.creation_date.month
@@ -156,14 +156,14 @@ def home_logged(request):
     # Count the records for dashboard display
     usuarios_count = Usuario.objects.filter(user_type="Empleado").count()
     empresas_count = Empresa.objects.count()
-    cursos_count = Course.objects.count()
+    programas_count = TrainingProgram.objects.count()
     certificados_count = Certificate.objects.count()
     
     return render(request, 'system/home_logged.html', {
         'user': user,
         'usuarios_count': usuarios_count,
         'empresas_count': empresas_count,
-        'cursos_count': cursos_count,
+        'programas_count': programas_count,
         'certificados_count': certificados_count
     })
 
@@ -323,57 +323,60 @@ def edit_usuario(request, pk):
 
 
 @login_required
-def gestion_cursos(request):
+def gestion_programas(request):
     from django.core.paginator import Paginator
     
     # Obtener información del usuario logueado
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
     
-    cursos_list = Course.objects.all()
-    paginator = Paginator(cursos_list, 10)  # 10 cursos por página
+    programas_list = TrainingProgram.objects.all()
+    paginator = Paginator(programas_list, 10)  # 10 programas por página
     
     page_number = request.GET.get('page')
-    cursos = paginator.get_page(page_number)
+    programas = paginator.get_page(page_number)
     
-    return render(request, 'system/gestion_cursos.html', {
+    return render(request, 'system/gestion_programas.html', {
         'user': user,
-        'cursos': cursos
+        'programas': programas
     })
 
 @login_required
-def add_curso(request):
+def add_programa(request):
     # Obtener información del usuario logueado
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
     
     if request.method == 'POST':
         name  = request.POST.get('name', '').strip()
-        hours = request.POST.get('course_hours', '0').strip()
-        Course.objects.create(
+        hours = request.POST.get('hours', '0').strip()
+        program_type = request.POST.get('program_type', '').strip()
+        TrainingProgram.objects.create(
             name=name,
-            course_hours=int(hours)
+            hours=int(hours),
+            program_type=program_type
         )
-        return redirect('system:gestion_cursos')
-    return render(request, 'system/curso_form.html', {
+        return redirect('system:gestion_programas')
+    return render(request, 'system/programa_form.html', {
         'user': user,
         'action': 'add',
-        'curso': None
+        'programa': None
     })
 
 @login_required
-def edit_curso(request, pk):
+def edit_programa(request, pk):
     # Obtener información del usuario logueado
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
     
-    curso = Course.objects.get(pk=pk)
+    programa = TrainingProgram.objects.get(pk=pk)
     if request.method == 'POST':
-        curso.name = request.POST.get('name', curso.name).strip()
-        curso.course_hours = int(request.POST.get('course_hours', curso.course_hours))
-        curso.save()
-        return redirect('system:gestion_cursos')
-    return render(request, 'system/curso_form.html', {
+        programa.name = request.POST.get('name', programa.name).strip()
+        programa.hours = int(request.POST.get('hours', programa.hours))
+        programa.program_type = request.POST.get('program_type', programa.program_type).strip()
+        programa.save()
+        return redirect('system:gestion_programas')
+    return render(request, 'system/programa_form.html', {
         'user': user,
         'action': 'edit',
-        'curso': curso
+        'programa': programa
     })
 
 
@@ -384,7 +387,7 @@ def gestion_certificados(request):
     # Obtener información del usuario logueado
     user = UserAccount.objects.select_related('usuario').get(pk=request.session['user_id'])
     
-    certificados_list = Certificate.objects.select_related('usuario', 'course', 'empresa').all().order_by('-creation_date')
+    certificados_list = Certificate.objects.select_related('usuario', 'program', 'empresa').all().order_by('-creation_date')
     paginator = Paginator(certificados_list, 10)  # 10 certificados por página
     
     page_number = request.GET.get('page')
@@ -402,14 +405,14 @@ def add_certificado(request):
     
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
-        course_id  = request.POST.get('course_id')
+        program_id  = request.POST.get('course_id')  # Mantenemos el nombre del campo para compatibilidad
         horas      = request.POST.get('chronological_hours', '0').strip() or '0'
         creation_date = request.POST.get('creation_date')
 
         # Validaciones de seguridad
-        if not usuario_id or not course_id:
+        if not usuario_id or not program_id:
             usuarios = Usuario.objects.all()
-            cursos   = Course.objects.all()
+            programas = TrainingProgram.objects.all()
             empresas = Empresa.objects.all()
             
             from django.utils import timezone
@@ -422,18 +425,18 @@ def add_certificado(request):
                 'action': 'add',
                 'certificado': None,
                 'usuarios': usuarios,
-                'cursos': cursos,
+                'programas': programas,
                 'empresas': empresas,
                 'fecha_actual': fecha_actual_peru,
-                'error_message': 'Debe seleccionar un cliente y un curso válidos.'
+                'error_message': 'Debe seleccionar un cliente y un programa válidos.'
             })
 
         try:
             usuario = get_object_or_404(Usuario, pk=int(usuario_id), user_type="Empleado")
-            course  = get_object_or_404(Course,  pk=int(course_id))
-        except (ValueError, Usuario.DoesNotExist, Course.DoesNotExist):
+            program = get_object_or_404(TrainingProgram, pk=int(program_id))
+        except (ValueError, Usuario.DoesNotExist, TrainingProgram.DoesNotExist):
             usuarios = Usuario.objects.all()
-            cursos   = Course.objects.all()
+            programas = TrainingProgram.objects.all()
             empresas = Empresa.objects.all()
             
             from django.utils import timezone
@@ -446,10 +449,10 @@ def add_certificado(request):
                 'action': 'add',
                 'certificado': None,
                 'usuarios': usuarios,
-                'cursos': cursos,
+                'programas': programas,
                 'empresas': empresas,
                 'fecha_actual': fecha_actual_peru,
-                'error_message': 'El cliente o curso seleccionado no es válido.'
+                'error_message': 'El cliente o programa seleccionado no es válido.'
             })
 
         # Generar un código aleatorio único para el certificado
@@ -461,7 +464,7 @@ def add_certificado(request):
         # Crear el certificado
         certificado = Certificate(
             usuario=usuario,
-            course=course,
+            program=program,
             empresa=empresa,
             chronological_hours=int(horas),
             cert_code=cert_code
@@ -486,7 +489,7 @@ def add_certificado(request):
         return redirect('system:gestion_certificados')
 
     usuarios = Usuario.objects.all()
-    cursos   = Course.objects.all()
+    programas = TrainingProgram.objects.all()
     empresas = Empresa.objects.all()
     
     # Obtener la fecha y hora actual en zona horaria de Perú
@@ -502,7 +505,7 @@ def add_certificado(request):
         'action': 'add',
         'certificado': None,
         'usuarios': usuarios,
-        'cursos': cursos,
+        'programas': programas,
         'empresas': empresas,
         'fecha_actual': fecha_actual_peru,
     })
@@ -515,42 +518,42 @@ def edit_certificado(request, pk):
     certificado = get_object_or_404(Certificate, pk=pk)
     if request.method == 'POST':
         usuario_id = request.POST.get('usuario_id')
-        course_id  = request.POST.get('course_id')
+        program_id = request.POST.get('course_id')  # Mantenemos el nombre del campo para compatibilidad
         empresa_id = request.POST.get('empresa_id')
         horas      = request.POST.get('chronological_hours', certificado.chronological_hours)
         creation_date = request.POST.get('creation_date')
 
         # Validaciones de seguridad
-        if not usuario_id or not course_id:
+        if not usuario_id or not program_id:
             usuarios = Usuario.objects.all()
-            cursos   = Course.objects.all()
+            programas = TrainingProgram.objects.all()
             empresas = Empresa.objects.all()
             return render(request, 'system/certificado_form.html', {
                 'user': user,
                 'action': 'edit',
                 'certificado': certificado,
                 'usuarios': usuarios,
-                'cursos': cursos,
+                'programas': programas,
                 'empresas': empresas,
-                'error_message': 'Debe seleccionar un cliente y un curso válidos.'
+                'error_message': 'Debe seleccionar un cliente y un programa válidos.'
             })
 
         try:
             usuario = get_object_or_404(Usuario, pk=int(usuario_id), user_type="Empleado")
             certificado.usuario = usuario
-            certificado.course = get_object_or_404(Course, pk=int(course_id))
-        except (ValueError, Usuario.DoesNotExist, Course.DoesNotExist):
+            certificado.program = get_object_or_404(TrainingProgram, pk=int(program_id))
+        except (ValueError, Usuario.DoesNotExist, TrainingProgram.DoesNotExist):
             usuarios = Usuario.objects.all()
-            cursos   = Course.objects.all()
+            programas = TrainingProgram.objects.all()
             empresas = Empresa.objects.all()
             return render(request, 'system/certificado_form.html', {
                 'user': user,
                 'action': 'edit',
                 'certificado': certificado,
                 'usuarios': usuarios,
-                'cursos': cursos,
+                'programas': programas,
                 'empresas': empresas,
-                'error_message': 'El cliente o curso seleccionado no es válido.'
+                'error_message': 'El cliente o programa seleccionado no es válido.'
             })
         
         # Permitir la selección manual de la empresa
@@ -585,14 +588,14 @@ def edit_certificado(request, pk):
         return redirect('system:gestion_certificados')
 
     usuarios = Usuario.objects.all()
-    cursos   = Course.objects.all()
+    programas = TrainingProgram.objects.all()
     empresas = Empresa.objects.all()
     return render(request, 'system/certificado_form.html', {
         'user': user,
         'action': 'edit',
         'certificado': certificado,
         'usuarios': usuarios,
-        'cursos': cursos,
+        'programas': programas,
         'empresas': empresas,
     })
 
@@ -601,7 +604,7 @@ def certificado_pdf(request, cert_code):
     """
     Genera un PDF con el certificado seleccionado.
     """
-    certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'course', 'empresa'), cert_code=cert_code)
+    certificado = get_object_or_404(Certificate.objects.select_related('usuario', 'program', 'empresa'), cert_code=cert_code)
     
     # Generar URL para el QR con un dominio personalizado
     # Puedes cambiarlo al dominio que prefieras, por ejemplo 'https://dampro.com.pe'
@@ -1033,32 +1036,33 @@ def api_buscar_usuarios(request):
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 @login_required 
-def api_buscar_cursos(request):
+def api_buscar_programas(request):
     """
-    API para buscar cursos por nombre para autocompletado
+    API para buscar programas por nombre para autocompletado
     """
     if request.method == 'GET':
         query = request.GET.get('q', '').strip()
         
-        # Si no hay query o es muy corto, devolver todos los cursos (para mostrar lista completa)
+        # Si no hay query o es muy corto, devolver todos los programas (para mostrar lista completa)
         if len(query) < 2:
-            cursos = Course.objects.all()[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
+            programas = TrainingProgram.objects.all()[:20]  # Limitar a 20 resultados para mostrar todos inicialmente
         else:
-            # Buscar cursos que coincidan con el query en nombre
-            cursos = Course.objects.filter(
+            # Buscar programas que coincidan con el query en nombre
+            programas = TrainingProgram.objects.filter(
                 name__icontains=query
             )[:10]  # Limitar a 10 resultados cuando se filtra
         
-        cursos_data = []
-        for curso in cursos:
-            cursos_data.append({
-                'id': curso.id,
-                'name': curso.name,
-                'course_hours': curso.course_hours,
-                'texto_display': f"{curso.name} - ({curso.course_hours} horas)"
+        programas_data = []
+        for programa in programas:
+            programas_data.append({
+                'id': programa.id,
+                'name': programa.name,
+                'hours': programa.hours,
+                'program_type': programa.program_type,
+                'texto_display': f"{programa.name} - {programa.program_type} ({programa.hours} horas)"
             })
         
-        return JsonResponse({'cursos': cursos_data})
+        return JsonResponse({'programas': programas_data})
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 

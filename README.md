@@ -64,9 +64,9 @@ La plataforma ha sido diseñada para empresas consultoras que brindan servicios 
 - Validación automática de información mediante APIs de RENIEC
 - Histórico completo de capacitaciones por persona
 - Gestión de grupos y cohortes de capacitación
-- Filtros inteligentes por empresa, curso o fecha
+- Filtros inteligentes por empresa, programa o fecha
 
-### 📚 *Catálogo de Cursos SSOMA*
+### 📚 *Catálogo de Programas SSOMA*
 - Biblioteca completa de programas de capacitación especializados
 - Gestión de contenidos curriculares y horas cronológicas
 - Categorización por áreas de especialización
@@ -115,14 +115,14 @@ La plataforma ha sido diseñada para empresas consultoras que brindan servicios 
 - Página de inicio institucional con información corporativa
 - Sección "Quiénes Somos" con misión, visión y valores
 - Catálogo completo de servicios SSOMA ofrecidos
-- Listado de cursos disponibles con detalles técnicos
+- Listado de programas disponibles con detalles técnicos
 - Sistema de verificación pública de certificados
 - Formularios de contacto integrados con WhatsApp
 
 #### 🔐 *Panel Administrativo*
 - Dashboard ejecutivo con métricas y KPIs en tiempo real
 - Gestión completa de clientes y empresas asociadas
-- Administración de cursos y programas educativos
+- Administración de programas educativos
 - Sistema de emisión y seguimiento de certificados
 - Reportes gerenciales y estadísticas operativas
 - Configuración de perfiles y preferencias de usuario
@@ -130,7 +130,7 @@ La plataforma ha sido diseñada para empresas consultoras que brindan servicios 
 #### 📊 *Sistema de Reportes*
 - Generación automática de informes ejecutivos
 - Estadísticas de certificaciones por período
-- Análisis de participación por empresa y curso
+- Análisis de participación por empresa y programa
 - Métricas de crecimiento y tendencias del negocio
 - Exportación de datos en múltiples formatos
 
@@ -221,7 +221,7 @@ La plataforma ha sido diseñada para empresas consultoras que brindan servicios 
 - *Gubernamental* - Entidades públicas y reguladoras
 
 ### *Tipos de Certificación*
-- *Cursos especializados* en prevención de riesgos laborales
+- *Programas especializados* en prevención de riesgos laborales
 - *Capacitaciones normativas* según legislación peruana
 - *Programas corporativos* personalizados por cliente
 - *Certificaciones internacionales* reconocidas en la región
@@ -289,7 +289,7 @@ La plataforma ha sido diseñada para empresas consultoras que brindan servicios 
 - *IoT integration* para monitoreo en tiempo real
 
 ### *Expansión de Servicios*
-- *Marketplace* de cursos especializados
+- *Marketplace* de programas especializados
 - *Certificaciones internacionales* con organismos globales
 - *Servicios de consultoría* integrados en la plataforma
 - *API pública* para desarrolladores terceros

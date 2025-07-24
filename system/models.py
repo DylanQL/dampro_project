@@ -21,14 +21,15 @@ class UserAccount(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='account')
     status = models.CharField(max_length=20)
 
-class Course(models.Model):
+class TrainingProgram(models.Model):
     name = models.CharField(max_length=200)
-    course_hours = models.PositiveIntegerField()
+    hours = models.PositiveIntegerField()
+    program_type = models.CharField(max_length=100)
 
 class Certificate(models.Model):
     cert_code = models.CharField(max_length=100, unique=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='certificates')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='certificates')
+    program = models.ForeignKey(TrainingProgram, on_delete=models.CASCADE, related_name='certificates', null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='certificates', null=True, blank=True)
     creation_date = models.DateTimeField(default=models.functions.Now)  # Se cambió de auto_now_add=True para permitir edición
     chronological_hours = models.PositiveIntegerField()

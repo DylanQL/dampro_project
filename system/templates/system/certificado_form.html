@@ -116,19 +116,19 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       }
     });
     
-    // Inicializar autocompletado para cursos
+    // Inicializar autocompletado para programas
     initAutocomplete({
-      inputId: 'curso_display',
-      hiddenInputId: 'course_id',
-      apiUrl: '{% url "system:api_buscar_cursos" %}',
-      placeholder: 'Escriba el nombre del curso...',
+      inputId: 'programa_display',
+      hiddenInputId: 'program_id',
+      apiUrl: '{% url "system:api_buscar_programas" %}',
+      placeholder: 'Escriba el nombre del programa...',
       onSelect: function(item) {
-        // Actualizar las horas automáticamente al seleccionar curso
-        if (item.course_hours && horasInput) {
-          // En modo edición, solo actualizamos las horas si se cambia el curso
-          if (!isEditMode || horasInput.value != item.course_hours) {
-            horasInput.value = item.course_hours;
-            console.log('Horas actualizadas a:', item.course_hours);
+        // Actualizar las horas automáticamente al seleccionar programa
+        if (item.hours && horasInput) {
+          // En modo edición, solo actualizamos las horas si se cambia el programa
+          if (!isEditMode || horasInput.value != item.hours) {
+            horasInput.value = item.hours;
+            console.log('Horas actualizadas a:', item.hours);
           }
         }
       }
@@ -162,15 +162,15 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
           usuarioDisplay.style.backgroundColor = '#f0fdf4';
         }
         
-        // Precargar curso
-        const cursoDisplay = document.getElementById('curso_display');
-        const cursoId = document.getElementById('course_id');
-        if (cursoDisplay && cursoId) {
-          cursoDisplay.value = '{{ certificado.course.name }} - ({{ certificado.course.course_hours }} horas)';
-          cursoId.value = '{{ certificado.course.id }}';
+        // Precargar programa
+        const programaDisplay = document.getElementById('programa_display');
+        const programaId = document.getElementById('program_id');
+        if (programaDisplay && programaId) {
+          programaDisplay.value = '{{ certificado.program.name }} - ({{ certificado.program.hours }} horas)';
+          programaId.value = '{{ certificado.program.id }}';
           // Aplicar estilos de éxito
-          cursoDisplay.style.borderColor = '#10b981';
-          cursoDisplay.style.backgroundColor = '#f0fdf4';
+          programaDisplay.style.borderColor = '#10b981';
+          programaDisplay.style.backgroundColor = '#f0fdf4';
         }
         
         // Precargar empresa (si existe)
@@ -235,8 +235,8 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
             let key;
             if (config.apiUrl.includes('usuarios')) {
               key = 'usuarios';
-            } else if (config.apiUrl.includes('cursos')) {
-              key = 'cursos';
+            } else if (config.apiUrl.includes('programas')) {
+              key = 'programas';
             } else if (config.apiUrl.includes('empresas')) {
               key = 'empresas';
             }
@@ -301,8 +301,8 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
             let key;
             if (config.apiUrl.includes('usuarios')) {
               key = 'usuarios';
-            } else if (config.apiUrl.includes('cursos')) {
-              key = 'cursos';
+            } else if (config.apiUrl.includes('programas')) {
+          key = 'programas';
             } else if (config.apiUrl.includes('empresas')) {
               key = 'empresas';
             }
@@ -330,8 +330,8 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
             let key;
             if (config.apiUrl.includes('usuarios')) {
               key = 'usuarios';
-            } else if (config.apiUrl.includes('cursos')) {
-              key = 'cursos';
+            } else if (config.apiUrl.includes('programas')) {
+          key = 'programas';
             } else if (config.apiUrl.includes('empresas')) {
               key = 'empresas';
             }
@@ -482,9 +482,9 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
   // Función para validar el formulario antes del envío
   function validateForm() {
     const usuarioInput = document.getElementById('usuario_display');
-    const cursoInput = document.getElementById('curso_display');
+    const programaInput = document.getElementById('programa_display');
     const usuarioHidden = document.getElementById('usuario_id');
-    const cursoHidden = document.getElementById('course_id');
+    const programaHidden = document.getElementById('program_id');
     
     let isValid = true;
     
@@ -496,11 +496,11 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       isValid = false;
     }
     
-    // Validar curso
-    if (!cursoHidden.value || cursoHidden.value.trim() === '') {
-      cursoInput.style.borderColor = '#ef4444';
-      cursoInput.style.backgroundColor = '#fef2f2';
-      showFormErrorMessage(cursoInput, 'Debe seleccionar un curso válido');
+    // Validar programa
+    if (!programaHidden.value || programaHidden.value.trim() === '') {
+      programaInput.style.borderColor = '#ef4444';
+      programaInput.style.backgroundColor = '#fef2f2';
+      showFormErrorMessage(programaInput, 'Debe seleccionar un programa válido');
       isValid = false;
     }
     
@@ -582,16 +582,16 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         </div>
 
         <div class="space-y-2">
-          <label for="curso_display" class="block text-sm font-medium text-rcm-navy">Curso:</label>
+          <label for="programa_display" class="block text-sm font-medium text-rcm-navy">Programa:</label>
           <div class="autocomplete-container">
             <input
               type="text"
-              id="curso_display"
+              id="programa_display"
               class="autocomplete-input"
-              placeholder="Escriba el nombre del curso..."
+              placeholder="Escriba el nombre del programa..."
               autocomplete="off"
             />
-            <input type="hidden" name="course_id" id="course_id" required />
+            <input type="hidden" name="program_id" id="program_id" required />
           </div>
         </div>
 
