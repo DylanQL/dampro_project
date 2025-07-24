@@ -1,4 +1,4 @@
-# 🏢 RCM Solutions SAC - Sistema de Gestión SSOMA
+# 🏢 RCM Solutions SAC - Sistema de Gestión SSOMA 
 
 <div align="center">
 
