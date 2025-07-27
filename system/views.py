@@ -606,7 +606,7 @@ def edit_certificado(request, pk):
         'empresas': empresas,
     })
 
-@login_required
+
 def certificado_pdf(request, cert_code):
     """
     Genera un PDF con el certificado seleccionado.
