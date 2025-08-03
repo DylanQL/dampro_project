@@ -488,6 +488,19 @@ def add_certificado(request):
                 # Si hay un problema con el formato, usar la fecha actual (valor por defecto)
                 pass
         
+        # Procesar la fecha de culminación si se proporcionó
+        completion_date = request.POST.get('completion_date')
+        if completion_date:
+            try:
+                # Parsear la fecha como naive datetime
+                naive_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
+                # Convertir a timezone-aware con zona horaria de Perú
+                lima_tz = ZoneInfo('America/Lima')
+                certificado.completion_date = naive_date.replace(tzinfo=lima_tz)
+            except ValueError:
+                # Si hay un problema con el formato, dejar el campo como None
+                pass
+        
         certificado.save()
         return redirect('system:gestion_certificados')
 
@@ -590,6 +603,22 @@ def edit_certificado(request, pk):
             except ValueError:
                 # Si hay un problema con el formato, mantenemos la fecha actual
                 pass
+        
+        # Procesar la fecha de culminación si se proporcionó
+        completion_date = request.POST.get('completion_date')
+        if completion_date:
+            try:
+                # Parsear la fecha como naive datetime
+                naive_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
+                # Convertir a timezone-aware con zona horaria de Perú
+                lima_tz = ZoneInfo('America/Lima')
+                certificado.completion_date = naive_date.replace(tzinfo=lima_tz)
+            except ValueError:
+                # Si hay un problema con el formato, mantenemos la fecha actual
+                pass
+        else:
+            # Si no se proporciona fecha de culminación, establecerla como None
+            certificado.completion_date = None
                 
         certificado.save()
         return redirect('system:gestion_certificados')
@@ -627,6 +656,12 @@ def certificado_pdf(request, cert_code):
     mes_numero = certificado.creation_date.month
     mes_espanol = get_mes_completo_espanol(mes_numero)
     
+    # Obtener el mes de culminación en español si existe
+    mes_culminacion_espanol = None
+    if certificado.completion_date:
+        mes_culminacion_numero = certificado.completion_date.month
+        mes_culminacion_espanol = get_mes_completo_espanol(mes_culminacion_numero)
+    
     # Generar QR code
     qr = qrcode.QRCode(
         version=1,
@@ -651,6 +686,7 @@ def certificado_pdf(request, cert_code):
         'qr_code': qr_image_base64,
         'verification_url': verification_url,
         'mes_espanol': mes_espanol,
+        'mes_culminacion_espanol': mes_culminacion_espanol,
     })
     
     # Configuración de fuentes

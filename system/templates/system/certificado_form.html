@@ -702,7 +702,7 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
         </div>
 
         <div class="space-y-2">
-          <label for="creation_date" class="block text-sm font-medium text-rcm-navy">Fecha del certificado:</label>
+          <label for="creation_date" class="block text-sm font-medium text-rcm-navy">Fecha de inicio:</label>
           <div class="date-input-container">
             <input
               type="datetime-local"
@@ -718,10 +718,28 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
           </div>
           <p class="text-xs text-gray-500 italic">
             {% if action == 'add' %}
-            <i class="fas fa-info-circle mr-1"></i>Fecha y hora pre-cargada con la actual. Puede modificarla si es necesario.
+            <i class="fas fa-info-circle mr-1"></i>Fecha y hora de inicio del programa. Pre-cargada con la actual.
             {% else %}
-            <i class="fas fa-edit mr-1"></i>Modifique la fecha del certificado si es necesario.
+            <i class="fas fa-edit mr-1"></i>Modifique la fecha de inicio si es necesario.
             {% endif %}
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label for="completion_date" class="block text-sm font-medium text-rcm-navy">Fecha de culminación (opcional):</label>
+          <div class="date-input-container">
+            <input
+              type="datetime-local"
+              name="completion_date"
+              id="completion_date"
+              {% if certificado and certificado.completion_date %}
+              value="{{ certificado.completion_date|date:'Y-m-d\TH:i' }}"
+              {% endif %}
+              class="w-full"
+            />          
+          </div>
+          <p class="text-xs text-gray-500 italic">
+            <i class="fas fa-info-circle mr-1"></i>Fecha de culminación del programa (opcional). Si se especifica, se mostrará un rango de fechas en el certificado.
           </p>
         </div>
 

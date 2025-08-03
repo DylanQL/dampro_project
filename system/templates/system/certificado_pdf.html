@@ -193,8 +193,15 @@ Por haber participado {% if certificado.program.program_type == "Capacitación" 
                 {% else %}
                 desarrollada de manera {% if certificado.modality %}{{ certificado.modality|lower }}{% else %}virtual{% endif %}, 
                 {% endif %}
+                {% if certificado.completion_date %}
+                realizado desde el día 
+                <span class="fecha-horas">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>
+                hasta el día
+                <span class="fecha-horas">{{ certificado.completion_date|date:"d" }} de {{ mes_culminacion_espanol }} del {{ certificado.completion_date|date:"Y" }}</span>, 
+                {% else %}
                 realizado el día 
                 <span class="fecha-horas">{{ certificado.creation_date|date:"d" }} de {{ mes_espanol }} del {{ certificado.creation_date|date:"Y" }}</span>, 
+                {% endif %}
                 con un total de <span class="fecha-horas">{{ certificado.chronological_hours }}</span> horas cronológicas.
             </div>
             
