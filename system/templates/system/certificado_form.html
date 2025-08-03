@@ -536,6 +536,8 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
     const programaInput = document.getElementById('programa_display');
     const usuarioHidden = document.getElementById('usuario_id');
     const programaHidden = document.getElementById('program_id');
+    const creationDateInput = document.getElementById('creation_date');
+    const completionDateInput = document.getElementById('completion_date');
     
     let isValid = true;
     
@@ -553,6 +555,23 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       programaInput.style.backgroundColor = '#fef2f2';
       showFormErrorMessage(programaInput, 'Debe seleccionar un programa válido');
       isValid = false;
+    }
+    
+    // Validar que la fecha de culminación no sea anterior a la fecha de inicio
+    if (completionDateInput.value) {
+      const startDate = new Date(creationDateInput.value);
+      const endDate = new Date(completionDateInput.value);
+      
+      if (endDate < startDate) {
+        completionDateInput.style.borderColor = '#ef4444';
+        completionDateInput.style.backgroundColor = '#fef2f2';
+        showFormErrorMessage(completionDateInput, 'La fecha de culminación no puede ser anterior a la fecha de inicio');
+        isValid = false;
+      } else {
+        // Restablecer estilos si la validación es exitosa
+        completionDateInput.style.borderColor = '';
+        completionDateInput.style.backgroundColor = '';
+      }
     }
     
     if (!isValid) {
@@ -597,6 +616,40 @@ input[type="datetime-local"]::-webkit-inner-spin-button {
       }
     }, 5000);
   }
+  
+  // Inicializar la validación de fechas cuando el documento esté completamente cargado
+  document.addEventListener('DOMContentLoaded', function() {
+    const creationDateInput = document.getElementById('creation_date');
+    const completionDateInput = document.getElementById('completion_date');
+    
+    function validateDates() {
+      if (completionDateInput.value) {
+        const startDate = new Date(creationDateInput.value);
+        const endDate = new Date(completionDateInput.value);
+        
+        if (endDate < startDate) {
+          completionDateInput.style.borderColor = '#ef4444';
+          completionDateInput.style.backgroundColor = '#fef2f2';
+          showFormErrorMessage(completionDateInput, 'La fecha de culminación no puede ser anterior a la fecha de inicio');
+        } else {
+          // Restablecer estilos si la validación es exitosa
+          completionDateInput.style.borderColor = '';
+          completionDateInput.style.backgroundColor = '';
+          // Eliminar mensaje de error si existe
+          const existingError = completionDateInput.parentElement.querySelector('.form-error-message');
+          if (existingError) {
+            existingError.remove();
+          }
+        }
+      }
+    }
+    
+    // Añadir validación en tiempo real cuando se cambian las fechas
+    if (creationDateInput && completionDateInput) {
+      creationDateInput.addEventListener('change', validateDates);
+      completionDateInput.addEventListener('change', validateDates);
+    }
+  });
 </script>
 {% endblock %}
 

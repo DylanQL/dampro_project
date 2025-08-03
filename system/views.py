@@ -493,10 +493,35 @@ def add_certificado(request):
         if completion_date:
             try:
                 # Parsear la fecha como naive datetime
-                naive_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
+                naive_completion_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
                 # Convertir a timezone-aware con zona horaria de Perú
                 lima_tz = ZoneInfo('America/Lima')
-                certificado.completion_date = naive_date.replace(tzinfo=lima_tz)
+                completion_date_aware = naive_completion_date.replace(tzinfo=lima_tz)
+                
+                # Verificar que la fecha de culminación no sea anterior a la fecha de inicio
+                if completion_date_aware < certificado.creation_date:
+                    # Si la fecha es anterior, mostrar error
+                    usuarios = Usuario.objects.all()
+                    programas = TrainingProgram.objects.all()
+                    empresas = Empresa.objects.all()
+                    
+                    from django.utils import timezone
+                    from zoneinfo import ZoneInfo
+                    lima_tz = ZoneInfo('America/Lima')
+                    fecha_actual_peru = timezone.now().astimezone(lima_tz)
+                    
+                    return render(request, 'system/certificado_form.html', {
+                        'user': user,
+                        'action': 'add',
+                        'certificado': None,
+                        'usuarios': usuarios,
+                        'programas': programas,
+                        'empresas': empresas,
+                        'fecha_actual': fecha_actual_peru,
+                        'error_message': 'La fecha de culminación no puede ser anterior a la fecha de inicio.'
+                    })
+                
+                certificado.completion_date = completion_date_aware
             except ValueError:
                 # Si hay un problema con el formato, dejar el campo como None
                 pass
@@ -609,10 +634,28 @@ def edit_certificado(request, pk):
         if completion_date:
             try:
                 # Parsear la fecha como naive datetime
-                naive_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
+                naive_completion_date = datetime.strptime(completion_date, '%Y-%m-%dT%H:%M')
                 # Convertir a timezone-aware con zona horaria de Perú
                 lima_tz = ZoneInfo('America/Lima')
-                certificado.completion_date = naive_date.replace(tzinfo=lima_tz)
+                completion_date_aware = naive_completion_date.replace(tzinfo=lima_tz)
+                
+                # Verificar que la fecha de culminación no sea anterior a la fecha de inicio
+                if completion_date_aware < certificado.creation_date:
+                    # Si la fecha es anterior, mostrar error
+                    usuarios = Usuario.objects.all()
+                    programas = TrainingProgram.objects.all()
+                    empresas = Empresa.objects.all()
+                    return render(request, 'system/certificado_form.html', {
+                        'user': user,
+                        'action': 'edit',
+                        'certificado': certificado,
+                        'usuarios': usuarios,
+                        'programas': programas,
+                        'empresas': empresas,
+                        'error_message': 'La fecha de culminación no puede ser anterior a la fecha de inicio.'
+                    })
+                
+                certificado.completion_date = completion_date_aware
             except ValueError:
                 # Si hay un problema con el formato, mantenemos la fecha actual
                 pass
